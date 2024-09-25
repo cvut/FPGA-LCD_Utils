@@ -1,0 +1,85 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>preview</LangVersion>
+    <ApplicationIcon>Images\FPGAtools.ico</ApplicationIcon>
+    <StartupObject>LSPtools.FormStart</StartupObject>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <AssemblyVersion>1.4</AssemblyVersion>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <FileVersion>1.4</FileVersion>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>E:\@VS_PRG\@Vyuka\LSPtools\RichardSusta.snk</AssemblyOriginatorKeyFile>
+    <Copyright>2024, Richard Susta, Dept. of Control Eng., Faculty of Electrical Eng. CTU in Prague</Copyright>
+    <PackageProjectUrl>https://dcenet.fel.cvut.cz/edu/fpga/Default_en.aspx</PackageProjectUrl>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <Authors>Richard Susta</Authors>
+    <Company>Department of Control Eng., Faculty of Electrical Eng. CTU in Prague</Company>
+    <Product>LSP tools for FPGA</Product>
+    <Description>LSP tools support the creation of images in FPGA memory with a focus on their LCD display. They are compiled for the VEEK-MT2 development board manufactured by Terasic. </Description>
+    <Version>1.4</Version>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>$(DefineConstants);xTABLE_CREATION</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Form1_old.cs" />
+    <Compile Remove="Form1_old.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Form1_old.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Help.rtf" />
+    <None Remove="Resources\Zoom.cur" />
+    <None Remove="tb.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Zoom.cur" />
+    <Content Include="Images\FPGAtools.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Help.rtf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="TBFormHelp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="RulerFormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="QCToDoForm_notused.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
