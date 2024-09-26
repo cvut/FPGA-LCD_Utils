@@ -1,8 +1,6 @@
-The LSPtools contain four utilities for Windows FPGA designs. They were written to use VHDL language in the Quartus development environment with the Veek-MT2 development board but could be modified for other environments.
+The LSPtools contain four utilities for Windows FPGA designs. They were written to use VHDL language in the Quartus development environment with the Veek-MT2 development board but could be modified for other environments. The utilities are run from the Start Window, which is also possible to minimize the system notification area, aka tray icon.
 
 ![alt text](https://github.com/cvut/LSPtools/blob/main/images/LSPtoolStart.png)
-
-The utilities are run from the Start Window, which is also possible to minimize the system notification area, aka tray icon.
 
 - **Bitmap To VHDL** converts an image to a VHDL file that Quartus compiles as FPGA memory.
 - **LCD Geometry Tool** measures image elements as lines, 
