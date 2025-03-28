@@ -1,4 +1,4 @@
-﻿namespace LSPtools
+﻿namespace FpgaLcdUtils
 {
     partial class RulerFormMain
     {
@@ -29,11 +29,14 @@
         private void InitializeComponent()
         {
       this.components = new System.ComponentModel.Container();
+      System.Windows.Forms.ImageList imageListDrawMove;
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RulerFormMain));
       this.setZoom200MenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.hScrollBarGraph = new System.Windows.Forms.HScrollBar();
       this.vScrollBarGraph = new System.Windows.Forms.VScrollBar();
       this.panel2 = new System.Windows.Forms.Panel();
+      this.drawButton = new System.Windows.Forms.Button();
+      this.resizeMoveButton = new System.Windows.Forms.Button();
       this.adjustWindow = new System.Windows.Forms.Button();
       this.label1 = new System.Windows.Forms.Label();
       this.zoomTextBox = new System.Windows.Forms.TextBox();
@@ -56,7 +59,7 @@
       this.setZoom125MenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.setZoom150MenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.centerImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-      this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.helpEquationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.panelGraph = new System.Windows.Forms.Panel();
       this.panelGraphContextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
       this.copyPixelInfoToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,13 +79,13 @@
       this.label7 = new System.Windows.Forms.Label();
       this.rrNUDxwidth = new System.Windows.Forms.NumericUpDown();
       this.rrNUDyheight = new System.Windows.Forms.NumericUpDown();
-      this.label5 = new System.Windows.Forms.Label();
       this.label10 = new System.Windows.Forms.Label();
       this.rrColorButton = new System.Windows.Forms.Button();
       this.visibleRRCheckBox = new System.Windows.Forms.CheckBox();
       this.rectResetButton = new System.Windows.Forms.Button();
       this.rrSelectButton = new System.Windows.Forms.Button();
       this.imageListHand = new System.Windows.Forms.ImageList(this.components);
+      this.label5 = new System.Windows.Forms.Label();
       this.rectTableLayoutReference = new System.Windows.Forms.TableLayoutPanel();
       this.rrRB21 = new System.Windows.Forms.RadioButton();
       this.rrRB22 = new System.Windows.Forms.RadioButton();
@@ -106,7 +109,6 @@
       this.label14 = new System.Windows.Forms.Label();
       this.label23 = new System.Windows.Forms.Label();
       this.label17 = new System.Windows.Forms.Label();
-      this.lineEQrtb = new System.Windows.Forms.RichTextBox();
       this.lineXdiffTextBox = new System.Windows.Forms.TextBox();
       this.lineYdiffTextBox = new System.Windows.Forms.TextBox();
       this.label12 = new System.Windows.Forms.Label();
@@ -119,6 +121,8 @@
       this.visibleLineCheckBox = new System.Windows.Forms.CheckBox();
       this.lineResetButton = new System.Windows.Forms.Button();
       this.lineSelectButton = new System.Windows.Forms.Button();
+      this.lineEQrtb = new System.Windows.Forms.RichTextBox();
+      this.tryAdjustLineGCGbutton = new System.Windows.Forms.Button();
       this.tabPage3 = new System.Windows.Forms.TabPage();
       this.ellipseTableLayoutPanelParams = new System.Windows.Forms.TableLayoutPanel();
       this.numericUpDown14 = new System.Windows.Forms.NumericUpDown();
@@ -131,7 +135,6 @@
       this.label26 = new System.Windows.Forms.Label();
       this.label29 = new System.Windows.Forms.Label();
       this.label31 = new System.Windows.Forms.Label();
-      this.ellipseEQrtb = new System.Windows.Forms.RichTextBox();
       this.visibleEllipseCheckBox = new System.Windows.Forms.CheckBox();
       this.ellipseColorButton = new System.Windows.Forms.Button();
       this.label13 = new System.Windows.Forms.Label();
@@ -142,6 +145,8 @@
       this.label22 = new System.Windows.Forms.Label();
       this.ellipseResetButton = new System.Windows.Forms.Button();
       this.ellipseSelectButton = new System.Windows.Forms.Button();
+      this.ellipseEQrtb = new System.Windows.Forms.RichTextBox();
+      this.tryAdjustEllipseGCGbutton = new System.Windows.Forms.Button();
       this.ellipseTableLayoutPanelRef = new System.Windows.Forms.TableLayoutPanel();
       this.ellipseRB21 = new System.Windows.Forms.RadioButton();
       this.ellipseRB22 = new System.Windows.Forms.RadioButton();
@@ -159,6 +164,7 @@
       this.statusStrip1 = new System.Windows.Forms.StatusStrip();
       this.messageToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
       this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+      imageListDrawMove = new System.Windows.Forms.ImageList(this.components);
       this.panel2.SuspendLayout();
       this.menuStrip1.SuspendLayout();
       this.panelGraphContextMenuStrip1.SuspendLayout();
@@ -187,11 +193,20 @@
       this.statusStrip1.SuspendLayout();
       this.SuspendLayout();
       // 
+      // imageListDrawMove
+      // 
+      imageListDrawMove.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListDrawMove.ImageStream")));
+      imageListDrawMove.TransparentColor = System.Drawing.Color.Transparent;
+      imageListDrawMove.Images.SetKeyName(0, "Resize24x24.png");
+      imageListDrawMove.Images.SetKeyName(1, "Resize24x24off.png");
+      imageListDrawMove.Images.SetKeyName(2, "Draw24x24.png");
+      imageListDrawMove.Images.SetKeyName(3, "Draw24x24off.png");
+      // 
       // setZoom200MenuItem
       // 
       this.setZoom200MenuItem.Name = "setZoom200MenuItem";
       this.setZoom200MenuItem.ShortcutKeys = System.Windows.Forms.Keys.F8;
-      this.setZoom200MenuItem.Size = new System.Drawing.Size(180, 22);
+      this.setZoom200MenuItem.Size = new System.Drawing.Size(230, 22);
       this.setZoom200MenuItem.Tag = "8";
       this.setZoom200MenuItem.Text = "200 %";
       this.setZoom200MenuItem.Click += new System.EventHandler(this.zoomSet_Click);
@@ -199,10 +214,10 @@
       // hScrollBarGraph
       // 
       this.hScrollBarGraph.Dock = System.Windows.Forms.DockStyle.Bottom;
-      this.hScrollBarGraph.Location = new System.Drawing.Point(0, 530);
+      this.hScrollBarGraph.Location = new System.Drawing.Point(0, 308);
       this.hScrollBarGraph.Maximum = 5120;
       this.hScrollBarGraph.Name = "hScrollBarGraph";
-      this.hScrollBarGraph.Size = new System.Drawing.Size(821, 21);
+      this.hScrollBarGraph.Size = new System.Drawing.Size(784, 21);
       this.hScrollBarGraph.TabIndex = 10;
       this.hScrollBarGraph.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBarGraph_Scroll);
       this.hScrollBarGraph.MouseEnter += new System.EventHandler(this.hScrollBarGraph_MouseEnter);
@@ -210,16 +225,18 @@
       // vScrollBarGraph
       // 
       this.vScrollBarGraph.Dock = System.Windows.Forms.DockStyle.Right;
-      this.vScrollBarGraph.Location = new System.Drawing.Point(800, 50);
+      this.vScrollBarGraph.Location = new System.Drawing.Point(763, 58);
       this.vScrollBarGraph.Maximum = 4200;
       this.vScrollBarGraph.Name = "vScrollBarGraph";
-      this.vScrollBarGraph.Size = new System.Drawing.Size(21, 480);
+      this.vScrollBarGraph.Size = new System.Drawing.Size(21, 250);
       this.vScrollBarGraph.TabIndex = 11;
       this.vScrollBarGraph.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBarGraph_Scroll);
       this.vScrollBarGraph.MouseEnter += new System.EventHandler(this.vScrollBarGraph_MouseEnter);
       // 
       // panel2
       // 
+      this.panel2.Controls.Add(this.drawButton);
+      this.panel2.Controls.Add(this.resizeMoveButton);
       this.panel2.Controls.Add(this.adjustWindow);
       this.panel2.Controls.Add(this.label1);
       this.panel2.Controls.Add(this.zoomTextBox);
@@ -231,17 +248,41 @@
       this.panel2.Location = new System.Drawing.Point(0, 24);
       this.panel2.Margin = new System.Windows.Forms.Padding(2);
       this.panel2.Name = "panel2";
-      this.panel2.Size = new System.Drawing.Size(821, 26);
+      this.panel2.Size = new System.Drawing.Size(784, 34);
       this.panel2.TabIndex = 12;
+      // 
+      // drawButton
+      // 
+      this.drawButton.ImageIndex = 3;
+      this.drawButton.ImageList = imageListDrawMove;
+      this.drawButton.Location = new System.Drawing.Point(41, 1);
+      this.drawButton.Name = "drawButton";
+      this.drawButton.Size = new System.Drawing.Size(32, 32);
+      this.drawButton.TabIndex = 11;
+      this.toolTip1.SetToolTip(this.drawButton, "Draw the selected ruler type by dragging");
+      this.drawButton.UseVisualStyleBackColor = true;
+      this.drawButton.Click += new System.EventHandler(this.drawButton_Click);
+      // 
+      // resizeMoveButton
+      // 
+      this.resizeMoveButton.ImageIndex = 0;
+      this.resizeMoveButton.ImageList = imageListDrawMove;
+      this.resizeMoveButton.Location = new System.Drawing.Point(3, 3);
+      this.resizeMoveButton.Name = "resizeMoveButton";
+      this.resizeMoveButton.Size = new System.Drawing.Size(32, 32);
+      this.resizeMoveButton.TabIndex = 10;
+      this.toolTip1.SetToolTip(this.resizeMoveButton, "Select ruler and resized or moved if by dragging");
+      this.resizeMoveButton.UseVisualStyleBackColor = true;
+      this.resizeMoveButton.Click += new System.EventHandler(this.resizeMoveButton_Click);
       // 
       // adjustWindow
       // 
       this.adjustWindow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.adjustWindow.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.adjustWindow.Image = global::LSPtools.Properties.Resources.FullScreenHS;
-      this.adjustWindow.Location = new System.Drawing.Point(794, 0);
+      this.adjustWindow.Image = global::FpgaLcdUtils.Properties.Resources.FullScreenHS;
+      this.adjustWindow.Location = new System.Drawing.Point(757, 3);
       this.adjustWindow.Name = "adjustWindow";
-      this.adjustWindow.Size = new System.Drawing.Size(24, 23);
+      this.adjustWindow.Size = new System.Drawing.Size(28, 28);
       this.adjustWindow.TabIndex = 9;
       this.toolTip1.SetToolTip(this.adjustWindow, "Adjust windows size to fit \r\n100 % zoom of picture.");
       this.adjustWindow.UseVisualStyleBackColor = true;
@@ -251,7 +292,7 @@
       // 
       this.label1.AutoSize = true;
       this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label1.Location = new System.Drawing.Point(4, 7);
+      this.label1.Location = new System.Drawing.Point(79, 11);
       this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
       this.label1.Name = "label1";
       this.label1.Size = new System.Drawing.Size(38, 13);
@@ -260,7 +301,7 @@
       // 
       // zoomTextBox
       // 
-      this.zoomTextBox.Location = new System.Drawing.Point(50, 4);
+      this.zoomTextBox.Location = new System.Drawing.Point(124, 7);
       this.zoomTextBox.Margin = new System.Windows.Forms.Padding(2);
       this.zoomTextBox.Name = "zoomTextBox";
       this.zoomTextBox.ReadOnly = true;
@@ -271,7 +312,8 @@
       // 
       // xyCoordinatesTextBox
       // 
-      this.xyCoordinatesTextBox.Location = new System.Drawing.Point(172, 5);
+      this.xyCoordinatesTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.xyCoordinatesTextBox.Location = new System.Drawing.Point(240, 7);
       this.xyCoordinatesTextBox.Margin = new System.Windows.Forms.Padding(2);
       this.xyCoordinatesTextBox.Name = "xyCoordinatesTextBox";
       this.xyCoordinatesTextBox.ReadOnly = true;
@@ -284,7 +326,7 @@
       // 
       this.label3.AutoSize = true;
       this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label3.Location = new System.Drawing.Point(141, 7);
+      this.label3.Location = new System.Drawing.Point(209, 11);
       this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
       this.label3.Name = "label3";
       this.label3.Size = new System.Drawing.Size(27, 13);
@@ -297,12 +339,12 @@
       this.rgbTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-      this.rgbTextBox.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-      this.rgbTextBox.Location = new System.Drawing.Point(282, 4);
+      this.rgbTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.rgbTextBox.Location = new System.Drawing.Point(340, 7);
       this.rgbTextBox.Margin = new System.Windows.Forms.Padding(2);
       this.rgbTextBox.Name = "rgbTextBox";
       this.rgbTextBox.ReadOnly = true;
-      this.rgbTextBox.Size = new System.Drawing.Size(507, 20);
+      this.rgbTextBox.Size = new System.Drawing.Size(412, 20);
       this.rgbTextBox.TabIndex = 4;
       this.rgbTextBox.Text = "00 00 00";
       this.toolTip1.SetToolTip(this.rgbTextBox, "RBG color of selected pixel");
@@ -311,7 +353,7 @@
       // 
       this.label2.AutoSize = true;
       this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label2.Location = new System.Drawing.Point(245, 8);
+      this.label2.Location = new System.Drawing.Point(302, 11);
       this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
       this.label2.Name = "label2";
       this.label2.Size = new System.Drawing.Size(33, 13);
@@ -325,11 +367,11 @@
       this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.toolStripMenuItem2,
-            this.helpToolStripMenuItem});
+            this.helpEquationsToolStripMenuItem});
       this.menuStrip1.Location = new System.Drawing.Point(0, 0);
       this.menuStrip1.Name = "menuStrip1";
       this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-      this.menuStrip1.Size = new System.Drawing.Size(821, 24);
+      this.menuStrip1.Size = new System.Drawing.Size(784, 24);
       this.menuStrip1.TabIndex = 13;
       this.menuStrip1.Text = "menuStrip1";
       // 
@@ -403,7 +445,7 @@
       // 
       this.toolStripMenuItem4.Name = "toolStripMenuItem4";
       this.toolStripMenuItem4.ShortcutKeys = System.Windows.Forms.Keys.F3;
-      this.toolStripMenuItem4.Size = new System.Drawing.Size(180, 22);
+      this.toolStripMenuItem4.Size = new System.Drawing.Size(230, 22);
       this.toolStripMenuItem4.Tag = "3";
       this.toolStripMenuItem4.Text = "50 %";
       this.toolStripMenuItem4.Click += new System.EventHandler(this.zoomSet_Click);
@@ -412,7 +454,7 @@
       // 
       this.toolStripMenuItem3.Name = "toolStripMenuItem3";
       this.toolStripMenuItem3.ShortcutKeys = System.Windows.Forms.Keys.F4;
-      this.toolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
+      this.toolStripMenuItem3.Size = new System.Drawing.Size(230, 22);
       this.toolStripMenuItem3.Tag = "4";
       this.toolStripMenuItem3.Text = "75 %";
       this.toolStripMenuItem3.Click += new System.EventHandler(this.zoomSet_Click);
@@ -421,7 +463,7 @@
       // 
       this.setZoom100MenuItem.Name = "setZoom100MenuItem";
       this.setZoom100MenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-      this.setZoom100MenuItem.Size = new System.Drawing.Size(180, 22);
+      this.setZoom100MenuItem.Size = new System.Drawing.Size(230, 22);
       this.setZoom100MenuItem.Tag = "5";
       this.setZoom100MenuItem.Text = "100 %";
       this.setZoom100MenuItem.ToolTipText = "Reset zoom to original size";
@@ -431,7 +473,7 @@
       // 
       this.setZoom125MenuItem.Name = "setZoom125MenuItem";
       this.setZoom125MenuItem.ShortcutKeys = System.Windows.Forms.Keys.F6;
-      this.setZoom125MenuItem.Size = new System.Drawing.Size(180, 22);
+      this.setZoom125MenuItem.Size = new System.Drawing.Size(230, 22);
       this.setZoom125MenuItem.Tag = "6";
       this.setZoom125MenuItem.Text = "125 %";
       this.setZoom125MenuItem.Click += new System.EventHandler(this.zoomSet_Click);
@@ -440,7 +482,7 @@
       // 
       this.setZoom150MenuItem.Name = "setZoom150MenuItem";
       this.setZoom150MenuItem.ShortcutKeys = System.Windows.Forms.Keys.F7;
-      this.setZoom150MenuItem.Size = new System.Drawing.Size(180, 22);
+      this.setZoom150MenuItem.Size = new System.Drawing.Size(230, 22);
       this.setZoom150MenuItem.Tag = "7";
       this.setZoom150MenuItem.Text = "150%";
       this.setZoom150MenuItem.Click += new System.EventHandler(this.zoomSet_Click);
@@ -454,18 +496,18 @@
       this.centerImageToolStripMenuItem.ToolTipText = "Move the center point of bitmap do the windows center";
       this.centerImageToolStripMenuItem.Click += new System.EventHandler(this.centerImageToolStripMenuItem_Click);
       // 
-      // helpToolStripMenuItem
+      // helpEquationsToolStripMenuItem
       // 
-      this.helpToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
-      this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-      this.helpToolStripMenuItem.ShortcutKeyDisplayString = "F1";
-      this.helpToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
-      this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-      this.helpToolStripMenuItem.Text = "Help";
-      this.helpToolStripMenuItem.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-      this.helpToolStripMenuItem.ToolTipText = "About LCD testbench";
-      this.helpToolStripMenuItem.Visible = false;
-      this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
+      this.helpEquationsToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+      this.helpEquationsToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
+      this.helpEquationsToolStripMenuItem.Name = "helpEquationsToolStripMenuItem";
+      this.helpEquationsToolStripMenuItem.ShortcutKeyDisplayString = "F1";
+      this.helpEquationsToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
+      this.helpEquationsToolStripMenuItem.Size = new System.Drawing.Size(202, 20);
+      this.helpEquationsToolStripMenuItem.Text = "Explanatory Notes to the Equations";
+      this.helpEquationsToolStripMenuItem.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+      this.helpEquationsToolStripMenuItem.ToolTipText = "About LCD testbench";
+      this.helpEquationsToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
       // 
       // panelGraph
       // 
@@ -473,10 +515,10 @@
       this.panelGraph.ContextMenuStrip = this.panelGraphContextMenuStrip1;
       this.panelGraph.Cursor = System.Windows.Forms.Cursors.Cross;
       this.panelGraph.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.panelGraph.Location = new System.Drawing.Point(0, 50);
+      this.panelGraph.Location = new System.Drawing.Point(0, 58);
       this.panelGraph.Margin = new System.Windows.Forms.Padding(2);
       this.panelGraph.Name = "panelGraph";
-      this.panelGraph.Size = new System.Drawing.Size(800, 480);
+      this.panelGraph.Size = new System.Drawing.Size(763, 250);
       this.panelGraph.TabIndex = 9;
       this.panelGraph.Paint += new System.Windows.Forms.PaintEventHandler(this.panelGraph_Paint);
       this.panelGraph.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelGraf_MouseDown);
@@ -509,7 +551,6 @@
       // openLCDImageFile
       // 
       this.openLCDImageFile.DefaultExt = "txt";
-      this.openLCDImageFile.FileName = "openFileDialog1";
       this.openLCDImageFile.Filter = "Image files|*.bmp;*.jpg;*.jpeg;*.gif;*.png;*.tif;*.tiff|All files|*.*";
       this.openLCDImageFile.ShowReadOnly = true;
       // 
@@ -523,7 +564,7 @@
       // 
       this.rrCropButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
       this.rrCropButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.rrCropButton.Image = global::LSPtools.Properties.Resources.Crop1;
+      this.rrCropButton.Image = global::FpgaLcdUtils.Properties.Resources.Crop1;
       this.rrCropButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
       this.rrCropButton.Location = new System.Drawing.Point(452, 35);
       this.rrCropButton.Name = "rrCropButton";
@@ -542,9 +583,10 @@
       this.rulersTabControl.Controls.Add(this.tabPage3);
       this.rulersTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
       this.rulersTabControl.Location = new System.Drawing.Point(0, 0);
+      this.rulersTabControl.MinimumSize = new System.Drawing.Size(780, 128);
       this.rulersTabControl.Name = "rulersTabControl";
       this.rulersTabControl.SelectedIndex = 0;
-      this.rulersTabControl.Size = new System.Drawing.Size(821, 128);
+      this.rulersTabControl.Size = new System.Drawing.Size(784, 128);
       this.rulersTabControl.TabIndex = 0;
       this.rulersTabControl.Tag = "EColor";
       this.toolTip1.SetToolTip(this.rulersTabControl, " Color of Elliptical Ruler");
@@ -558,7 +600,7 @@
       this.tabPage1.Location = new System.Drawing.Point(4, 22);
       this.tabPage1.Name = "tabPage1";
       this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-      this.tabPage1.Size = new System.Drawing.Size(813, 102);
+      this.tabPage1.Size = new System.Drawing.Size(776, 102);
       this.tabPage1.TabIndex = 0;
       this.tabPage1.Text = "Rectangular Ruler";
       // 
@@ -581,13 +623,13 @@
       this.rrTableLayoutPanelParams.Controls.Add(this.label7, 3, 2);
       this.rrTableLayoutPanelParams.Controls.Add(this.rrNUDxwidth, 4, 1);
       this.rrTableLayoutPanelParams.Controls.Add(this.rrNUDyheight, 4, 2);
-      this.rrTableLayoutPanelParams.Controls.Add(this.label5, 1, 0);
       this.rrTableLayoutPanelParams.Controls.Add(this.label10, 3, 0);
       this.rrTableLayoutPanelParams.Controls.Add(this.rrColorButton, 5, 1);
       this.rrTableLayoutPanelParams.Controls.Add(this.visibleRRCheckBox, 5, 2);
       this.rrTableLayoutPanelParams.Controls.Add(this.rrCropButton, 6, 1);
       this.rrTableLayoutPanelParams.Controls.Add(this.rectResetButton, 6, 2);
       this.rrTableLayoutPanelParams.Controls.Add(this.rrSelectButton, 0, 1);
+      this.rrTableLayoutPanelParams.Controls.Add(this.label5, 0, 0);
       this.rrTableLayoutPanelParams.Dock = System.Windows.Forms.DockStyle.Fill;
       this.rrTableLayoutPanelParams.Location = new System.Drawing.Point(93, 3);
       this.rrTableLayoutPanelParams.Name = "rrTableLayoutPanelParams";
@@ -595,7 +637,7 @@
       this.rrTableLayoutPanelParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
       this.rrTableLayoutPanelParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
       this.rrTableLayoutPanelParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-      this.rrTableLayoutPanelParams.Size = new System.Drawing.Size(717, 96);
+      this.rrTableLayoutPanelParams.Size = new System.Drawing.Size(680, 96);
       this.rrTableLayoutPanelParams.TabIndex = 1;
       // 
       // rrNUDxref
@@ -744,18 +786,6 @@
             0});
       this.rrNUDyheight.ValueChanged += new System.EventHandler(this.rectNUD_ValueChanged);
       // 
-      // label5
-      // 
-      this.label5.Anchor = System.Windows.Forms.AnchorStyles.Right;
-      this.label5.AutoSize = true;
-      this.rrTableLayoutPanelParams.SetColumnSpan(this.label5, 2);
-      this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label5.Location = new System.Drawing.Point(72, 8);
-      this.label5.Name = "label5";
-      this.label5.Size = new System.Drawing.Size(118, 16);
-      this.label5.TabIndex = 6;
-      this.label5.Text = "Reference Point";
-      // 
       // label10
       // 
       this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -802,11 +832,11 @@
       // 
       // rectResetButton
       // 
-      this.rectResetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+      this.rectResetButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
       this.rectResetButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.rectResetButton.Location = new System.Drawing.Point(452, 68);
       this.rectResetButton.Name = "rectResetButton";
-      this.rectResetButton.Size = new System.Drawing.Size(125, 23);
+      this.rectResetButton.Size = new System.Drawing.Size(75, 23);
       this.rectResetButton.TabIndex = 9;
       this.rectResetButton.Text = "Reset";
       this.toolTip1.SetToolTip(this.rectResetButton, "Reset the coordinates to their initial values");
@@ -829,6 +859,7 @@
       this.rrSelectButton.Size = new System.Drawing.Size(54, 58);
       this.rrSelectButton.TabIndex = 10;
       this.rrSelectButton.Tag = "SSelect";
+      this.toolTip1.SetToolTip(this.rrSelectButton, "Select/Unselect Rectangle");
       this.rrSelectButton.UseVisualStyleBackColor = true;
       this.rrSelectButton.Click += new System.EventHandler(this.rrSelectButton_Click);
       // 
@@ -837,6 +868,18 @@
       this.imageListHand.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListHand.ImageStream")));
       this.imageListHand.TransparentColor = System.Drawing.Color.Transparent;
       this.imageListHand.Images.SetKeyName(0, "hand24x48.png");
+      // 
+      // label5
+      // 
+      this.label5.Anchor = System.Windows.Forms.AnchorStyles.Right;
+      this.label5.AutoSize = true;
+      this.rrTableLayoutPanelParams.SetColumnSpan(this.label5, 3);
+      this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.label5.Location = new System.Drawing.Point(35, 8);
+      this.label5.Name = "label5";
+      this.label5.Size = new System.Drawing.Size(155, 16);
+      this.label5.TabIndex = 6;
+      this.label5.Text = "RP = Reference Point";
       // 
       // rectTableLayoutReference
       // 
@@ -1007,11 +1050,12 @@
       this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
       this.label9.AutoSize = true;
       this.rectTableLayoutReference.SetColumnSpan(this.label9, 3);
+      this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.label9.Location = new System.Drawing.Point(3, 5);
       this.label9.Name = "label9";
       this.label9.Size = new System.Drawing.Size(84, 13);
       this.label9.TabIndex = 1;
-      this.label9.Text = "Point [Xref ,Yref]";
+      this.label9.Text = "RP Position";
       this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
       // 
       // tabPage2
@@ -1021,7 +1065,7 @@
       this.tabPage2.Location = new System.Drawing.Point(4, 22);
       this.tabPage2.Name = "tabPage2";
       this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-      this.tabPage2.Size = new System.Drawing.Size(813, 102);
+      this.tabPage2.Size = new System.Drawing.Size(776, 102);
       this.tabPage2.TabIndex = 1;
       this.tabPage2.Text = "Line Segment Ruler";
       // 
@@ -1050,7 +1094,6 @@
       this.lineTableLayoutParams.Controls.Add(this.label14, 1, 1);
       this.lineTableLayoutParams.Controls.Add(this.label23, 0, 0);
       this.lineTableLayoutParams.Controls.Add(this.label17, 0, 2);
-      this.lineTableLayoutParams.Controls.Add(this.lineEQrtb, 1, 2);
       this.lineTableLayoutParams.Controls.Add(this.lineXdiffTextBox, 6, 0);
       this.lineTableLayoutParams.Controls.Add(this.lineYdiffTextBox, 6, 1);
       this.lineTableLayoutParams.Controls.Add(this.label12, 5, 0);
@@ -1063,6 +1106,8 @@
       this.lineTableLayoutParams.Controls.Add(this.visibleLineCheckBox, 10, 1);
       this.lineTableLayoutParams.Controls.Add(this.lineResetButton, 11, 1);
       this.lineTableLayoutParams.Controls.Add(this.lineSelectButton, 0, 1);
+      this.lineTableLayoutParams.Controls.Add(this.lineEQrtb, 2, 2);
+      this.lineTableLayoutParams.Controls.Add(this.tryAdjustLineGCGbutton, 1, 2);
       this.lineTableLayoutParams.Dock = System.Windows.Forms.DockStyle.Fill;
       this.lineTableLayoutParams.Location = new System.Drawing.Point(3, 3);
       this.lineTableLayoutParams.Name = "lineTableLayoutParams";
@@ -1070,13 +1115,14 @@
       this.lineTableLayoutParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33444F));
       this.lineTableLayoutParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33444F));
       this.lineTableLayoutParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33112F));
-      this.lineTableLayoutParams.Size = new System.Drawing.Size(807, 96);
+      this.lineTableLayoutParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+      this.lineTableLayoutParams.Size = new System.Drawing.Size(770, 96);
       this.lineTableLayoutParams.TabIndex = 2;
       // 
       // lineNUPxend
       // 
       this.lineNUPxend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-      this.lineNUPxend.Location = new System.Drawing.Point(209, 6);
+      this.lineNUPxend.Location = new System.Drawing.Point(232, 6);
       this.lineNUPxend.Maximum = new decimal(new int[] {
             2048,
             0,
@@ -1088,7 +1134,7 @@
             0,
             -2147483648});
       this.lineNUPxend.Name = "lineNUPxend";
-      this.lineNUPxend.Size = new System.Drawing.Size(61, 20);
+      this.lineNUPxend.Size = new System.Drawing.Size(75, 20);
       this.lineNUPxend.TabIndex = 0;
       this.lineNUPxend.Tag = "L3";
       this.lineNUPxend.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -1103,7 +1149,7 @@
       // lineNUPyend
       // 
       this.lineNUPyend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-      this.lineNUPyend.Location = new System.Drawing.Point(209, 38);
+      this.lineNUPyend.Location = new System.Drawing.Point(232, 38);
       this.lineNUPyend.Maximum = new decimal(new int[] {
             2048,
             0,
@@ -1115,7 +1161,7 @@
             0,
             -2147483648});
       this.lineNUPyend.Name = "lineNUPyend";
-      this.lineNUPyend.Size = new System.Drawing.Size(61, 20);
+      this.lineNUPyend.Size = new System.Drawing.Size(75, 20);
       this.lineNUPyend.TabIndex = 0;
       this.lineNUPyend.Tag = "L4";
       this.lineNUPyend.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -1132,7 +1178,7 @@
       this.label15.Anchor = System.Windows.Forms.AnchorStyles.Right;
       this.label15.AutoSize = true;
       this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label15.Location = new System.Drawing.Point(181, 8);
+      this.label15.Location = new System.Drawing.Point(204, 8);
       this.label15.Name = "label15";
       this.label15.Size = new System.Drawing.Size(22, 16);
       this.label15.TabIndex = 1;
@@ -1144,7 +1190,7 @@
       this.label16.Anchor = System.Windows.Forms.AnchorStyles.Right;
       this.label16.AutoSize = true;
       this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label16.Location = new System.Drawing.Point(180, 40);
+      this.label16.Location = new System.Drawing.Point(203, 40);
       this.label16.Name = "label16";
       this.label16.Size = new System.Drawing.Size(23, 16);
       this.label16.TabIndex = 1;
@@ -1154,7 +1200,7 @@
       // lineNUPxstart
       // 
       this.lineNUPxstart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-      this.lineNUPxstart.Location = new System.Drawing.Point(113, 6);
+      this.lineNUPxstart.Location = new System.Drawing.Point(122, 6);
       this.lineNUPxstart.Maximum = new decimal(new int[] {
             2048,
             0,
@@ -1166,7 +1212,7 @@
             0,
             -2147483648});
       this.lineNUPxstart.Name = "lineNUPxstart";
-      this.lineNUPxstart.Size = new System.Drawing.Size(61, 20);
+      this.lineNUPxstart.Size = new System.Drawing.Size(75, 20);
       this.lineNUPxstart.TabIndex = 0;
       this.lineNUPxstart.Tag = "L1";
       this.lineNUPxstart.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -1181,7 +1227,7 @@
       // lineNUPstart
       // 
       this.lineNUPstart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-      this.lineNUPstart.Location = new System.Drawing.Point(113, 38);
+      this.lineNUPstart.Location = new System.Drawing.Point(122, 38);
       this.lineNUPstart.Maximum = new decimal(new int[] {
             2048,
             0,
@@ -1193,7 +1239,7 @@
             0,
             -2147483648});
       this.lineNUPstart.Name = "lineNUPstart";
-      this.lineNUPstart.Size = new System.Drawing.Size(61, 20);
+      this.lineNUPstart.Size = new System.Drawing.Size(75, 20);
       this.lineNUPstart.TabIndex = 0;
       this.lineNUPstart.Tag = "L2";
       this.lineNUPstart.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -1210,7 +1256,7 @@
       this.label11.Anchor = System.Windows.Forms.AnchorStyles.Right;
       this.label11.AutoSize = true;
       this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label11.Location = new System.Drawing.Point(85, 8);
+      this.label11.Location = new System.Drawing.Point(94, 8);
       this.label11.Name = "label11";
       this.label11.Size = new System.Drawing.Size(22, 16);
       this.label11.TabIndex = 1;
@@ -1222,7 +1268,7 @@
       this.label14.Anchor = System.Windows.Forms.AnchorStyles.Right;
       this.label14.AutoSize = true;
       this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label14.Location = new System.Drawing.Point(84, 40);
+      this.label14.Location = new System.Drawing.Point(93, 40);
       this.label14.Name = "label14";
       this.label14.Size = new System.Drawing.Size(23, 16);
       this.label14.TabIndex = 1;
@@ -1253,28 +1299,13 @@
       this.label17.Text = "Equation";
       this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
       // 
-      // lineEQrtb
-      // 
-      this.lineEQrtb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-      this.lineEQrtb.BackColor = System.Drawing.SystemColors.Control;
-      this.lineTableLayoutParams.SetColumnSpan(this.lineEQrtb, 11);
-      this.lineEQrtb.Location = new System.Drawing.Point(84, 67);
-      this.lineEQrtb.MaxLength = 1000;
-      this.lineEQrtb.Multiline = false;
-      this.lineEQrtb.Name = "lineEQrtb";
-      this.lineEQrtb.ReadOnly = true;
-      this.lineEQrtb.Size = new System.Drawing.Size(720, 26);
-      this.lineEQrtb.TabIndex = 10;
-      this.lineEQrtb.Tag = "LEQ";
-      this.lineEQrtb.Text = "";
-      // 
       // lineXdiffTextBox
       // 
       this.lineXdiffTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-      this.lineXdiffTextBox.Location = new System.Drawing.Point(334, 6);
+      this.lineXdiffTextBox.Location = new System.Drawing.Point(351, 6);
       this.lineXdiffTextBox.Name = "lineXdiffTextBox";
       this.lineXdiffTextBox.ReadOnly = true;
-      this.lineXdiffTextBox.Size = new System.Drawing.Size(61, 20);
+      this.lineXdiffTextBox.Size = new System.Drawing.Size(75, 20);
       this.lineXdiffTextBox.TabIndex = 14;
       this.lineXdiffTextBox.Tag = "LX";
       this.toolTip1.SetToolTip(this.lineXdiffTextBox, "B=X2-X1 for line: A*X+B*Y+C=0");
@@ -1282,10 +1313,10 @@
       // lineYdiffTextBox
       // 
       this.lineYdiffTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-      this.lineYdiffTextBox.Location = new System.Drawing.Point(334, 38);
+      this.lineYdiffTextBox.Location = new System.Drawing.Point(351, 38);
       this.lineYdiffTextBox.Name = "lineYdiffTextBox";
       this.lineYdiffTextBox.ReadOnly = true;
-      this.lineYdiffTextBox.Size = new System.Drawing.Size(61, 20);
+      this.lineYdiffTextBox.Size = new System.Drawing.Size(75, 20);
       this.lineYdiffTextBox.TabIndex = 14;
       this.lineYdiffTextBox.Tag = "LY";
       this.toolTip1.SetToolTip(this.lineYdiffTextBox, "B=Yend-Ystart");
@@ -1295,11 +1326,11 @@
       this.label12.Anchor = System.Windows.Forms.AnchorStyles.Right;
       this.label12.AutoSize = true;
       this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label12.Location = new System.Drawing.Point(281, 8);
+      this.label12.Location = new System.Drawing.Point(314, 8);
       this.label12.Name = "label12";
-      this.label12.Size = new System.Drawing.Size(47, 16);
+      this.label12.Size = new System.Drawing.Size(31, 16);
       this.label12.TabIndex = 1;
-      this.label12.Text = "B=ΔX=";
+      this.label12.Text = "ΔX=";
       this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
       this.toolTip1.SetToolTip(this.label12, "B for line: A*X+B*Y+C=0");
       // 
@@ -1308,11 +1339,11 @@
       this.label18.Anchor = System.Windows.Forms.AnchorStyles.Right;
       this.label18.AutoSize = true;
       this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label18.Location = new System.Drawing.Point(276, 40);
+      this.label18.Location = new System.Drawing.Point(313, 40);
       this.label18.Name = "label18";
-      this.label18.Size = new System.Drawing.Size(52, 16);
+      this.label18.Size = new System.Drawing.Size(32, 16);
       this.label18.TabIndex = 1;
-      this.label18.Text = "A=-ΔY=";
+      this.label18.Text = "ΔY=";
       this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
       this.toolTip1.SetToolTip(this.label18, "A=(Y1-Y2) for line: A*X+B*Y+C=0");
       // 
@@ -1320,7 +1351,7 @@
       // 
       this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
       this.lineTableLayoutParams.SetColumnSpan(this.textBox2, 2);
-      this.textBox2.Location = new System.Drawing.Point(444, 6);
+      this.textBox2.Location = new System.Drawing.Point(475, 6);
       this.textBox2.Name = "textBox2";
       this.textBox2.ReadOnly = true;
       this.textBox2.Size = new System.Drawing.Size(128, 20);
@@ -1332,7 +1363,7 @@
       // 
       this.lineGCDXYTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
       this.lineTableLayoutParams.SetColumnSpan(this.lineGCDXYTextBox, 2);
-      this.lineGCDXYTextBox.Location = new System.Drawing.Point(444, 38);
+      this.lineGCDXYTextBox.Location = new System.Drawing.Point(475, 38);
       this.lineGCDXYTextBox.Name = "lineGCDXYTextBox";
       this.lineGCDXYTextBox.ReadOnly = true;
       this.lineGCDXYTextBox.Size = new System.Drawing.Size(128, 20);
@@ -1345,11 +1376,11 @@
       this.label19.Anchor = System.Windows.Forms.AnchorStyles.Right;
       this.label19.AutoSize = true;
       this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label19.Location = new System.Drawing.Point(415, 8);
+      this.label19.Location = new System.Drawing.Point(445, 8);
       this.label19.Name = "label19";
-      this.label19.Size = new System.Drawing.Size(23, 16);
+      this.label19.Size = new System.Drawing.Size(24, 16);
       this.label19.TabIndex = 1;
-      this.label19.Text = "C=";
+      this.label19.Text = "Q=";
       this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
       this.toolTip1.SetToolTip(this.label19, "C=( X1*Y2 - X2* Y1); for line: A*X+B*Y+C=0; ");
       // 
@@ -1358,11 +1389,11 @@
       this.label20.Anchor = System.Windows.Forms.AnchorStyles.Right;
       this.label20.AutoSize = true;
       this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label20.Location = new System.Drawing.Point(401, 40);
+      this.label20.Location = new System.Drawing.Point(432, 40);
       this.label20.Name = "label20";
       this.label20.Size = new System.Drawing.Size(37, 16);
       this.label20.TabIndex = 1;
-      this.label20.Text = "gdc=";
+      this.label20.Text = "gcd=";
       this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
       this.toolTip1.SetToolTip(this.label20, "gcd(A,B,C) = Their Greatest Common Divisor ");
       // 
@@ -1375,7 +1406,7 @@
       this.lineColorButton.BackColor = System.Drawing.Color.ForestGreen;
       this.lineColorButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.lineColorButton.ForeColor = System.Drawing.Color.White;
-      this.lineColorButton.Location = new System.Drawing.Point(578, 3);
+      this.lineColorButton.Location = new System.Drawing.Point(609, 3);
       this.lineColorButton.Name = "lineColorButton";
       this.lineColorButton.Size = new System.Drawing.Size(68, 26);
       this.lineColorButton.TabIndex = 5;
@@ -1392,7 +1423,7 @@
       this.visibleLineCheckBox.Checked = true;
       this.visibleLineCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
       this.visibleLineCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.visibleLineCheckBox.Location = new System.Drawing.Point(578, 37);
+      this.visibleLineCheckBox.Location = new System.Drawing.Point(609, 37);
       this.visibleLineCheckBox.Name = "visibleLineCheckBox";
       this.visibleLineCheckBox.Size = new System.Drawing.Size(68, 21);
       this.visibleLineCheckBox.TabIndex = 8;
@@ -1405,11 +1436,11 @@
       // 
       // lineResetButton
       // 
-      this.lineResetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+      this.lineResetButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
       this.lineResetButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.lineResetButton.Location = new System.Drawing.Point(698, 35);
+      this.lineResetButton.Location = new System.Drawing.Point(683, 35);
       this.lineResetButton.Name = "lineResetButton";
-      this.lineResetButton.Size = new System.Drawing.Size(60, 26);
+      this.lineResetButton.Size = new System.Drawing.Size(75, 26);
       this.lineResetButton.TabIndex = 12;
       this.lineResetButton.Tag = "";
       this.lineResetButton.Text = "Reset";
@@ -1434,6 +1465,34 @@
       this.lineSelectButton.UseVisualStyleBackColor = true;
       this.lineSelectButton.Click += new System.EventHandler(this.lineSelectButton_Click);
       // 
+      // lineEQrtb
+      // 
+      this.lineEQrtb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+      this.lineEQrtb.BackColor = System.Drawing.SystemColors.Control;
+      this.lineTableLayoutParams.SetColumnSpan(this.lineEQrtb, 10);
+      this.lineEQrtb.Location = new System.Drawing.Point(122, 67);
+      this.lineEQrtb.MaxLength = 1000;
+      this.lineEQrtb.Name = "lineEQrtb";
+      this.lineEQrtb.ReadOnly = true;
+      this.lineEQrtb.Size = new System.Drawing.Size(645, 26);
+      this.lineEQrtb.TabIndex = 10;
+      this.lineEQrtb.Tag = "LEQ";
+      this.lineEQrtb.Text = "";
+      // 
+      // tryAdjustLineGCGbutton
+      // 
+      this.tryAdjustLineGCGbutton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+      this.tryAdjustLineGCGbutton.Image = global::FpgaLcdUtils.Properties.Resources.Wheel24x24;
+      this.tryAdjustLineGCGbutton.Location = new System.Drawing.Point(84, 67);
+      this.tryAdjustLineGCGbutton.Name = "tryAdjustLineGCGbutton";
+      this.tryAdjustLineGCGbutton.Size = new System.Drawing.Size(32, 26);
+      this.tryAdjustLineGCGbutton.TabIndex = 16;
+      this.toolTip1.SetToolTip(this.tryAdjustLineGCGbutton, "Search simpler equation with a better GCD ");
+      this.tryAdjustLineGCGbutton.UseVisualStyleBackColor = true;
+      this.tryAdjustLineGCGbutton.Click += new System.EventHandler(this.tryAdjustLineGCGbutton_Click);
+      // 
       // tabPage3
       // 
       this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
@@ -1441,7 +1500,7 @@
       this.tabPage3.Controls.Add(this.ellipseTableLayoutPanelRef);
       this.tabPage3.Location = new System.Drawing.Point(4, 22);
       this.tabPage3.Name = "tabPage3";
-      this.tabPage3.Size = new System.Drawing.Size(813, 102);
+      this.tabPage3.Size = new System.Drawing.Size(776, 102);
       this.tabPage3.TabIndex = 2;
       this.tabPage3.Text = "Elliptical Ruler";
       // 
@@ -1468,7 +1527,6 @@
       this.ellipseTableLayoutPanelParams.Controls.Add(this.label26, 1, 1);
       this.ellipseTableLayoutPanelParams.Controls.Add(this.label29, 0, 0);
       this.ellipseTableLayoutPanelParams.Controls.Add(this.label31, 0, 2);
-      this.ellipseTableLayoutPanelParams.Controls.Add(this.ellipseEQrtb, 1, 2);
       this.ellipseTableLayoutPanelParams.Controls.Add(this.visibleEllipseCheckBox, 8, 1);
       this.ellipseTableLayoutPanelParams.Controls.Add(this.ellipseColorButton, 8, 0);
       this.ellipseTableLayoutPanelParams.Controls.Add(this.label13, 7, 0);
@@ -1479,6 +1537,8 @@
       this.ellipseTableLayoutPanelParams.Controls.Add(this.label22, 5, 1);
       this.ellipseTableLayoutPanelParams.Controls.Add(this.ellipseResetButton, 9, 1);
       this.ellipseTableLayoutPanelParams.Controls.Add(this.ellipseSelectButton, 0, 1);
+      this.ellipseTableLayoutPanelParams.Controls.Add(this.ellipseEQrtb, 2, 2);
+      this.ellipseTableLayoutPanelParams.Controls.Add(this.tryAdjustEllipseGCGbutton, 1, 2);
       this.ellipseTableLayoutPanelParams.Dock = System.Windows.Forms.DockStyle.Fill;
       this.ellipseTableLayoutPanelParams.Location = new System.Drawing.Point(90, 0);
       this.ellipseTableLayoutPanelParams.Name = "ellipseTableLayoutPanelParams";
@@ -1486,13 +1546,13 @@
       this.ellipseTableLayoutPanelParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33444F));
       this.ellipseTableLayoutPanelParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33444F));
       this.ellipseTableLayoutPanelParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33112F));
-      this.ellipseTableLayoutPanelParams.Size = new System.Drawing.Size(723, 102);
+      this.ellipseTableLayoutPanelParams.Size = new System.Drawing.Size(686, 102);
       this.ellipseTableLayoutPanelParams.TabIndex = 4;
       // 
       // numericUpDown14
       // 
       this.numericUpDown14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-      this.numericUpDown14.Location = new System.Drawing.Point(266, 7);
+      this.numericUpDown14.Location = new System.Drawing.Point(252, 7);
       this.numericUpDown14.Maximum = new decimal(new int[] {
             2048,
             0,
@@ -1504,7 +1564,7 @@
             0,
             -2147483648});
       this.numericUpDown14.Name = "numericUpDown14";
-      this.numericUpDown14.Size = new System.Drawing.Size(90, 20);
+      this.numericUpDown14.Size = new System.Drawing.Size(75, 20);
       this.numericUpDown14.TabIndex = 0;
       this.numericUpDown14.Tag = "E3";
       this.numericUpDown14.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -1514,7 +1574,7 @@
       // numericUpDown15
       // 
       this.numericUpDown15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-      this.numericUpDown15.Location = new System.Drawing.Point(266, 41);
+      this.numericUpDown15.Location = new System.Drawing.Point(252, 41);
       this.numericUpDown15.Maximum = new decimal(new int[] {
             2048,
             0,
@@ -1526,7 +1586,7 @@
             0,
             -2147483648});
       this.numericUpDown15.Name = "numericUpDown15";
-      this.numericUpDown15.Size = new System.Drawing.Size(90, 20);
+      this.numericUpDown15.Size = new System.Drawing.Size(75, 20);
       this.numericUpDown15.TabIndex = 0;
       this.numericUpDown15.Tag = "E4";
       this.numericUpDown15.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -1538,7 +1598,7 @@
       this.label27.Anchor = System.Windows.Forms.AnchorStyles.Right;
       this.label27.AutoSize = true;
       this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label27.Location = new System.Drawing.Point(219, 9);
+      this.label27.Location = new System.Drawing.Point(205, 9);
       this.label27.Name = "label27";
       this.label27.Size = new System.Drawing.Size(41, 16);
       this.label27.TabIndex = 1;
@@ -1550,7 +1610,7 @@
       this.label28.Anchor = System.Windows.Forms.AnchorStyles.Right;
       this.label28.AutoSize = true;
       this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label28.Location = new System.Drawing.Point(214, 43);
+      this.label28.Location = new System.Drawing.Point(200, 43);
       this.label28.Name = "label28";
       this.label28.Size = new System.Drawing.Size(46, 16);
       this.label28.TabIndex = 1;
@@ -1560,7 +1620,7 @@
       // numericUpDown12
       // 
       this.numericUpDown12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-      this.numericUpDown12.Location = new System.Drawing.Point(118, 7);
+      this.numericUpDown12.Location = new System.Drawing.Point(119, 7);
       this.numericUpDown12.Maximum = new decimal(new int[] {
             2048,
             0,
@@ -1572,7 +1632,7 @@
             0,
             -2147483648});
       this.numericUpDown12.Name = "numericUpDown12";
-      this.numericUpDown12.Size = new System.Drawing.Size(90, 20);
+      this.numericUpDown12.Size = new System.Drawing.Size(75, 20);
       this.numericUpDown12.TabIndex = 0;
       this.numericUpDown12.Tag = "E1";
       this.numericUpDown12.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -1582,7 +1642,7 @@
       // numericUpDown13
       // 
       this.numericUpDown13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-      this.numericUpDown13.Location = new System.Drawing.Point(118, 41);
+      this.numericUpDown13.Location = new System.Drawing.Point(119, 41);
       this.numericUpDown13.Maximum = new decimal(new int[] {
             2048,
             0,
@@ -1594,7 +1654,7 @@
             0,
             -2147483648});
       this.numericUpDown13.Name = "numericUpDown13";
-      this.numericUpDown13.Size = new System.Drawing.Size(90, 20);
+      this.numericUpDown13.Size = new System.Drawing.Size(75, 20);
       this.numericUpDown13.TabIndex = 0;
       this.numericUpDown13.Tag = "E2";
       this.numericUpDown13.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -1606,7 +1666,7 @@
       this.label25.Anchor = System.Windows.Forms.AnchorStyles.Right;
       this.label25.AutoSize = true;
       this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label25.Location = new System.Drawing.Point(82, 9);
+      this.label25.Location = new System.Drawing.Point(83, 9);
       this.label25.Name = "label25";
       this.label25.Size = new System.Drawing.Size(30, 16);
       this.label25.TabIndex = 1;
@@ -1618,7 +1678,7 @@
       this.label26.Anchor = System.Windows.Forms.AnchorStyles.Right;
       this.label26.AutoSize = true;
       this.label26.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label26.Location = new System.Drawing.Point(81, 43);
+      this.label26.Location = new System.Drawing.Point(82, 43);
       this.label26.Name = "label26";
       this.label26.Size = new System.Drawing.Size(31, 16);
       this.label26.TabIndex = 1;
@@ -1649,20 +1709,6 @@
       this.label31.Text = "Equation ";
       this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
       // 
-      // ellipseEQrtb
-      // 
-      this.ellipseEQrtb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-      this.ellipseEQrtb.BackColor = System.Drawing.SystemColors.Control;
-      this.ellipseTableLayoutPanelParams.SetColumnSpan(this.ellipseEQrtb, 9);
-      this.ellipseEQrtb.Location = new System.Drawing.Point(81, 71);
-      this.ellipseEQrtb.Name = "ellipseEQrtb";
-      this.ellipseEQrtb.ReadOnly = true;
-      this.ellipseEQrtb.Size = new System.Drawing.Size(639, 28);
-      this.ellipseEQrtb.TabIndex = 9;
-      this.ellipseEQrtb.Tag = "EEQ";
-      this.ellipseEQrtb.Text = "";
-      this.toolTip1.SetToolTip(this.ellipseEQrtb, "The equation of Ellipse");
-      // 
       // visibleEllipseCheckBox
       // 
       this.visibleEllipseCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
@@ -1671,7 +1717,7 @@
       this.visibleEllipseCheckBox.Checked = true;
       this.visibleEllipseCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
       this.visibleEllipseCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.visibleEllipseCheckBox.Location = new System.Drawing.Point(579, 37);
+      this.visibleEllipseCheckBox.Location = new System.Drawing.Point(531, 37);
       this.visibleEllipseCheckBox.Name = "visibleEllipseCheckBox";
       this.visibleEllipseCheckBox.Size = new System.Drawing.Size(67, 28);
       this.visibleEllipseCheckBox.TabIndex = 6;
@@ -1691,9 +1737,9 @@
       this.ellipseColorButton.BackColor = System.Drawing.Color.Blue;
       this.ellipseColorButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.ellipseColorButton.ForeColor = System.Drawing.Color.White;
-      this.ellipseColorButton.Location = new System.Drawing.Point(573, 3);
+      this.ellipseColorButton.Location = new System.Drawing.Point(527, 3);
       this.ellipseColorButton.Name = "ellipseColorButton";
-      this.ellipseColorButton.Size = new System.Drawing.Size(80, 28);
+      this.ellipseColorButton.Size = new System.Drawing.Size(75, 28);
       this.ellipseColorButton.TabIndex = 5;
       this.ellipseColorButton.Tag = "EColor";
       this.ellipseColorButton.Text = "Color";
@@ -1706,20 +1752,20 @@
       this.label13.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
       this.label13.AutoSize = true;
       this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label13.Location = new System.Drawing.Point(491, 18);
+      this.label13.Location = new System.Drawing.Point(461, 18);
       this.label13.Name = "label13";
-      this.label13.Size = new System.Drawing.Size(72, 16);
+      this.label13.Size = new System.Drawing.Size(59, 16);
       this.label13.TabIndex = 1;
-      this.label13.Text = "GCD(A,B)=";
+      this.label13.Text = "gcd(A,B)";
       this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
       // 
       // textBox1
       // 
       this.textBox1.Anchor = System.Windows.Forms.AnchorStyles.Left;
-      this.textBox1.Location = new System.Drawing.Point(487, 41);
+      this.textBox1.Location = new System.Drawing.Point(461, 41);
       this.textBox1.Name = "textBox1";
       this.textBox1.ReadOnly = true;
-      this.textBox1.Size = new System.Drawing.Size(80, 20);
+      this.textBox1.Size = new System.Drawing.Size(60, 20);
       this.textBox1.TabIndex = 11;
       this.textBox1.Tag = "EG";
       this.toolTip1.SetToolTip(this.textBox1, "Greatest Common Divisor of A, B");
@@ -1727,10 +1773,10 @@
       // ellipseXSemiTxb
       // 
       this.ellipseXSemiTxb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-      this.ellipseXSemiTxb.Location = new System.Drawing.Point(391, 7);
+      this.ellipseXSemiTxb.Location = new System.Drawing.Point(355, 7);
       this.ellipseXSemiTxb.Name = "ellipseXSemiTxb";
       this.ellipseXSemiTxb.ReadOnly = true;
-      this.ellipseXSemiTxb.Size = new System.Drawing.Size(90, 20);
+      this.ellipseXSemiTxb.Size = new System.Drawing.Size(100, 20);
       this.ellipseXSemiTxb.TabIndex = 11;
       this.ellipseXSemiTxb.Tag = "EX";
       this.toolTip1.SetToolTip(this.ellipseXSemiTxb, " Semi-axis  A = Width/2");
@@ -1738,10 +1784,10 @@
       // ellipseTSemiTxb
       // 
       this.ellipseTSemiTxb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-      this.ellipseTSemiTxb.Location = new System.Drawing.Point(391, 41);
+      this.ellipseTSemiTxb.Location = new System.Drawing.Point(355, 41);
       this.ellipseTSemiTxb.Name = "ellipseTSemiTxb";
       this.ellipseTSemiTxb.ReadOnly = true;
-      this.ellipseTSemiTxb.Size = new System.Drawing.Size(90, 20);
+      this.ellipseTSemiTxb.Size = new System.Drawing.Size(100, 20);
       this.ellipseTSemiTxb.TabIndex = 11;
       this.ellipseTSemiTxb.Tag = "EY";
       this.toolTip1.SetToolTip(this.ellipseTSemiTxb, "Semi-axis B = Height/2");
@@ -1751,11 +1797,11 @@
       this.label21.Anchor = System.Windows.Forms.AnchorStyles.Right;
       this.label21.AutoSize = true;
       this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label21.Location = new System.Drawing.Point(362, 9);
+      this.label21.Location = new System.Drawing.Point(333, 9);
       this.label21.Name = "label21";
-      this.label21.Size = new System.Drawing.Size(23, 16);
+      this.label21.Size = new System.Drawing.Size(16, 16);
       this.label21.TabIndex = 1;
-      this.label21.Text = "A=";
+      this.label21.Text = "A";
       this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
       this.toolTip1.SetToolTip(this.label21, "A:horizonatal semi axis");
       // 
@@ -1764,22 +1810,22 @@
       this.label22.Anchor = System.Windows.Forms.AnchorStyles.Right;
       this.label22.AutoSize = true;
       this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label22.Location = new System.Drawing.Point(362, 43);
+      this.label22.Location = new System.Drawing.Point(333, 43);
       this.label22.Name = "label22";
-      this.label22.Size = new System.Drawing.Size(23, 16);
+      this.label22.Size = new System.Drawing.Size(16, 16);
       this.label22.TabIndex = 1;
-      this.label22.Text = "B=";
+      this.label22.Text = "B";
       this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
       this.toolTip1.SetToolTip(this.label22, "B:vertical semi axis");
       // 
       // ellipseResetButton
       // 
-      this.ellipseResetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+      this.ellipseResetButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
       this.ellipseResetButton.AutoSize = true;
       this.ellipseResetButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.ellipseResetButton.Location = new System.Drawing.Point(660, 37);
+      this.ellipseResetButton.Location = new System.Drawing.Point(608, 37);
       this.ellipseResetButton.Name = "ellipseResetButton";
-      this.ellipseResetButton.Size = new System.Drawing.Size(58, 28);
+      this.ellipseResetButton.Size = new System.Drawing.Size(65, 28);
       this.ellipseResetButton.TabIndex = 10;
       this.ellipseResetButton.Tag = "";
       this.ellipseResetButton.Text = "Reset";
@@ -1803,6 +1849,34 @@
       this.toolTip1.SetToolTip(this.ellipseSelectButton, "Select/Unselect Ellipse");
       this.ellipseSelectButton.UseVisualStyleBackColor = true;
       this.ellipseSelectButton.Click += new System.EventHandler(this.ellipseSelectButton_Click);
+      // 
+      // ellipseEQrtb
+      // 
+      this.ellipseEQrtb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+      this.ellipseEQrtb.BackColor = System.Drawing.SystemColors.Control;
+      this.ellipseTableLayoutPanelParams.SetColumnSpan(this.ellipseEQrtb, 8);
+      this.ellipseEQrtb.Location = new System.Drawing.Point(119, 71);
+      this.ellipseEQrtb.Name = "ellipseEQrtb";
+      this.ellipseEQrtb.ReadOnly = true;
+      this.ellipseEQrtb.Size = new System.Drawing.Size(564, 28);
+      this.ellipseEQrtb.TabIndex = 9;
+      this.ellipseEQrtb.Tag = "EEQ";
+      this.ellipseEQrtb.Text = "";
+      this.toolTip1.SetToolTip(this.ellipseEQrtb, "The equation of Ellipse");
+      // 
+      // tryAdjustEllipseGCGbutton
+      // 
+      this.tryAdjustEllipseGCGbutton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+      this.tryAdjustEllipseGCGbutton.Image = global::FpgaLcdUtils.Properties.Resources.Wheel24x24;
+      this.tryAdjustEllipseGCGbutton.Location = new System.Drawing.Point(81, 71);
+      this.tryAdjustEllipseGCGbutton.Name = "tryAdjustEllipseGCGbutton";
+      this.tryAdjustEllipseGCGbutton.Size = new System.Drawing.Size(32, 28);
+      this.tryAdjustEllipseGCGbutton.TabIndex = 17;
+      this.toolTip1.SetToolTip(this.tryAdjustEllipseGCGbutton, "Search simpler equation with a better GCD ");
+      this.tryAdjustEllipseGCGbutton.UseVisualStyleBackColor = true;
+      this.tryAdjustEllipseGCGbutton.Click += new System.EventHandler(this.tryAdjustEllipseGCGbutton_Click);
       // 
       // ellipseTableLayoutPanelRef
       // 
@@ -1977,7 +2051,7 @@
       this.label24.Name = "label24";
       this.label24.Size = new System.Drawing.Size(84, 13);
       this.label24.TabIndex = 1;
-      this.label24.Text = "Point [Xref,Yref]";
+      this.label24.Text = "Selecting RP";
       this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
       // 
       // playImageList
@@ -1998,9 +2072,9 @@
       this.panelPlay.Controls.Add(this.rulersTabControl);
       this.panelPlay.Controls.Add(this.statusStrip1);
       this.panelPlay.Dock = System.Windows.Forms.DockStyle.Bottom;
-      this.panelPlay.Location = new System.Drawing.Point(0, 551);
+      this.panelPlay.Location = new System.Drawing.Point(0, 329);
       this.panelPlay.Name = "panelPlay";
-      this.panelPlay.Size = new System.Drawing.Size(821, 150);
+      this.panelPlay.Size = new System.Drawing.Size(784, 150);
       this.panelPlay.TabIndex = 15;
       // 
       // statusStrip1
@@ -2009,7 +2083,7 @@
             this.messageToolStripStatusLabel});
       this.statusStrip1.Location = new System.Drawing.Point(0, 128);
       this.statusStrip1.Name = "statusStrip1";
-      this.statusStrip1.Size = new System.Drawing.Size(821, 22);
+      this.statusStrip1.Size = new System.Drawing.Size(784, 22);
       this.statusStrip1.TabIndex = 0;
       this.statusStrip1.Text = "statusStrip1";
       // 
@@ -2022,7 +2096,7 @@
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(821, 701);
+      this.ClientSize = new System.Drawing.Size(784, 479);
       this.Controls.Add(this.panelGraph);
       this.Controls.Add(this.vScrollBarGraph);
       this.Controls.Add(this.hScrollBarGraph);
@@ -2030,7 +2104,7 @@
       this.Controls.Add(this.menuStrip1);
       this.Controls.Add(this.panelPlay);
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-      this.MinimumSize = new System.Drawing.Size(320, 240);
+      this.MinimumSize = new System.Drawing.Size(800, 320);
       this.Name = "RulerFormMain";
       this.Tag = "EV";
       this.Text = "LCD Geometry Rulers";
@@ -2100,7 +2174,7 @@
         private ToolStripMenuItem setZoom100MenuItem;
         private ToolStripMenuItem setZoom125MenuItem;
         private ToolStripMenuItem setZoom150MenuItem;
-        private ToolStripMenuItem helpToolStripMenuItem;
+        private ToolStripMenuItem helpEquationsToolStripMenuItem;
         private Panel panelGraph;
         private OpenFileDialog openLCDImageFile;
         private SaveFileDialog saveLCDImageAs;
@@ -2209,5 +2283,9 @@
     private Button lineSelectButton;
     private ImageList imageListHand;
     private ToolStripMenuItem centerImageToolStripMenuItem;
+    private Button tryAdjustLineGCGbutton;
+    private Button tryAdjustEllipseGCGbutton;
+    private Button resizeMoveButton;
+    private Button drawButton;
   }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
     // Using-statements:
     using System;

@@ -1,4 +1,4 @@
-﻿namespace LSPtools
+﻿namespace FpgaLcdUtils
 {
   partial class FormStartException
   {
@@ -31,11 +31,11 @@
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormStartException));
       this.noteTextBox = new System.Windows.Forms.TextBox();
       this.panel1 = new System.Windows.Forms.Panel();
+      this.confirmationTextBox = new System.Windows.Forms.TextBox();
       this.label1 = new System.Windows.Forms.Label();
       this.linkLabel1 = new System.Windows.Forms.LinkLabel();
       this.copyToClipboard = new System.Windows.Forms.Button();
       this.closeButton = new System.Windows.Forms.Button();
-      this.confirmationTextBox = new System.Windows.Forms.TextBox();
       this.panel1.SuspendLayout();
       this.SuspendLayout();
       // 
@@ -47,7 +47,7 @@
       this.noteTextBox.Name = "noteTextBox";
       this.noteTextBox.ReadOnly = true;
       this.noteTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-      this.noteTextBox.Size = new System.Drawing.Size(502, 393);
+      this.noteTextBox.Size = new System.Drawing.Size(484, 354);
       this.noteTextBox.TabIndex = 3;
       // 
       // panel1
@@ -58,10 +58,19 @@
       this.panel1.Controls.Add(this.copyToClipboard);
       this.panel1.Controls.Add(this.closeButton);
       this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-      this.panel1.Location = new System.Drawing.Point(0, 393);
+      this.panel1.Location = new System.Drawing.Point(0, 354);
       this.panel1.Name = "panel1";
-      this.panel1.Size = new System.Drawing.Size(502, 57);
+      this.panel1.Size = new System.Drawing.Size(484, 57);
       this.panel1.TabIndex = 2;
+      // 
+      // confirmationTextBox
+      // 
+      this.confirmationTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+      this.confirmationTextBox.Location = new System.Drawing.Point(129, 5);
+      this.confirmationTextBox.Name = "confirmationTextBox";
+      this.confirmationTextBox.ReadOnly = true;
+      this.confirmationTextBox.Size = new System.Drawing.Size(266, 20);
+      this.confirmationTextBox.TabIndex = 4;
       // 
       // label1
       // 
@@ -87,7 +96,7 @@
       // 
       // copyToClipboard
       // 
-      this.copyToClipboard.Image = global::LSPtools.Properties.Resources.CopyHS;
+      this.copyToClipboard.Image = global::FpgaLcdUtils.Properties.Resources.CopyHS;
       this.copyToClipboard.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
       this.copyToClipboard.Location = new System.Drawing.Point(3, 3);
       this.copyToClipboard.Name = "copyToClipboard";
@@ -101,9 +110,9 @@
       // closeButton
       // 
       this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-      this.closeButton.Image = global::LSPtools.Properties.Resources._109_AllAnnotations_Default_16x16_72;
+      this.closeButton.Image = global::FpgaLcdUtils.Properties.Resources._109_AllAnnotations_Default_16x16_72;
       this.closeButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-      this.closeButton.Location = new System.Drawing.Point(420, 3);
+      this.closeButton.Location = new System.Drawing.Point(402, 3);
       this.closeButton.Name = "closeButton";
       this.closeButton.Size = new System.Drawing.Size(75, 25);
       this.closeButton.TabIndex = 0;
@@ -112,24 +121,17 @@
       this.closeButton.UseVisualStyleBackColor = true;
       this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
       // 
-      // confirmationTextBox
-      // 
-      this.confirmationTextBox.Location = new System.Drawing.Point(129, 5);
-      this.confirmationTextBox.Name = "confirmationTextBox";
-      this.confirmationTextBox.ReadOnly = true;
-      this.confirmationTextBox.Size = new System.Drawing.Size(290, 20);
-      this.confirmationTextBox.TabIndex = 4;
-      // 
       // FormStartException
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(502, 450);
+      this.ClientSize = new System.Drawing.Size(484, 411);
       this.Controls.Add(this.noteTextBox);
       this.Controls.Add(this.panel1);
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+      this.MinimumSize = new System.Drawing.Size(500, 450);
       this.Name = "FormStartException";
-      this.Text = "Bug Report in LSPtools";
+      this.Text = "Bug Report";
       this.panel1.ResumeLayout(false);
       this.panel1.PerformLayout();
       this.ResumeLayout(false);

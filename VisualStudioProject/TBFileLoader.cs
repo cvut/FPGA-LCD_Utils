@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
   public class FrameItem
   {

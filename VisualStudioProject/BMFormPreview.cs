@@ -7,7 +7,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
   public partial class BMFormPreview : Form
   {

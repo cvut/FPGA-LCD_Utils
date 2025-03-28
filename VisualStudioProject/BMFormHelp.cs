@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
     public partial class BMFormHelp : Form
     {
@@ -18,7 +18,7 @@ namespace LSPtools
         {
             try
             {
-                richTextBox1.Rtf = LSPtools.Properties.Resources.BMHelp;
+                richTextBox1.Rtf = FpgaLcdUtils.Properties.Resources.BMHelp;
             }
             catch (Exception ex)
             {

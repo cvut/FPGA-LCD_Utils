@@ -1,4 +1,4 @@
-﻿namespace LSPtools
+﻿namespace FpgaLcdUtils
 {
     partial class TBFormMain
     {
@@ -143,7 +143,7 @@
       // 
       this.adjustWindow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.adjustWindow.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.adjustWindow.Image = global::LSPtools.Properties.Resources.FullScreenHS;
+      this.adjustWindow.Image = global::FpgaLcdUtils.Properties.Resources.FullScreenHS;
       this.adjustWindow.Location = new System.Drawing.Point(256, 0);
       this.adjustWindow.Name = "adjustWindow";
       this.adjustWindow.Size = new System.Drawing.Size(24, 23);
@@ -482,7 +482,7 @@
       // openLCDImageFile
       // 
       this.openLCDImageFile.DefaultExt = "txt";
-      this.openLCDImageFile.FileName = "openFileDialog1";
+      this.openLCDImageFile.FileName = "";
       this.openLCDImageFile.Filter = "Testbench Image File (*.txt)|*.txt|All files (*.*)|*.*";
       this.openLCDImageFile.ShowReadOnly = true;
       // 

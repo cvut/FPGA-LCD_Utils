@@ -5,15 +5,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
+using System.Security;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Serialization.Configuration;
-using static LSPtools.QuartusProject;
+using static FpgaLcdUtils.QuartusProject;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
   public class QuartusModelSim
   {
@@ -97,6 +99,7 @@ namespace LSPtools
 
   public class QuartusProject
   {
+
     private string? activeRevisionName = null;
     private string? activeDate = null;
     private string? projectCreatedInQuartusVersion = null;
@@ -747,9 +750,16 @@ namespace LSPtools
   }
   internal class QuartusModelSimInstallations
   {
-    public List<QuartusModelSim> Versions = new List<QuartusModelSim>();
+    /// <summary>
+    /// OS allowed reading install access
+    /// </summary>
+    public bool InstallationAccess { get { return _InstallationAccess; } }
+    public bool _InstallationAccess = true;
 
-    public void Clear() { Versions.Clear(); }
+    public List<QuartusModelSim> Versions = new List<QuartusModelSim>();
+    public StringBuilder sbKyeLogDebug = new StringBuilder();
+
+    public void Clear() { Versions.Clear(); sbKyeLogDebug.Clear(); _InstallationAccess = true; }
 
     public void Sort()
     {
@@ -800,27 +810,65 @@ namespace LSPtools
       return n > 0 ? Versions[n] : null;
     }
     private int _depthSearchLocalMachine = 0;
-    public void SearchLocalMachine(string? localMachineSubkey)
+
+    public static bool CanReadKey(string key)
     {
-      if (localMachineSubkey == null) return;
+      try
+      {
+        RegistryPermission r = new RegistryPermission(RegistryPermissionAccess.Read, key);
+        r.Demand();
+        return true;
+      }
+      catch (SecurityException)
+      {
+        return false;
+      }
+    }
+    public bool SearchLocalMachine(string? localMachineSubkey)
+    {
+      if (localMachineSubkey == null || !CanReadKey(localMachineSubkey))
+        return (_InstallationAccess=false);
+      
+      try
+      {
+        RegistryPermission perm1 = new RegistryPermission(RegistryPermissionAccess.Read, localMachineSubkey);
+        perm1.Demand();
+      }
+      catch (System.Security.SecurityException ex)
+      {
+        return (_InstallationAccess = false);
+      }
+
       _depthSearchLocalMachine = 0;
       try
       {
         openSubKey(localMachineSubkey);
+        return true;
       }
-      catch (Exception ex) { Trace.WriteLine(ex.ToString()); }
+      catch (Exception ex)
+      {
+ //       Trace.WriteLine(ex.ToString());
+ //       sbKyeLogDebug.AppendLine("Exception: " + ex.ToString());
+        _InstallationAccess = false;
+        return false;
+      }
     }
 
 
     private void openSubKey(string? localMachineSubkey)
     {
       if (localMachineSubkey == null) return;
-      using (RegistryKey key = Registry.LocalMachine.OpenSubKey(localMachineSubkey))
+//      sbKyeLogDebug.AppendLine("openSubKey " + localMachineSubkey);
+      using (RegistryKey key = Registry.LocalMachine.OpenSubKey(localMachineSubkey,
+        RegistryKeyPermissionCheck.ReadSubTree, System.Security.AccessControl.RegistryRights.EnumerateSubKeys))
       {
         string textKey = String.Empty;
 
-        if (localMachineSubkey.IndexOf("ModelSim", StringComparison.InvariantCultureIgnoreCase) > 0)
-          return; // we search first for Quartus
+        //if (key != null && key.Name != null)
+        //  sbKyeLogDebug.AppendLine(String.Format("{0}\n", key.Name));
+
+        //if (localMachineSubkey.IndexOf("ModelSim", StringComparison.InvariantCultureIgnoreCase) > 0)
+        //  return; // we search first for Quartus
         if (localMachineSubkey.IndexOf("Quartus", StringComparison.InvariantCultureIgnoreCase) >= 0)
         {
 

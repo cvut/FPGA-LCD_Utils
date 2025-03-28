@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
   internal static class IniData
   {
     private static string? _lspTools_IniFileName = null;
 
     private static StringBuilder debugSB;
-    public static  StringWriter DebugLogWriter = new StringWriter(debugSB = new StringBuilder());
+    public static StringWriter DebugLogWriter = new StringWriter(debugSB = new StringBuilder());
     public static int DebugLogLength { get { return debugSB.Length; } }
     public static string DebugLog { get { return debugSB.ToString(); } }
     public static bool IsFileRdWr(string filename)
@@ -38,16 +38,22 @@ namespace LSPtools
     {
       if (IniData._lspTools_IniFileName == null) // not loaded yet
       {
-        IniData._lspTools_IniFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "LSPTools.ini");
+        IniData._lspTools_IniFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                                         "FpgaLcdUtils.ini"); // application was renamed
         if (!File.Exists(IniData._lspTools_IniFileName))
         {
-          // old version
-          string s = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LSPTools.ini");
-          if (File.Exists(s))
+          string sold = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "LSPTools.ini");
+          if (!File.Exists(sold))
+          {
+            // old version
+            sold = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "LSPTools.ini");
+          }
+          if (File.Exists(sold))
           {
             try
             {
-              File.Copy(s, IniData._lspTools_IniFileName);
+              File.Copy(sold, IniData._lspTools_IniFileName);
+              File.Delete(sold);
             }
             catch (Exception) { }
           }
@@ -57,7 +63,7 @@ namespace LSPtools
       return null;
     }
 
-        /// <summary>
+    /// <summary>
     /// Create XmlTextReader and processes attributes by calling TASetting.Test
     /// </summary>
     /// <param name="settingsFileName"></param>
@@ -82,7 +88,7 @@ namespace LSPtools
                   predesly = reader.Name;
                   while (reader.MoveToNextAttribute())
                   {
-                         IniSettings.Test(reader.Name, reader.Value);
+                    IniSettings.Test(reader.Name, reader.Value);
                   }
                 }
                 break;
@@ -103,7 +109,7 @@ namespace LSPtools
         Trace.WriteLine(ex.ToString());
         return false;
       }
-      finally { Environment.CurrentDirectory=cd; }
+      finally { Environment.CurrentDirectory = cd; }
     }
 
     public static void SaveSettingToFile(string settingsFileName)
@@ -154,5 +160,103 @@ namespace LSPtools
       }
     }
 
+    public static void AssignNUD(NumericUpDown nud, int n)
+    {
+      AssignNUD(nud, (decimal)n);
+    }
+    public static void AssignNUD(NumericUpDown nud, double d)
+    {
+      AssignNUD(nud, (decimal)d);
+    }
+
+    public static void AssignNUD(NumericUpDown nud, decimal ndecimal)
+    {
+      decimal min = nud.Minimum, max = nud.Maximum;
+      if (ndecimal < nud.Minimum) ndecimal = nud.Minimum;
+      if (ndecimal > nud.Maximum) ndecimal = nud.Maximum;
+      nud.Value = ndecimal;
+
+    }
+
+    public static string CheckReadAccessToFile(string filename)
+    {
+      try
+      {
+        FileInfo fi = new FileInfo(filename);
+        if (!fi.Exists)
+        {
+          return "Not found or access deinied: " + filename;
+        }
+        using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+        {
+          if (!fs.CanRead)
+          {
+            return "No permission to read file " + filename;
+          }
+          using (BinaryReader br = new BinaryReader(fs))
+          {
+            if (fi.Length > 0)
+            {
+              byte[] test = br.ReadBytes(128);
+            }
+          }
+        }
+        return String.Empty;
+      }
+      catch (Exception ex)
+      {
+        return ex.Message;
+      }
+    }
+
+ /*  An attempt to remove modality of the open/save file dialog
+  *  ***ToDo create own open file dialog
+  private class ThreadDialogCall
+    {
+      public bool IsDialogResultOk = false;
+      System.Windows.Forms.FileDialog? fileDialog = null;
+      public ThreadDialogCall(System.Windows.Forms.FileDialog? OpenSaveFileDialog)
+      {
+        fileDialog = OpenSaveFileDialog;
+      }
+
+      public void ThreadProc()
+      {
+        try
+        {
+          if (fileDialog != null)
+          {
+            System.Windows.Forms.OpenFileDialog? openFileDialog = fileDialog as System.Windows.Forms.OpenFileDialog;
+            if (openFileDialog != null)
+            {
+              IsDialogResultOk = openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK;
+              return;
+            }
+            System.Windows.Forms.SaveFileDialog? saveFileDialog = fileDialog as System.Windows.Forms.SaveFileDialog;
+            if (saveFileDialog != null)
+            {
+              IsDialogResultOk = saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK;
+              return;
+            }
+          }
+        }
+        catch (Exception) { }
+      }
+    }
+
+    public static bool RunFileDialog(System.Windows.Forms.FileDialog openSaveDialog)
+    {
+      ThreadDialogCall tdc = new ThreadDialogCall(openSaveDialog);
+      Thread t = new Thread(new ThreadStart(tdc.ThreadProc));
+      t.SetApartmentState(ApartmentState.STA);
+      t.Start();
+      t.Join();
+      return tdc.IsDialogResultOk;
+    }
+ */
+
   }
 }
+
+
+

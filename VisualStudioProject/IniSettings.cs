@@ -1,15 +1,19 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using System.Windows.Forms;
 using System.Xml.Linq;
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
   /// <summary>
   /// Collection of all settings
@@ -20,20 +24,33 @@ namespace LSPtools
     public static IniGeometry GeometryBMP = new IniGeometry("Bitmap");
     public static IniGeometry GeometryQCheck = new IniGeometry("QCheck");
     public static IniGeometry GeometryRulers = new IniGeometry("Rules");
+    public static IniGeometry GeometryRLSearch = new IniGeometry("RLSearch");
+    public static IniGeometry GeometryRESearch = new IniGeometry("RESearch");
+    public static IniGeometry GeometryREquations = new IniGeometry("REquations");
     public static IniGeometry GeometryViewer = new IniGeometry("Viewer");
-    public static IniMRUList MRUFilesBitmap = new IniMRUList("Bitmap");
+    public static IniGeometry GeometryViewerInfo = new IniGeometry("ViewerInfo");
+    public static IniMRUList MRUFilesBitmap = new IniMRUList("BmpMRU");
+    public static IniTxtList FilesBitmap = new IniTxtList("BmpTxt");
     public static IniMRUList MRUFilesRulers = new IniMRUList("Rulers");
-    public static IniMRUList MRUFilesViewer = new IniMRUList("Viewer");
+    public static IniTxtList FilesRulers = new IniTxtList("RulersTxt");
+    public static IniMRUList MRUFilesTBViewer = new IniMRUList("Viewer");
+    public static IniTxtList FilesTBViewer = new IniTxtList("ViewerTxt");
     public static IniMRUList MRUFilesQCheck = new IniMRUList("QCheck");
+    public static IniTxtList FilesQCheck = new IniTxtList("QCheckTxt");
     public static IniMRUList MRUFilesQCAdjustVWF = new IniMRUList("QCAvwf");
-    public static IniSettingsData RRData = new IniSettingsData("RRuler");
-    public static IniSettingsData LRData = new IniSettingsData("LRuler");
-    public static IniSettingsData ERData = new IniSettingsData("ERuler");
+    public static IniFloatList RRData = new IniFloatList("RRuler");
+    public static IniFloatList LRData = new IniFloatList("LRuler");
+    public static IniIntList LSearchData = new IniIntList("LSRuler");
+    public static IniFloatList ERData = new IniFloatList("ERuler");
+    public static IniIntList ESearchData = new IniIntList("ESRuler");
 
     private static readonly RootSettings[] rootSettings = new RootSettings[]
-    { GeometryStart, GeometryBMP, GeometryRulers, GeometryQCheck, GeometryViewer,
-      MRUFilesBitmap, MRUFilesRulers, MRUFilesQCheck, MRUFilesQCAdjustVWF, MRUFilesViewer,
-      RRData, LRData, ERData};
+    { GeometryStart, GeometryBMP, GeometryRulers, GeometryRLSearch, 
+      GeometryRESearch, GeometryREquations, GeometryQCheck, GeometryViewer,
+      MRUFilesBitmap, FilesBitmap, MRUFilesRulers, FilesRulers,
+      RRData, LRData, LSearchData, ERData, ESearchData,
+      MRUFilesTBViewer, FilesTBViewer,
+      MRUFilesQCheck, FilesQCheck, MRUFilesQCAdjustVWF};
 
 
     public static bool Test(string name, string token)
@@ -137,7 +154,7 @@ namespace LSPtools
     {
       _wasApplyCall = true;
       if (WinSize.Height < formIn.MinimumSize.Height) WinSize.Height = formIn.MinimumSize.Height;
-      if(WinSize.Width< formIn.MinimumSize.Width) WinSize.Width=formIn.MinimumSize.Width;
+      if (WinSize.Width < formIn.MinimumSize.Width) WinSize.Width = formIn.MinimumSize.Width;
       if (initialState == FormWindowState.Normal || initialState == FormWindowState.Minimized)
       {
         bool locOkay = GeometryIsBizarreLocation(WinLocation, ref WinSize);
@@ -273,13 +290,16 @@ namespace LSPtools
 
   class IniMRUList : RootSettings
   {
-    const int MRUnumber = 6;
+    private int MRUnumber = 6;
     private readonly List<string> MRUlist = new List<string>();
 
     public string Top { get { return MRUlist.Count > 0 ? MRUlist[0] : String.Empty; } }
 
-    public IniMRUList(string settingsName) : base("MRU", settingsName)
+    public IniMRUList(string settingsName) : this(settingsName, 0) { } // 0-keep default
+
+    public IniMRUList(string settingsName, int limit) : base("MRU", settingsName)
     {
+      if (limit > 0) MRUnumber = limit;
     }
     public string? AddToMenuItem(ToolStripMenuItem recentToolStripMenuItem, EventHandler eventHandler)
     {
@@ -364,26 +384,230 @@ namespace LSPtools
     }
   }
 
+  class IniTxtList : RootSettings
+  {
+    private readonly SortedList<string, string> list = new SortedList<string, string>(StringComparer.CurrentCultureIgnoreCase);
 
-  class IniSettingsData : RootSettings
+    public string this[string key]
+    {
+      get
+      {
+        if (list.TryGetValue(key, out string val)) return val;
+        else return String.Empty;
+      }
+      set
+      {
+        if (key == null) return;
+        key = key.Trim();
+        if (key.Length == 0) return;
+        int ix = list.IndexOfKey(key);
+        if (ix >= 0) list.RemoveAt(ix); 
+        list.Add(key, value);
+        
+      }
+    }
+    /// <summary>
+    /// Search ini setting for keys
+    /// </summary>
+    /// <param name="keys">list of keys in order of the search</param>
+    /// <param name="index">index of found key, or -1 if no key was found </param>
+    /// <returns></returns>
+    public string GetFirstNonEmpty(string[] keys, out int index)
+    {
+      index = -1;
+      if (keys == null) return String.Empty;
+      for (int i = 0; i < keys.Length; i++)
+      {
+        string param = this[keys[i]];
+        if (!string.IsNullOrEmpty(param)) { index = i; return param; }
+      }
+      return string.Empty;
+    }
+    /// <summary>
+    /// Process ini filenames, set found file extension and show SaveDialog
+    /// </summary>
+    /// <param name="saveFileDialog">save dialog</param>
+    /// <param name="keys">search keys in initilized stored filenames</param>
+    /// <param name="relatedFilename">derive store filename from this name </param>
+    /// <param name="extension">use extension</param>
+    /// <returns>true if dialog succesful</returns>
+    public bool ShowSaveDialog(SaveFileDialog saveFileDialog, string[] keys, string? relatedFilename, string extension)
+    {
+      return ShowSaveDialog(saveFileDialog, keys, relatedFilename, extension, false);
+    }
+    /// <summary>
+    /// Process ini filenames and show SaveDialog
+    /// </summary>
+    /// <param name="saveFileDialog">SaveFileDialog instance</param>
+    /// <param name="keys">search keys in IniSettings stored filenames</param>
+    /// <param name="relatedFilename">derive store filename from this name </param>
+    /// <param name="extension">use this extension</param>
+    /// <param name="replaceOnlyEmptyByRelatedFilename">if true then reletated file name is used only when stored is empty</param>
+    /// <returns>true if dialog succesful</returns>
+    public bool ShowSaveDialog(SaveFileDialog saveFileDialog, string[] keys,
+                               string? relatedFilename, string extension, bool replaceOnlyEmptyByRelatedFilename)
+    {
+      try
+      {
+        int ixFound = -1;
+        string lastFile = IniSettings.FilesBitmap.GetFirstNonEmpty(keys, out ixFound);
+        bool useRelated = true;
+        if (!String.IsNullOrEmpty(lastFile))
+        {
+          try
+          {
+            saveFileDialog.InitialDirectory = Path.GetDirectoryName(lastFile);
+            string filename = Path.GetFileName(lastFile);
+            string ext = Path.GetExtension(filename);
+            if (ixFound > 0) // not the main index
+              filename = Path.ChangeExtension(filename, extension);
+            saveFileDialog.FileName = filename;
+            if (replaceOnlyEmptyByRelatedFilename) useRelated = false;
+          }
+          catch (Exception) { }
+        }
+        if (useRelated && !String.IsNullOrEmpty(relatedFilename))
+        {
+          string s = Path.ChangeExtension(relatedFilename, extension);
+          saveFileDialog.FileName = Path.GetFileName(s);
+        }
+      }
+      catch (Exception ex)
+      {
+        Trace.WriteLine(ex.ToString());
+      }
+      if (saveFileDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+        return false;
+      IniSettings.FilesBitmap[keys[0]] = saveFileDialog.FileName;
+      return true;
+
+    }
+
+    public IniTxtList(string settingsName) : base("Txt", settingsName) { }
+
+
+    internal override bool TokenWasStored(string name, string token)
+    {
+      if (CompareNameToken(name, token, false))
+      {
+        string[] fields = token.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+        if (fields.Length > 1)
+        {
+          list[fields[0]] = fields[1];
+          return true;
+        }
+
+      }
+      return false;
+    }
+
+    internal override void WriteToXml(System.Xml.XmlTextWriter writer)
+    {
+      if (list.Count > 0)
+      {
+        writer.WriteStartElement(Root);
+        int i = 1;
+        foreach (KeyValuePair<string, string> kw in list)
+        {
+          writer.WriteAttributeString(RootSettingsName + i.ToString(), String.Format("{0}|{1}", kw.Key, kw.Value));
+          i++;
+        }
+        writer.WriteEndElement();
+      }
+
+    }
+  }
+
+
+  class IniIntList : RootSettings
+  {
+    public List<int> IntList = new List<int>(8);
+
+    public int Count { get { return IntList.Count; } }
+    public int GetInt(int ix)
+    {
+      if (ix >= 0 && ix < IntList.Count) return IntList[ix];
+      else return 0;
+    }
+
+    public bool ExistNonZeroValue()
+    {
+      for (int i = 0; i < IntList.Count; i++)
+      {
+        if (IntList[i]!=0) return true;
+      }
+      return false;
+    }
+
+
+    public IniIntList(string settingsName) : base("Data", settingsName)
+    {
+    }
+
+ 
+    internal override bool TokenWasStored(string name, string token)
+    {
+      if (CompareNameToken(name, token))
+      {
+        string[] numbers = token.Split('|');
+        for (int i = 0; i < numbers.Length; i++)
+        {
+          int n;
+          if (int.TryParse(numbers[i], out n)) IntList.Add(n); else IntList.Add(0);
+        }
+        return true;
+      }
+      return false;
+    }
+
+    internal override void WriteToXml(System.Xml.XmlTextWriter writer)
+    {
+      if (IntList.Count > 0)
+      {
+        writer.WriteStartElement(Root);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < IntList.Count; i++)
+        {
+          if (sb.Length > 0) sb.Append(" | ");
+          sb.AppendFormat("{0}", IntList[i]);
+        }
+        writer.WriteAttributeString(RootSettingsName, sb.ToString());
+        writer.WriteEndElement();
+      }
+
+    }
+  }
+
+  class IniFloatList : RootSettings
   {
     public List<float> FloatList = new List<float>(8);
+    public int Count { get { return FloatList.Count; } }
 
-    int GetInt(int ix)
+    public int GetInt(int ix)
     {
       if (ix >= 0 && ix < FloatList.Count) return (int)Math.Round(FloatList[ix], 0, MidpointRounding.AwayFromZero);
       else return 0;
     }
-    float GetFloat(int ix)
+    public float GetFloat(int ix)
     {
       if (ix >= 0 && ix < FloatList.Count) return FloatList[ix];
       else return 0f;
     }
 
-    public IniSettingsData(string settingsName) : base("Data", settingsName)
+    public bool ExistNonZeroValue()
     {
-
+      for (int i = 0; i < FloatList.Count; i++)
+      {
+        if (Math.Abs(FloatList[i]) > 1e-6) return true;
+      }
+      return false;
     }
+
+
+    public IniFloatList(string settingsName) : base("Data", settingsName)
+    {
+    }
+
 
     internal override bool TokenWasStored(string name, string token)
     {
@@ -417,15 +641,15 @@ namespace LSPtools
 
     }
   }
-  class IniSettingsFiles : RootSettings
+  class IniFilename : RootSettings
   {
     public string Filename = String.Empty;
 
-    public IniSettingsFiles(string settingsName) : base("Path", settingsName)
+    public IniFilename(string settingsName) : base("Path", settingsName)
     {
 
     }
-    public IniSettingsFiles(string settingsName, string initialNameValue) : this(settingsName)
+    public IniFilename(string settingsName, string initialNameValue) : this(settingsName)
     {
       Filename = initialNameValue;
     }

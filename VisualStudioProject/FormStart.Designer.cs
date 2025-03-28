@@ -1,4 +1,4 @@
-﻿namespace LSPtools
+﻿namespace FpgaLcdUtils
 {
   partial class FormStart
   {
@@ -51,6 +51,7 @@
       this.label1 = new System.Windows.Forms.Label();
       this.panel1 = new System.Windows.Forms.Panel();
       this.infoButton = new System.Windows.Forms.Button();
+      this.timerShow = new System.Windows.Forms.Timer(this.components);
       this.tableLayoutPanel1.SuspendLayout();
       this.notifyIconContextMenuStrip.SuspendLayout();
       this.panel1.SuspendLayout();
@@ -64,7 +65,7 @@
       this.button1.AutoSize = true;
       this.button1.BackColor = System.Drawing.SystemColors.ControlLight;
       this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.button1.Image = global::LSPtools.Properties.Resources.tb;
+      this.button1.Image = global::FpgaLcdUtils.Properties.Resources.tb;
       this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
       this.button1.Location = new System.Drawing.Point(4, 92);
       this.button1.Margin = new System.Windows.Forms.Padding(4);
@@ -108,7 +109,7 @@
       this.bitmapButton.AutoSize = true;
       this.bitmapButton.BackColor = System.Drawing.SystemColors.ControlLight;
       this.bitmapButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.bitmapButton.Image = global::LSPtools.Properties.Resources.BM32x32;
+      this.bitmapButton.Image = global::FpgaLcdUtils.Properties.Resources.BM32x32;
       this.bitmapButton.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
       this.bitmapButton.Location = new System.Drawing.Point(3, 3);
       this.bitmapButton.MinimumSize = new System.Drawing.Size(32, 32);
@@ -127,7 +128,7 @@
       this.button4.BackColor = System.Drawing.SystemColors.ControlLight;
       this.button4.Dock = System.Windows.Forms.DockStyle.Top;
       this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.button4.Image = global::LSPtools.Properties.Resources.QCtool32x32;
+      this.button4.Image = global::FpgaLcdUtils.Properties.Resources.QCtool32x32;
       this.button4.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
       this.button4.Location = new System.Drawing.Point(3, 137);
       this.button4.MinimumSize = new System.Drawing.Size(32, 32);
@@ -148,7 +149,7 @@
       this.button3.AutoSize = true;
       this.button3.BackColor = System.Drawing.SystemColors.ControlLight;
       this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.button3.Image = global::LSPtools.Properties.Resources.Measure32x32;
+      this.button3.Image = global::FpgaLcdUtils.Properties.Resources.Measure32x32;
       this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
       this.button3.Location = new System.Drawing.Point(3, 47);
       this.button3.MinimumSize = new System.Drawing.Size(32, 32);
@@ -174,40 +175,40 @@
             this.toolStripSeparator2,
             this.closeToolStripMenuItem});
       this.notifyIconContextMenuStrip.Name = "notifyIconContextMenuStrip";
-      this.notifyIconContextMenuStrip.Size = new System.Drawing.Size(242, 192);
+      this.notifyIconContextMenuStrip.Size = new System.Drawing.Size(275, 170);
       // 
       // runBitmap
       // 
-      this.runBitmap.Image = global::LSPtools.Properties.Resources.BM16x16;
+      this.runBitmap.Image = global::FpgaLcdUtils.Properties.Resources.BM16x16;
       this.runBitmap.Name = "runBitmap";
-      this.runBitmap.Size = new System.Drawing.Size(241, 22);
+      this.runBitmap.Size = new System.Drawing.Size(274, 22);
       this.runBitmap.Text = "Bitmap to VHDL";
       this.runBitmap.ToolTipText = "Converting images to VHDL code for FPGA memories";
       this.runBitmap.Click += new System.EventHandler(this.runBitmap2MIF_Click);
       // 
       // runMeasureRulers
       // 
-      this.runMeasureRulers.Image = global::LSPtools.Properties.Resources.Measure32x32;
+      this.runMeasureRulers.Image = global::FpgaLcdUtils.Properties.Resources.Measure32x32;
       this.runMeasureRulers.Name = "runMeasureRulers";
-      this.runMeasureRulers.Size = new System.Drawing.Size(241, 22);
+      this.runMeasureRulers.Size = new System.Drawing.Size(274, 22);
       this.runMeasureRulers.Text = "LCD Geometry Rulers";
       this.runMeasureRulers.ToolTipText = "Measurement rulers of LCD images";
       this.runMeasureRulers.Click += new System.EventHandler(this.runLCDGeometry_Click);
       // 
       // runQuartusProjectCheck
       // 
-      this.runQuartusProjectCheck.Image = global::LSPtools.Properties.Resources.QCtool32x32;
+      this.runQuartusProjectCheck.Image = global::FpgaLcdUtils.Properties.Resources.QCtool32x32;
       this.runQuartusProjectCheck.Name = "runQuartusProjectCheck";
-      this.runQuartusProjectCheck.Size = new System.Drawing.Size(241, 22);
+      this.runQuartusProjectCheck.Size = new System.Drawing.Size(274, 22);
       this.runQuartusProjectCheck.Text = "Quartus Project ???";
       this.runQuartusProjectCheck.ToolTipText = "The checker of Quartus Project settings";
       this.runQuartusProjectCheck.Click += new System.EventHandler(this.runChecker_Click);
       // 
       // runTestbenchViewer
       // 
-      this.runTestbenchViewer.Image = global::LSPtools.Properties.Resources.tb1;
+      this.runTestbenchViewer.Image = global::FpgaLcdUtils.Properties.Resources.tb1;
       this.runTestbenchViewer.Name = "runTestbenchViewer";
-      this.runTestbenchViewer.Size = new System.Drawing.Size(241, 22);
+      this.runTestbenchViewer.Size = new System.Drawing.Size(274, 22);
       this.runTestbenchViewer.Text = "Testbench Viewer";
       this.runTestbenchViewer.ToolTipText = "View LCD-testbench result";
       this.runTestbenchViewer.Click += new System.EventHandler(this.runTestbenchViewer_Click);
@@ -215,58 +216,58 @@
       // toolStripSeparator1
       // 
       this.toolStripSeparator1.Name = "toolStripSeparator1";
-      this.toolStripSeparator1.Size = new System.Drawing.Size(238, 6);
+      this.toolStripSeparator1.Size = new System.Drawing.Size(271, 6);
       // 
       // fullScreenTool
       // 
-      this.fullScreenTool.Image = global::LSPtools.Properties.Resources._125_FullView_16x16_72;
+      this.fullScreenTool.Image = global::FpgaLcdUtils.Properties.Resources._125_FullView_16x16_72;
       this.fullScreenTool.Name = "fullScreenTool";
-      this.fullScreenTool.Size = new System.Drawing.Size(241, 22);
+      this.fullScreenTool.Size = new System.Drawing.Size(274, 22);
       this.fullScreenTool.Text = "Show Tool Window";
-      this.fullScreenTool.ToolTipText = "Force Show of LSPtools Main Windows";
+      this.fullScreenTool.ToolTipText = "Force Show of FpgaLcdUtils Main Windows";
       this.fullScreenTool.Click += new System.EventHandler(this.fullScreenTool_Click);
       // 
       // emergencyRestart
       // 
-      this.emergencyRestart.Image = global::LSPtools.Properties.Resources.Restart_16x;
+      this.emergencyRestart.Image = global::FpgaLcdUtils.Properties.Resources.Restart_16x;
       this.emergencyRestart.Name = "emergencyRestart";
-      this.emergencyRestart.Size = new System.Drawing.Size(241, 22);
-      this.emergencyRestart.Text = "Emergency Restart of LSP Tools ";
-      this.emergencyRestart.ToolTipText = "An emergency restart of LSP Tools not using the stored setting";
+      this.emergencyRestart.Size = new System.Drawing.Size(274, 22);
+      this.emergencyRestart.Text = "Emergency Restart of FPGA-LCD Utils ";
+      this.emergencyRestart.ToolTipText = "An emergency restart of FPGA-LCD Utils not using the stored setting";
       this.emergencyRestart.Click += new System.EventHandler(this.emergencyRestart_Click);
       // 
       // toolStripSeparator2
       // 
       this.toolStripSeparator2.Name = "toolStripSeparator2";
-      this.toolStripSeparator2.Size = new System.Drawing.Size(238, 6);
+      this.toolStripSeparator2.Size = new System.Drawing.Size(271, 6);
       // 
       // closeToolStripMenuItem
       // 
-      this.closeToolStripMenuItem.Image = global::LSPtools.Properties.Resources.ClosePreviewHS;
+      this.closeToolStripMenuItem.Image = global::FpgaLcdUtils.Properties.Resources.ClosePreviewHS;
       this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-      this.closeToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
-      this.closeToolStripMenuItem.Text = "Close LSP Tools";
+      this.closeToolStripMenuItem.Size = new System.Drawing.Size(274, 22);
+      this.closeToolStripMenuItem.Text = "Close FPGA-LCD Utils";
       this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
       // 
       // notifyIconMain
       // 
-      this.notifyIconMain.BalloonTipText = "LSP Tools";
+      this.notifyIconMain.BalloonTipText = "FPGA-LCD Utils";
       this.notifyIconMain.ContextMenuStrip = this.notifyIconContextMenuStrip;
       this.notifyIconMain.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIconMain.Icon")));
-      this.notifyIconMain.Text = "LSPtools";
+      this.notifyIconMain.Text = "FpgaLcdUtils";
       this.notifyIconMain.Visible = true;
       this.notifyIconMain.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
       this.notifyIconMain.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
       // 
       // button5
       // 
-      this.button5.Image = global::LSPtools.Properties.Resources.minimize_24x24;
+      this.button5.Image = global::FpgaLcdUtils.Properties.Resources.minimize_24x24;
       this.button5.Location = new System.Drawing.Point(5, 5);
       this.button5.Name = "button5";
       this.button5.Size = new System.Drawing.Size(28, 28);
       this.button5.TabIndex = 3;
       this.button5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-      this.toolTip1.SetToolTip(this.button5, "Minimize the LSP tools into system tray icon");
+      this.toolTip1.SetToolTip(this.button5, "Minimize the FPGA-LCD Utils into system tray icon");
       this.button5.UseVisualStyleBackColor = true;
       this.button5.Click += new System.EventHandler(this.minimizeButton_Click);
       // 
@@ -301,16 +302,20 @@
       this.infoButton.BackColor = System.Drawing.SystemColors.ActiveCaption;
       this.infoButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.infoButton.ForeColor = System.Drawing.SystemColors.ControlText;
-      this.infoButton.Image = global::LSPtools.Properties.Resources.HelpHS1;
+      this.infoButton.Image = global::FpgaLcdUtils.Properties.Resources.HelpHS1;
       this.infoButton.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
       this.infoButton.Location = new System.Drawing.Point(120, 6);
       this.infoButton.Name = "infoButton";
       this.infoButton.Size = new System.Drawing.Size(66, 26);
       this.infoButton.TabIndex = 8;
-      this.infoButton.Text = "V1.3";
+      this.infoButton.Text = "V1.5";
       this.infoButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
       this.infoButton.UseVisualStyleBackColor = false;
       this.infoButton.Click += new System.EventHandler(this.infoButton_Click);
+      // 
+      // timerShow
+      // 
+      this.timerShow.Tick += new System.EventHandler(this.timerShow_Tick);
       // 
       // FormStart
       // 
@@ -329,7 +334,7 @@
       this.MinimizeBox = false;
       this.MinimumSize = new System.Drawing.Size(210, 273);
       this.Name = "FormStart";
-      this.Text = "LSP tool for FPGA";
+      this.Text = "FPGA-LCD Utilities";
       this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormStart_FormClosing);
       this.Load += new System.EventHandler(this.FormStart_Load);
       this.Shown += new System.EventHandler(this.FormStart_Shown);
@@ -368,5 +373,6 @@
     private ToolStripSeparator toolStripSeparator2;
     private ToolStripMenuItem emergencyRestart;
     private Button infoButton;
+    private System.Windows.Forms.Timer timerShow;
   }
 }

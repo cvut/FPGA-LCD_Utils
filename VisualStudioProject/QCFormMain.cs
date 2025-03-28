@@ -17,15 +17,15 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
-using static LSPtools.QuartusProject;
-using static LSPtools.TodoTexts;
+using static FpgaLcdUtils.QuartusProject;
+using static FpgaLcdUtils.TodoTexts;
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
   public partial class QCFormMain : Form
   {
     private readonly string? firstMRUFileOnStart = null;
-    private const string WINDOW_TITLE = "Checker of VEEK-MT2 Project (Alpha version) ";
+    private const string WINDOW_TITLE = "Checker of VEEK-MT2 Project";
     private readonly QuartusModelSimInstallations qmsi = new QuartusModelSimInstallations();
     private readonly QuartusProject quartusProject = new QuartusProject();
     private readonly RichTBWriter qcReport;
@@ -111,15 +111,22 @@ namespace LSPtools
         qcReport.Clear();
         qcReport.WrLine("============= Searching Quartus Installations Registry Keys =============");
         qmsi.Clear();
+//        qcReport.WrLineB("Altera key!");
         qmsi.SearchLocalMachine(alteraUniversitySubkey);
+//        qcReport.WrI(String.Format("{0} - alteraUniversitySubkey\n", qmsi.Count));
+//        qcReport.WrLineB("Altera university key!");
         qmsi.SearchLocalMachine(alteraQuartusSubkey);
-        qmsi.SearchLocalMachine(intelSubkey);
+ //       qcReport.WrI(String.Format("{0} - alteraQuartusSubkey\n", qmsi.Count));
+//        qcReport.WrLineB("Intel key!");
+        qmsi.SearchLocalMachine(intelSubkey); 
+//        qcReport.WrI(String.Format("{0} - intelSubkey\n", qmsi.Count));
         qmsi.Sort();
         bool error = false;
+        qcReport.WrLine(qmsi.sbKyeLogDebug.ToString());
         if (qmsi.Count == 0)
         {
-          qcReport.WrLineB("No Quartus installation was found!");
-          error = true;
+          if(qmsi.InstallationAccess) qcReport.WrLineB("No Quartus installation was found!");
+          else qcReport.WrLineB("Quartus Checker has not priviledges to search for Quartus installations.");
         }
         else
         {
@@ -217,6 +224,7 @@ namespace LSPtools
       try
       {
         IniSettings.GeometryQCheck.StoreGeometry(this);
+        was_shown = false;
       }
       catch (Exception ex)
       {
@@ -240,8 +248,7 @@ namespace LSPtools
 
     private void openQuartusProjectToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      if (qmsi.Versions.Count == 0)
-      { displayStatusMessage.Error("Quartus installation was not found."); }
+      if (qmsi.Versions.Count == 0 && qmsi.InstallationAccess) { displayStatusMessage.Error("Quartus installation was not found."); }
       if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
       {
         openQuartusProject(openFileDialog1.FileName);
@@ -443,7 +450,14 @@ namespace LSPtools
         do { Application.DoEvents(); }
         while (0 < count-- && _openQuartusProjectLock);
       }
-      if (!File.Exists(filenameOfProject)) return false;
+      string message = IniData.CheckReadAccessToFile(filenameOfProject);
+      if (message.Length > 0)
+      {
+        qcReport.WrLineB(message);
+        displayStatusMessage.Error(message);
+        return false;
+      }
+
       try
       {
         _openQuartusProjectLock = true;
@@ -474,7 +488,7 @@ namespace LSPtools
             }
           }
         }
-        catch (Exception ex) { Trace.WriteLine(ex.ToString()); }
+        catch (Exception ex) { Trace.WriteLine(ex.ToString()); qcReport.WrLine(ex.Message); }
         try
         {
           quartusProject.Clear();
@@ -489,6 +503,7 @@ namespace LSPtools
             Regex rg = new Regex(@"\s*(\w+)\s*=\s*\""(.+)\""", RegexOptions.Compiled);
             using (StreamReader sr = new StreamReader(fileStream))
             {
+              qcReport.WrLine("Opened: "+ filenameOfProject);
               string? line = null;
               while ((line = sr.ReadLine()) != null)
               {
@@ -527,6 +542,11 @@ namespace LSPtools
           }
           string quartusRevisionFile = quartusProject.ActiveRevisionName + ".qsf";
           string qsfull = Path.Combine(Path.GetDirectoryName(filenameOfProject), quartusRevisionFile);
+          message = IniData.CheckReadAccessToFile(qsfull);
+          if (message.Length > 0)
+          {
+            qcReport.WrLine("No access to file: " + qsfull);
+          }
           if (!File.Exists(qsfull))
           {
             quartusProject.AddError(quartusRevisionFile, "Failure to read the setting file of active project revision: " + qsfull,
@@ -694,7 +714,7 @@ namespace LSPtools
 
               switch (expecterValueOfSettings[0])
               {
-                case '*': // file name character specified in LSPtools gassDefinitions as the mark for filename
+                case '*': // file name character specified in FpgaLcdUtils gassDefinitions as the mark for filename
                   for (int i = 0; i < ga.Length; i++)
                   {
                     string vf = ga[i].Value;
@@ -1175,7 +1195,5 @@ namespace LSPtools
       int h = labelToDo.Height;
       labelToDo.Location = new Point(labelToDo.Location.X, r.Height / 2 - h / 2);
     }
-
-
   }
 }

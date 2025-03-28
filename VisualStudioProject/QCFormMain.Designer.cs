@@ -1,5 +1,5 @@
 ﻿
-namespace LSPtools
+namespace FpgaLcdUtils
 {
   partial class QCFormMain: Form
   {
@@ -57,6 +57,7 @@ namespace LSPtools
       this.splitContainer2 = new System.Windows.Forms.SplitContainer();
       this.listViewReports = new System.Windows.Forms.ListView();
       this.columnHeaderType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.columnHeaderCode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
       this.columnHeaderDesc = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
       this.descriptionRTB = new System.Windows.Forms.RichTextBox();
       this.panel3 = new System.Windows.Forms.Panel();
@@ -84,7 +85,6 @@ namespace LSPtools
       this.vwfOpenedFilenameTextBox = new System.Windows.Forms.TextBox();
       this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
       this.timerReload = new System.Windows.Forms.Timer(this.components);
-      this.columnHeaderCode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
       this.menuStrip1.SuspendLayout();
       this.statusStrip1.SuspendLayout();
       this.panel1.SuspendLayout();
@@ -232,7 +232,7 @@ namespace LSPtools
       // clearLogs
       // 
       this.clearLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.clearLogs.Image = global::LSPtools.Properties.Resources.DeleteHS;
+      this.clearLogs.Image = global::FpgaLcdUtils.Properties.Resources.DeleteHS;
       this.clearLogs.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
       this.clearLogs.Location = new System.Drawing.Point(153, 6);
       this.clearLogs.Name = "clearLogs";
@@ -245,7 +245,7 @@ namespace LSPtools
       // copyToClipboard
       // 
       this.copyToClipboard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.copyToClipboard.Image = global::LSPtools.Properties.Resources.CopyHS;
+      this.copyToClipboard.Image = global::FpgaLcdUtils.Properties.Resources.CopyHS;
       this.copyToClipboard.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
       this.copyToClipboard.Location = new System.Drawing.Point(3, 6);
       this.copyToClipboard.Name = "copyToClipboard";
@@ -259,7 +259,7 @@ namespace LSPtools
       // openFileDialog1
       // 
       this.openFileDialog1.DefaultExt = "qpf";
-      this.openFileDialog1.FileName = "openFileDialog1";
+      this.openFileDialog1.FileName = "";
       this.openFileDialog1.Filter = "Quartus Projects {*.qpf)|*.qpf|All Files (*.*)|*.*";
       this.openFileDialog1.Title = "Open Quartus Project";
       // 
@@ -353,6 +353,11 @@ namespace LSPtools
       // 
       this.columnHeaderType.Text = "Type";
       this.columnHeaderType.Width = 50;
+      // 
+      // columnHeaderCode
+      // 
+      this.columnHeaderCode.Text = "Code";
+      this.columnHeaderCode.Width = 150;
       // 
       // columnHeaderDesc
       // 
@@ -561,7 +566,7 @@ namespace LSPtools
       // button3
       // 
       this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.button3.Image = global::LSPtools.Properties.Resources.HelpHS;
+      this.button3.Image = global::FpgaLcdUtils.Properties.Resources.HelpHS;
       this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
       this.button3.Location = new System.Drawing.Point(545, 144);
       this.button3.Name = "button3";
@@ -661,11 +666,6 @@ namespace LSPtools
       // 
       this.timerReload.Interval = 250;
       this.timerReload.Tick += new System.EventHandler(this.timerReload_Tick);
-      // 
-      // columnHeaderCode
-      // 
-      this.columnHeaderCode.Text = "Code";
-      this.columnHeaderCode.Width = 150;
       // 
       // QCFormMain
       // 

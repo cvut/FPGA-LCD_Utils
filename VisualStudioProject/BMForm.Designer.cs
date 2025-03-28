@@ -1,4 +1,4 @@
-﻿namespace LSPtools
+﻿namespace FpgaLcdUtils
 {
     partial class BMForm
     {
@@ -34,6 +34,12 @@
       this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
       this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
       this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+      this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+      this.messagesErrorRichTextBox = new System.Windows.Forms.RichTextBox();
+      this.messagesContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+      this.copySelected_messagesContextMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+      this.deleteAll_messagesContextMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+      this.messageRichTextBox = new System.Windows.Forms.RichTextBox();
       this.groupBox1 = new System.Windows.Forms.GroupBox();
       this.infoMemoryTypeRichTextBox = new System.Windows.Forms.RichTextBox();
       this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -42,9 +48,6 @@
       this.label3 = new System.Windows.Forms.Label();
       this.txbLoadedSize = new System.Windows.Forms.TextBox();
       this.txbCountOfColors = new System.Windows.Forms.TextBox();
-      this.clearAllMessages = new System.Windows.Forms.Button();
-      this.label1 = new System.Windows.Forms.Label();
-      this.messageRichTextBox = new System.Windows.Forms.RichTextBox();
       this.pictureBox3 = new System.Windows.Forms.PictureBox();
       this.pictureBox2 = new System.Windows.Forms.PictureBox();
       this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -75,8 +78,8 @@
       this.memoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.saveAsVHDL_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.saveAsMemoryInitalizationFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-      this.copyMemoryTableAsTextToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
+      this.copyMemoryTableAsTextToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.helpToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
       this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
       this.helpToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
@@ -101,6 +104,11 @@
       this.splitContainer1.Panel1.SuspendLayout();
       this.splitContainer1.Panel2.SuspendLayout();
       this.splitContainer1.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+      this.splitContainer2.Panel1.SuspendLayout();
+      this.splitContainer2.Panel2.SuspendLayout();
+      this.splitContainer2.SuspendLayout();
+      this.messagesContextMenuStrip.SuspendLayout();
       this.groupBox1.SuspendLayout();
       this.groupBox3.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -153,11 +161,9 @@
       // 
       // splitContainer1.Panel1
       // 
+      this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
       this.splitContainer1.Panel1.Controls.Add(this.groupBox1);
       this.splitContainer1.Panel1.Controls.Add(this.groupBox3);
-      this.splitContainer1.Panel1.Controls.Add(this.clearAllMessages);
-      this.splitContainer1.Panel1.Controls.Add(this.label1);
-      this.splitContainer1.Panel1.Controls.Add(this.messageRichTextBox);
       this.splitContainer1.Panel1MinSize = 375;
       // 
       // splitContainer1.Panel2
@@ -182,18 +188,89 @@
       this.splitContainer1.Panel2.Controls.Add(this.label11);
       this.splitContainer1.Panel2.Controls.Add(this.nudReloadWidth);
       this.splitContainer1.Panel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.splitContainer1.Size = new System.Drawing.Size(714, 315);
+      this.splitContainer1.Size = new System.Drawing.Size(714, 321);
       this.splitContainer1.SplitterDistance = 375;
       this.splitContainer1.SplitterWidth = 6;
       this.splitContainer1.TabIndex = 8;
       // 
+      // splitContainer2
+      // 
+      this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.splitContainer2.Location = new System.Drawing.Point(0, 227);
+      this.splitContainer2.Name = "splitContainer2";
+      this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+      // 
+      // splitContainer2.Panel1
+      // 
+      this.splitContainer2.Panel1.Controls.Add(this.messagesErrorRichTextBox);
+      this.splitContainer2.Panel1MinSize = 32;
+      // 
+      // splitContainer2.Panel2
+      // 
+      this.splitContainer2.Panel2.Controls.Add(this.messageRichTextBox);
+      this.splitContainer2.Size = new System.Drawing.Size(371, 90);
+      this.splitContainer2.SplitterDistance = 32;
+      this.splitContainer2.SplitterWidth = 6;
+      this.splitContainer2.TabIndex = 23;
+      this.toolTip1.SetToolTip(this.splitContainer2, "Messages related to memory width");
+      // 
+      // messagesErrorRichTextBox
+      // 
+      this.messagesErrorRichTextBox.ContextMenuStrip = this.messagesContextMenuStrip;
+      this.messagesErrorRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.messagesErrorRichTextBox.Location = new System.Drawing.Point(0, 0);
+      this.messagesErrorRichTextBox.Name = "messagesErrorRichTextBox";
+      this.messagesErrorRichTextBox.ReadOnly = true;
+      this.messagesErrorRichTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+      this.messagesErrorRichTextBox.Size = new System.Drawing.Size(371, 32);
+      this.messagesErrorRichTextBox.TabIndex = 17;
+      this.messagesErrorRichTextBox.Tag = "E";
+      this.messagesErrorRichTextBox.Text = "";
+      // 
+      // messagesContextMenuStrip
+      // 
+      this.messagesContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copySelected_messagesContextMenuStrip,
+            this.deleteAll_messagesContextMenuStrip});
+      this.messagesContextMenuStrip.Name = "messagesContextMenuStrip";
+      this.messagesContextMenuStrip.Size = new System.Drawing.Size(203, 48);
+      this.messagesContextMenuStrip.Opened += new System.EventHandler(this.messagesContextMenuStrip_Opened);
+      // 
+      // copySelected_messagesContextMenuStrip
+      // 
+      this.copySelected_messagesContextMenuStrip.Name = "copySelected_messagesContextMenuStrip";
+      this.copySelected_messagesContextMenuStrip.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+      this.copySelected_messagesContextMenuStrip.Size = new System.Drawing.Size(202, 22);
+      this.copySelected_messagesContextMenuStrip.Text = "Copy Selected";
+      this.copySelected_messagesContextMenuStrip.Click += new System.EventHandler(this.copySelected_messagesContextMenuStrip_Click);
+      // 
+      // deleteAll_messagesContextMenuStrip
+      // 
+      this.deleteAll_messagesContextMenuStrip.Name = "deleteAll_messagesContextMenuStrip";
+      this.deleteAll_messagesContextMenuStrip.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+      this.deleteAll_messagesContextMenuStrip.Size = new System.Drawing.Size(202, 22);
+      this.deleteAll_messagesContextMenuStrip.Text = "Delete All Messages";
+      this.deleteAll_messagesContextMenuStrip.Click += new System.EventHandler(this.deleteAll_messagesContextMenuStrip_Click);
+      // 
+      // messageRichTextBox
+      // 
+      this.messageRichTextBox.ContextMenuStrip = this.messagesContextMenuStrip;
+      this.messageRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.messageRichTextBox.Location = new System.Drawing.Point(0, 0);
+      this.messageRichTextBox.Name = "messageRichTextBox";
+      this.messageRichTextBox.ReadOnly = true;
+      this.messageRichTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+      this.messageRichTextBox.Size = new System.Drawing.Size(371, 52);
+      this.messageRichTextBox.TabIndex = 17;
+      this.messageRichTextBox.Tag = "M";
+      this.messageRichTextBox.Text = "";
+      // 
       // groupBox1
       // 
-      this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
       this.groupBox1.Controls.Add(this.infoMemoryTypeRichTextBox);
+      this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
       this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.groupBox1.Location = new System.Drawing.Point(0, 166);
+      this.groupBox1.Location = new System.Drawing.Point(0, 160);
       this.groupBox1.Name = "groupBox1";
       this.groupBox1.Size = new System.Drawing.Size(371, 67);
       this.groupBox1.TabIndex = 22;
@@ -203,13 +280,14 @@
       // infoMemoryTypeRichTextBox
       // 
       this.infoMemoryTypeRichTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-      this.infoMemoryTypeRichTextBox.Location = new System.Drawing.Point(3, 19);
+      this.infoMemoryTypeRichTextBox.Location = new System.Drawing.Point(3, 22);
       this.infoMemoryTypeRichTextBox.Name = "infoMemoryTypeRichTextBox";
       this.infoMemoryTypeRichTextBox.ReadOnly = true;
       this.infoMemoryTypeRichTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-      this.infoMemoryTypeRichTextBox.Size = new System.Drawing.Size(365, 45);
+      this.infoMemoryTypeRichTextBox.Size = new System.Drawing.Size(365, 42);
       this.infoMemoryTypeRichTextBox.TabIndex = 0;
       this.infoMemoryTypeRichTextBox.Text = "";
+      this.toolTip1.SetToolTip(this.infoMemoryTypeRichTextBox, "Memory required for storing bitmap");
       // 
       // groupBox3
       // 
@@ -289,46 +367,11 @@
       this.txbCountOfColors.Text = "0";
       this.txbCountOfColors.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
       // 
-      // clearAllMessages
-      // 
-      this.clearAllMessages.Location = new System.Drawing.Point(90, 233);
-      this.clearAllMessages.Name = "clearAllMessages";
-      this.clearAllMessages.Size = new System.Drawing.Size(59, 24);
-      this.clearAllMessages.TabIndex = 20;
-      this.clearAllMessages.Text = "Clear All";
-      this.clearAllMessages.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-      this.toolTip1.SetToolTip(this.clearAllMessages, "Clear Content of Message Window");
-      this.clearAllMessages.UseVisualStyleBackColor = true;
-      this.clearAllMessages.Click += new System.EventHandler(this.clearAllMessages_Click);
-      // 
-      // label1
-      // 
-      this.label1.AutoSize = true;
-      this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label1.Location = new System.Drawing.Point(5, 236);
-      this.label1.Name = "label1";
-      this.label1.Size = new System.Drawing.Size(79, 16);
-      this.label1.TabIndex = 18;
-      this.label1.Text = "Messages";
-      // 
-      // messageRichTextBox
-      // 
-      this.messageRichTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.messageRichTextBox.Location = new System.Drawing.Point(0, 259);
-      this.messageRichTextBox.Name = "messageRichTextBox";
-      this.messageRichTextBox.ReadOnly = true;
-      this.messageRichTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-      this.messageRichTextBox.Size = new System.Drawing.Size(371, 52);
-      this.messageRichTextBox.TabIndex = 17;
-      this.messageRichTextBox.Text = "";
-      // 
       // pictureBox3
       // 
       this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-      this.pictureBox3.Image = global::LSPtools.Properties.Resources.Height16x16;
-      this.pictureBox3.Location = new System.Drawing.Point(170, 264);
+      this.pictureBox3.Image = global::FpgaLcdUtils.Properties.Resources.Height16x16;
+      this.pictureBox3.Location = new System.Drawing.Point(162, 270);
       this.pictureBox3.Name = "pictureBox3";
       this.pictureBox3.Size = new System.Drawing.Size(16, 16);
       this.pictureBox3.TabIndex = 15;
@@ -337,8 +380,8 @@
       // pictureBox2
       // 
       this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.pictureBox2.Image = global::LSPtools.Properties.Resources.Width16x16;
-      this.pictureBox2.Location = new System.Drawing.Point(21, 264);
+      this.pictureBox2.Image = global::FpgaLcdUtils.Properties.Resources.Width16x16;
+      this.pictureBox2.Location = new System.Drawing.Point(21, 270);
       this.pictureBox2.Name = "pictureBox2";
       this.pictureBox2.Size = new System.Drawing.Size(16, 16);
       this.pictureBox2.TabIndex = 15;
@@ -346,7 +389,7 @@
       // 
       // pictureBox1
       // 
-      this.pictureBox1.Image = global::LSPtools.Properties.Resources.UpperLeftCorner40x40;
+      this.pictureBox1.Image = global::FpgaLcdUtils.Properties.Resources.UpperLeftCorner40x40;
       this.pictureBox1.Location = new System.Drawing.Point(4, 9);
       this.pictureBox1.Name = "pictureBox1";
       this.pictureBox1.Size = new System.Drawing.Size(40, 40);
@@ -368,7 +411,7 @@
       // 
       this.numericUpDownScale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.numericUpDownScale.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-      this.numericUpDownScale.Location = new System.Drawing.Point(260, 27);
+      this.numericUpDownScale.Location = new System.Drawing.Point(252, 27);
       this.numericUpDownScale.Margin = new System.Windows.Forms.Padding(2);
       this.numericUpDownScale.Maximum = new decimal(new int[] {
             8,
@@ -418,7 +461,7 @@
       this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
       this.label4.AutoSize = true;
       this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-      this.label4.Location = new System.Drawing.Point(42, 264);
+      this.label4.Location = new System.Drawing.Point(42, 270);
       this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
       this.label4.Name = "label4";
       this.label4.Size = new System.Drawing.Size(41, 16);
@@ -430,7 +473,7 @@
       this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
       this.label2.AutoSize = true;
       this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-      this.label2.Location = new System.Drawing.Point(191, 264);
+      this.label2.Location = new System.Drawing.Point(183, 270);
       this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
       this.label2.Name = "label2";
       this.label2.Size = new System.Drawing.Size(46, 16);
@@ -439,10 +482,10 @@
       // 
       // label7
       // 
-      this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+      this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
       this.label7.AutoSize = true;
       this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-      this.label7.Location = new System.Drawing.Point(175, 289);
+      this.label7.Location = new System.Drawing.Point(171, 295);
       this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
       this.label7.Name = "label7";
       this.label7.Size = new System.Drawing.Size(72, 16);
@@ -454,7 +497,7 @@
       this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
       this.label13.AutoSize = true;
       this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-      this.label13.Location = new System.Drawing.Point(9, 289);
+      this.label13.Location = new System.Drawing.Point(9, 295);
       this.label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
       this.label13.Name = "label13";
       this.label13.Size = new System.Drawing.Size(141, 16);
@@ -487,9 +530,9 @@
       // 
       // txbExtendValue
       // 
-      this.txbExtendValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+      this.txbExtendValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
       this.txbExtendValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-      this.txbExtendValue.Location = new System.Drawing.Point(255, 286);
+      this.txbExtendValue.Location = new System.Drawing.Point(251, 292);
       this.txbExtendValue.Name = "txbExtendValue";
       this.txbExtendValue.Size = new System.Drawing.Size(55, 22);
       this.txbExtendValue.TabIndex = 12;
@@ -501,7 +544,7 @@
       // 
       this.panelExtendColor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
       this.panelExtendColor.BackColor = System.Drawing.Color.Black;
-      this.panelExtendColor.Location = new System.Drawing.Point(155, 286);
+      this.panelExtendColor.Location = new System.Drawing.Point(155, 292);
       this.panelExtendColor.Name = "panelExtendColor";
       this.panelExtendColor.Size = new System.Drawing.Size(19, 19);
       this.panelExtendColor.TabIndex = 13;
@@ -516,7 +559,7 @@
       this.previewBitmapPanel.Location = new System.Drawing.Point(3, 54);
       this.previewBitmapPanel.Margin = new System.Windows.Forms.Padding(2);
       this.previewBitmapPanel.Name = "previewBitmapPanel";
-      this.previewBitmapPanel.Size = new System.Drawing.Size(306, 203);
+      this.previewBitmapPanel.Size = new System.Drawing.Size(298, 209);
       this.previewBitmapPanel.TabIndex = 0;
       this.previewBitmapPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.previewBitmapPanel_Paint);
       this.previewBitmapPanel.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.previewBitmapPanel_MouseDoubleClick);
@@ -548,7 +591,7 @@
       // 
       this.nudReloadHeight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
       this.nudReloadHeight.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-      this.nudReloadHeight.Location = new System.Drawing.Point(240, 261);
+      this.nudReloadHeight.Location = new System.Drawing.Point(232, 267);
       this.nudReloadHeight.Margin = new System.Windows.Forms.Padding(2);
       this.nudReloadHeight.Maximum = new decimal(new int[] {
             1024,
@@ -577,7 +620,7 @@
       this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.label11.AutoSize = true;
       this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-      this.label11.Location = new System.Drawing.Point(246, 9);
+      this.label11.Location = new System.Drawing.Point(238, 9);
       this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
       this.label11.Name = "label11";
       this.label11.Size = new System.Drawing.Size(62, 16);
@@ -588,7 +631,7 @@
       // 
       this.nudReloadWidth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
       this.nudReloadWidth.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-      this.nudReloadWidth.Location = new System.Drawing.Point(87, 261);
+      this.nudReloadWidth.Location = new System.Drawing.Point(87, 267);
       this.nudReloadWidth.Margin = new System.Windows.Forms.Padding(2);
       this.nudReloadWidth.Maximum = new decimal(new int[] {
             1024,
@@ -704,20 +747,20 @@
       this.saveAsMemoryInitalizationFileToolStripMenuItem.Name = "saveAsMemoryInitalizationFileToolStripMenuItem";
       this.saveAsMemoryInitalizationFileToolStripMenuItem.Size = new System.Drawing.Size(293, 22);
       this.saveAsMemoryInitalizationFileToolStripMenuItem.Text = "Save as Memory Initialization file...";
-      this.saveAsMemoryInitalizationFileToolStripMenuItem.ToolTipText = "Create file MIF for initialization of memory";
+      this.saveAsMemoryInitalizationFileToolStripMenuItem.ToolTipText = "Store as *.MIF for initialization of  \r\n1 and 2-port on-chip memory blocks ";
       this.saveAsMemoryInitalizationFileToolStripMenuItem.Click += new System.EventHandler(this.saveAsMemoryInitializationFileToolStripMenuItem_Click);
-      // 
-      // copyMemoryTableAsTextToClipboardToolStripMenuItem
-      // 
-      this.copyMemoryTableAsTextToClipboardToolStripMenuItem.Name = "copyMemoryTableAsTextToClipboardToolStripMenuItem";
-      this.copyMemoryTableAsTextToClipboardToolStripMenuItem.Size = new System.Drawing.Size(293, 22);
-      this.copyMemoryTableAsTextToClipboardToolStripMenuItem.Text = "Copy memory table as text to Clipboard";
-      this.copyMemoryTableAsTextToClipboardToolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuItemCopyToClipboard_Click);
       // 
       // toolStripMenuItem5
       // 
       this.toolStripMenuItem5.Name = "toolStripMenuItem5";
       this.toolStripMenuItem5.Size = new System.Drawing.Size(290, 6);
+      // 
+      // copyMemoryTableAsTextToClipboardToolStripMenuItem
+      // 
+      this.copyMemoryTableAsTextToClipboardToolStripMenuItem.Name = "copyMemoryTableAsTextToClipboardToolStripMenuItem";
+      this.copyMemoryTableAsTextToClipboardToolStripMenuItem.Size = new System.Drawing.Size(293, 22);
+      this.copyMemoryTableAsTextToClipboardToolStripMenuItem.Text = "Copy memory sizes as text to Clipboard";
+      this.copyMemoryTableAsTextToClipboardToolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuItemCopyToClipboard_Click);
       // 
       // helpToolStripMenuItem2
       // 
@@ -840,7 +883,7 @@
       this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
       this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsslMessage});
-      this.statusStrip1.Location = new System.Drawing.Point(0, 339);
+      this.statusStrip1.Location = new System.Drawing.Point(0, 345);
       this.statusStrip1.Name = "statusStrip1";
       this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
       this.statusStrip1.Size = new System.Drawing.Size(714, 22);
@@ -868,7 +911,7 @@
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(714, 361);
+      this.ClientSize = new System.Drawing.Size(714, 367);
       this.Controls.Add(this.splitContainer1);
       this.Controls.Add(this.statusStrip1);
       this.Controls.Add(this.menuStrip1);
@@ -881,11 +924,15 @@
       this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BMForm_FormClosing);
       this.Shown += new System.EventHandler(this.BMForm_Shown);
       this.splitContainer1.Panel1.ResumeLayout(false);
-      this.splitContainer1.Panel1.PerformLayout();
       this.splitContainer1.Panel2.ResumeLayout(false);
       this.splitContainer1.Panel2.PerformLayout();
       ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
       this.splitContainer1.ResumeLayout(false);
+      this.splitContainer2.Panel1.ResumeLayout(false);
+      this.splitContainer2.Panel2.ResumeLayout(false);
+      ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+      this.splitContainer2.ResumeLayout(false);
+      this.messagesContextMenuStrip.ResumeLayout(false);
       this.groupBox1.ResumeLayout(false);
       this.groupBox3.ResumeLayout(false);
       this.groupBox3.PerformLayout();
@@ -958,8 +1005,6 @@
     private NumericUpDown nudX0;
     private NumericUpDown nudY0;
     private RichTextBox messageRichTextBox;
-    private Label label1;
-    private Button clearAllMessages;
     private GroupBox groupBox3;
     private TextBox openedFilenameTextBox;
     private Label label7;
@@ -975,6 +1020,11 @@
     private ToolStripMenuItem recentBitmapsToolStripMenuItem;
     private ToolStripSeparator toolStripSeparator1;
     private RichTextBox infoMemoryTypeRichTextBox;
+    private ContextMenuStrip messagesContextMenuStrip;
+    private ToolStripMenuItem copySelected_messagesContextMenuStrip;
+    private ToolStripMenuItem deleteAll_messagesContextMenuStrip;
+    private SplitContainer splitContainer2;
+    private RichTextBox messagesErrorRichTextBox;
   }
 }
 

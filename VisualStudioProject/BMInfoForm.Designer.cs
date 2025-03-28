@@ -1,4 +1,4 @@
-﻿namespace LSPtools
+﻿namespace FpgaLcdUtils
 {
   partial class BMInfoForm
   {
@@ -48,9 +48,9 @@
       // palettePanel
       // 
       this.palettePanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-      this.palettePanel.Location = new System.Drawing.Point(0, 448);
+      this.palettePanel.Location = new System.Drawing.Point(0, 194);
       this.palettePanel.Name = "palettePanel";
-      this.palettePanel.Size = new System.Drawing.Size(781, 120);
+      this.palettePanel.Size = new System.Drawing.Size(484, 120);
       this.palettePanel.TabIndex = 1;
       this.palettePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.palettePanel_Paint);
       this.palettePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.palettePanel_MouseMove);
@@ -61,9 +61,9 @@
       this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
       this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
       this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.button1.Image = global::LSPtools.Properties.Resources.ClosePreviewHS;
+      this.button1.Image = global::FpgaLcdUtils.Properties.Resources.ClosePreviewHS;
       this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-      this.button1.Location = new System.Drawing.Point(642, 419);
+      this.button1.Location = new System.Drawing.Point(345, 165);
       this.button1.Name = "button1";
       this.button1.Size = new System.Drawing.Size(133, 27);
       this.button1.TabIndex = 2;
@@ -77,7 +77,7 @@
       this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
       this.label1.AutoSize = true;
       this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label1.Location = new System.Drawing.Point(179, 426);
+      this.label1.Location = new System.Drawing.Point(179, 172);
       this.label1.Name = "label1";
       this.label1.Size = new System.Drawing.Size(135, 13);
       this.label1.TabIndex = 3;
@@ -86,7 +86,7 @@
       // colorCountTextBox
       // 
       this.colorCountTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.colorCountTextBox.Location = new System.Drawing.Point(54, 422);
+      this.colorCountTextBox.Location = new System.Drawing.Point(54, 168);
       this.colorCountTextBox.Name = "colorCountTextBox";
       this.colorCountTextBox.ReadOnly = true;
       this.colorCountTextBox.Size = new System.Drawing.Size(119, 20);
@@ -98,7 +98,7 @@
       this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
       this.label2.AutoSize = true;
       this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label2.Location = new System.Drawing.Point(1, 427);
+      this.label2.Location = new System.Drawing.Point(1, 173);
       this.label2.Name = "label2";
       this.label2.Size = new System.Drawing.Size(47, 13);
       this.label2.TabIndex = 5;
@@ -109,12 +109,12 @@
       this.infoTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
       this.infoTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.infoTextBox.Location = new System.Drawing.Point(508, 25);
+      this.infoTextBox.Location = new System.Drawing.Point(211, 25);
       this.infoTextBox.Multiline = true;
       this.infoTextBox.Name = "infoTextBox";
       this.infoTextBox.ReadOnly = true;
       this.infoTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-      this.infoTextBox.Size = new System.Drawing.Size(272, 394);
+      this.infoTextBox.Size = new System.Drawing.Size(272, 140);
       this.infoTextBox.TabIndex = 6;
       // 
       // label3
@@ -131,9 +131,9 @@
       // 
       this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.messageLabel});
-      this.statusStrip1.Location = new System.Drawing.Point(0, 568);
+      this.statusStrip1.Location = new System.Drawing.Point(0, 314);
       this.statusStrip1.Name = "statusStrip1";
-      this.statusStrip1.Size = new System.Drawing.Size(781, 22);
+      this.statusStrip1.Size = new System.Drawing.Size(484, 22);
       this.statusStrip1.TabIndex = 7;
       this.statusStrip1.Text = "statusStrip1";
       // 
@@ -151,7 +151,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
       this.bitmapPanel.Location = new System.Drawing.Point(0, 25);
       this.bitmapPanel.Name = "bitmapPanel";
-      this.bitmapPanel.Size = new System.Drawing.Size(502, 394);
+      this.bitmapPanel.Size = new System.Drawing.Size(205, 140);
       this.bitmapPanel.TabIndex = 8;
       this.bitmapPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
       this.bitmapPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.bitmapPanel_MouseMove);
@@ -194,7 +194,7 @@
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(781, 590);
+      this.ClientSize = new System.Drawing.Size(484, 336);
       this.Controls.Add(this.numericUpDownScale);
       this.Controls.Add(this.label11);
       this.Controls.Add(this.bitmapPanel);
@@ -207,6 +207,7 @@
       this.Controls.Add(this.palettePanel);
       this.Controls.Add(this.statusStrip1);
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+      this.MinimumSize = new System.Drawing.Size(500, 375);
       this.Name = "BMInfoForm";
       this.Text = "Rejected Bitmap ";
       this.Load += new System.EventHandler(this.BMInfoForm_Load);

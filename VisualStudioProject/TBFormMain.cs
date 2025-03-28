@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
   public partial class TBFormMain : Form
   {
@@ -35,7 +35,7 @@ namespace LSPtools
 
 
 
-      firstMRUFileOnStart = IniSettings.MRUFilesViewer.AddToMenuItem(recentTestbenchToolStripMenuItem, recentTestbenchToolStripMenuItem_Click);
+      firstMRUFileOnStart = IniSettings.MRUFilesTBViewer.AddToMenuItem(recentTestbenchToolStripMenuItem, recentTestbenchToolStripMenuItem_Click);
       DBG("MRUtestbench=" + firstMRUFileOnStart);
 
       rgbArray = new RGBInfoArray();
@@ -85,6 +85,7 @@ namespace LSPtools
         SetHScrollBar(0, imageWidth = RGBInfoArray.WIDTH_VISIBLE);
         SetVScrollBar(0, imageHeight = RGBInfoArray.HEIGHT_VISIBLE);
         showVisibleToolStripMenuItem.Checked = true;
+        RGBInfoArray.Assign_IsVisibleLCDonly(true);
         fontTextBox = xyCoordinatesTextBox.Font;
         fontTextBoxItalic = new Font(fontTextBox, FontStyle.Italic);
         this.Cursor = Cursors.WaitCursor;
@@ -209,13 +210,13 @@ namespace LSPtools
         if (testIfAccessible(openLCDImageFile.FileName))
         {
           currentFilename = openLCDImageFile.FileName;
-          IniSettings.MRUFilesViewer.AddFile(currentFilename);
-          IniSettings.MRUFilesViewer.AddToMenuItem(recentTestbenchToolStripMenuItem, recentTestbenchToolStripMenuItem_Click);
+          IniSettings.MRUFilesTBViewer.AddFile(currentFilename);
+          IniSettings.MRUFilesTBViewer.AddToMenuItem(recentTestbenchToolStripMenuItem, recentTestbenchToolStripMenuItem_Click);
         }
         else
         {
           currentFilename = String.Empty;
-          IniSettings.MRUFilesViewer.RemoveFile(openLCDImageFile.FileName, recentTestbenchToolStripMenuItem);
+          IniSettings.MRUFilesTBViewer.RemoveFile(openLCDImageFile.FileName, recentTestbenchToolStripMenuItem);
         }
         applyChangesOfCurrentFilename();
       }
@@ -231,14 +232,14 @@ namespace LSPtools
           string filename = mi.ToolTipText;
           if (testIfAccessible(filename))
           {
-            IniSettings.MRUFilesViewer.AddFile(filename);
-            IniSettings.MRUFilesViewer.AddToMenuItem(recentTestbenchToolStripMenuItem, recentTestbenchToolStripMenuItem_Click);
+            IniSettings.MRUFilesTBViewer.AddFile(filename);
+            IniSettings.MRUFilesTBViewer.AddToMenuItem(recentTestbenchToolStripMenuItem, recentTestbenchToolStripMenuItem_Click);
             currentFilename = filename;
             applyChangesOfCurrentFilename();
           }
           else
           {
-            IniSettings.MRUFilesViewer.RemoveFile(filename, recentTestbenchToolStripMenuItem);
+            IniSettings.MRUFilesTBViewer.RemoveFile(filename, recentTestbenchToolStripMenuItem);
           }
         }
         catch (Exception ex)
@@ -270,6 +271,25 @@ namespace LSPtools
         using (FileStream fs = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
         {
           if (fs.CanRead) return true;
+          displayMessage("File is not readable: " + filename, MessageSeverity.Error);
+          using (BinaryReader br = new BinaryReader(fs))
+          {
+            if (fs.Length > 0)
+            {
+              byte[] test = br.ReadBytes(32);
+              if (test.Length > 0) return true;
+              else
+              {
+                displayMessage("Attempt to read failed: " + filename, MessageSeverity.Error);
+                return false;
+              }
+            }
+            else
+            {
+              displayMessage("File is empty: " + filename, MessageSeverity.Warning);
+            }
+          }
+         return true;
         }
       }
       //   T:System.IO.IOException:
@@ -528,7 +548,7 @@ The program has switched to a slower timer mode.",
                 playTimerFrameIndex++; directLoadOfFrame();
               }
             }
-            else  setPauseOnPlayPauseButton();
+            else setPauseOnPlayPauseButton();
             // stopping is tested according data received from the output queue 
           }
           else
@@ -600,29 +620,32 @@ The program has switched to a slower timer mode.",
     /// <param name="e"></param>
     private void saveImageAsBitmapToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      if (screenBitmap == null) { messageToolStripStatusLabel.Text = "No image loaded"; }
+      if (screenBitmap == null || rgbArray==null) 
+      { messageToolStripStatusLabel.Text = "No image loaded"; return;  }
       try
       {
-        if (saveLCDImageAs.ShowDialog() == System.Windows.Forms.DialogResult.OK && rgbArray != null)
+        if (!IniSettings.FilesTBViewer.ShowSaveDialog(saveLCDImageAs, new string[] { "image" },
+                                                   currentFilename, "bmp", true))
+          return;
+        // Create bitmap without border
+        Bitmap bitmap = showVisibleToolStripMenuItem.Checked ?
+                  rgbArray.CreateVisibleBitmap(panelGraph.CreateGraphics(), Application.DoEvents)
+                : rgbArray.CreateBitmap(false, panelGraph.CreateGraphics(), Application.DoEvents);
+        string ext = Path.GetExtension(saveLCDImageAs.FileName).ToLower();
+        switch (ext)
         {
-          // Create bitmap without border
-          Bitmap bitmap = showVisibleToolStripMenuItem.Checked ?
-                    rgbArray.CreateVisibleBitmap(panelGraph.CreateGraphics(), Application.DoEvents)
-                  : rgbArray.CreateBitmap(false, panelGraph.CreateGraphics(), Application.DoEvents);
-          string ext = Path.GetExtension(saveLCDImageAs.FileName).ToLower();
-          switch (ext)
-          {
-            case ".bmp": bitmap.Save(saveLCDImageAs.FileName, System.Drawing.Imaging.ImageFormat.Bmp); break;
-            case ".jpg": bitmap.Save(saveLCDImageAs.FileName, System.Drawing.Imaging.ImageFormat.Jpeg); break;
-            case ".png": bitmap.Save(saveLCDImageAs.FileName, System.Drawing.Imaging.ImageFormat.Png); break;
-            default: messageToolStripStatusLabel.Text = "Unsupported extension"; return;
-          }
-          messageToolStripStatusLabel.Text = "Image saved as " + saveLCDImageAs.FileName;
+          case ".bmp": bitmap.Save(saveLCDImageAs.FileName, System.Drawing.Imaging.ImageFormat.Bmp); break;
+          case ".jpg": bitmap.Save(saveLCDImageAs.FileName, System.Drawing.Imaging.ImageFormat.Jpeg); break;
+          case ".png": bitmap.Save(saveLCDImageAs.FileName, System.Drawing.Imaging.ImageFormat.Png); break;
+          default: messageToolStripStatusLabel.Text = "Use bmp, jpg or png extension. You entered unsupported: "+ext; 
+                   return;
         }
+        messageToolStripStatusLabel.Text = "Image saved as " + saveLCDImageAs.FileName;
       }
       catch (Exception ex)
       {
-        messageToolStripStatusLabel.Text = ex.Message;
+        messageToolStripStatusLabel.Text = "System Exception"+ex.Message;
+        Trace.WriteLine(ex.ToString());
       }
     }
 
@@ -718,16 +741,20 @@ The program has switched to a slower timer mode.",
     {
       if (showVisibleToolStripMenuItem.Checked)
       {
+        RGBInfoArray.Assign_IsVisibleLCDonly(true);
         SetHScrollBar(0, imageWidth = RGBInfoArray.WIDTH_VISIBLE);
         SetVScrollBar(0, imageHeight = RGBInfoArray.HEIGHT_VISIBLE);
       }
       else
       {
+        RGBInfoArray.Assign_IsVisibleLCDonly(false);
         SetHScrollBar(0, imageWidth = RGBInfoArray.WIDTH);
         SetVScrollBar(0, imageHeight = RGBInfoArray.HEIGHT);
       }
-      PaintImage(panelGraph.CreateGraphics());
+      Application.DoEvents();
+      directLoadOfFrame();
       setZoom(1);
+      panelGraph.Invalidate();
     }
 
     private void lastFullFrameToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1025,7 +1052,7 @@ The program has switched to a slower timer mode.",
 
     private void panelGraph_MouseEnter(object sender, EventArgs e)
     {
-      panelGraph.Focus();
+      if(this.ContainsFocus) panelGraph.Focus();
     }
     private void vScrollBarGraph_MouseEnter(object sender, EventArgs e)
     {

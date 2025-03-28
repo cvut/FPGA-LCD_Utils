@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using static LSPtools.QuartusProject;
+using static FpgaLcdUtils.QuartusProject;
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
   internal class VEEKMT2
   {

@@ -15,7 +15,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
     public partial class TBFormHelp : Form
     {
@@ -28,7 +28,7 @@ namespace LSPtools
             try
             {
                 // load RTF help file stored in resources
-                  richTextBoxHelp.Rtf = LSPtools.Properties.Resources.Help;
+                  richTextBoxHelp.Rtf = FpgaLcdUtils.Properties.Resources.Help;
             }
             catch (Exception ex)
             {

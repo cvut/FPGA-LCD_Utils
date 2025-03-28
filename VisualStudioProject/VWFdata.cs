@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Windows.Forms.LinkLabel;
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
   internal class VWFdata
   {

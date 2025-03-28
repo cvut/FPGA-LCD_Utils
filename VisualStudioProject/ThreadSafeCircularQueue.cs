@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
     public class ThreadSafeCircularQueue<T> where T : class
     {

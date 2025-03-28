@@ -1,4 +1,4 @@
-namespace LSPtools
+namespace FpgaLcdUtils
 {
     internal static class Program
     {

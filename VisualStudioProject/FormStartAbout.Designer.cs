@@ -1,4 +1,4 @@
-﻿namespace LSPtools
+﻿namespace FpgaLcdUtils
 {
   partial class FormStartAbout
   {
@@ -53,14 +53,14 @@
       this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
       this.label2.AutoSize = true;
       this.tableLayoutPanel1.SetColumnSpan(this.label2, 3);
-      this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+      this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
       this.label2.ForeColor = System.Drawing.Color.Blue;
       this.label2.Location = new System.Drawing.Point(4, 37);
       this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
       this.label2.Name = "label2";
-      this.label2.Size = new System.Drawing.Size(475, 37);
+      this.label2.Size = new System.Drawing.Size(478, 29);
       this.label2.TabIndex = 8;
-      this.label2.Text = "for FPGA Designs";
+      this.label2.Text = "for designing FPGA-based LCD images";
       this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
       // 
       // label1
@@ -68,14 +68,14 @@
       this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
       this.label1.AutoSize = true;
       this.tableLayoutPanel1.SetColumnSpan(this.label1, 3);
-      this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+      this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
       this.label1.ForeColor = System.Drawing.Color.Blue;
       this.label1.Location = new System.Drawing.Point(4, 0);
       this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
       this.label1.Name = "label1";
-      this.label1.Size = new System.Drawing.Size(475, 37);
+      this.label1.Size = new System.Drawing.Size(478, 37);
       this.label1.TabIndex = 9;
-      this.label1.Text = "LSP Course Tools";
+      this.label1.Text = "FPGA-LCD Utilities";
       this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
       // 
       // label3
@@ -93,7 +93,7 @@
       // 
       this.pictureBoxCVUT.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
       this.pictureBoxCVUT.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxCVUT.Image")));
-      this.pictureBoxCVUT.Location = new System.Drawing.Point(3, 139);
+      this.pictureBoxCVUT.Location = new System.Drawing.Point(3, 135);
       this.pictureBoxCVUT.Name = "pictureBoxCVUT";
       this.pictureBoxCVUT.Size = new System.Drawing.Size(84, 64);
       this.pictureBoxCVUT.TabIndex = 11;
@@ -104,7 +104,7 @@
       // 
       this.pictureBoxControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
       this.pictureBoxControl.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxControl.Image")));
-      this.pictureBoxControl.Location = new System.Drawing.Point(396, 129);
+      this.pictureBoxControl.Location = new System.Drawing.Point(399, 126);
       this.pictureBoxControl.Name = "pictureBoxControl";
       this.pictureBoxControl.Size = new System.Drawing.Size(84, 83);
       this.pictureBoxControl.TabIndex = 10;
@@ -128,9 +128,9 @@
       this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
       this.closeButton.DialogResult = System.Windows.Forms.DialogResult.OK;
       this.closeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.closeButton.Image = global::LSPtools.Properties.Resources._109_AllAnnotations_Default_16x16_72;
+      this.closeButton.Image = global::FpgaLcdUtils.Properties.Resources._109_AllAnnotations_Default_16x16_72;
       this.closeButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-      this.closeButton.Location = new System.Drawing.Point(356, 80);
+      this.closeButton.Location = new System.Drawing.Point(359, 80);
       this.closeButton.Name = "closeButton";
       this.closeButton.Size = new System.Drawing.Size(121, 28);
       this.closeButton.TabIndex = 12;
@@ -160,9 +160,9 @@
       this.groupBox1.Controls.Add(this.linkFPGA);
       this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
       this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.groupBox1.Location = new System.Drawing.Point(9, 237);
+      this.groupBox1.Location = new System.Drawing.Point(9, 238);
       this.groupBox1.Name = "groupBox1";
-      this.groupBox1.Size = new System.Drawing.Size(483, 114);
+      this.groupBox1.Size = new System.Drawing.Size(486, 114);
       this.groupBox1.TabIndex = 14;
       this.groupBox1.TabStop = false;
       this.groupBox1.Text = "Contacts";
@@ -210,7 +210,7 @@
       this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
       this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
       this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-      this.tableLayoutPanel1.Size = new System.Drawing.Size(483, 228);
+      this.tableLayoutPanel1.Size = new System.Drawing.Size(486, 229);
       this.tableLayoutPanel1.TabIndex = 15;
       // 
       // labelVersion
@@ -219,11 +219,11 @@
       this.labelVersion.AutoSize = true;
       this.labelVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.labelVersion.ForeColor = System.Drawing.Color.Blue;
-      this.labelVersion.Location = new System.Drawing.Point(93, 84);
+      this.labelVersion.Location = new System.Drawing.Point(93, 76);
       this.labelVersion.Name = "labelVersion";
-      this.labelVersion.Size = new System.Drawing.Size(297, 20);
+      this.labelVersion.Size = new System.Drawing.Size(300, 20);
       this.labelVersion.TabIndex = 13;
-      this.labelVersion.Text = "Version Alpha 1.4";
+      this.labelVersion.Text = "Version Beta 2.0";
       this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
       // 
       // label4
@@ -233,9 +233,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
       this.label4.AutoSize = true;
       this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label4.Location = new System.Drawing.Point(93, 114);
+      this.label4.Location = new System.Drawing.Point(93, 106);
       this.label4.Name = "label4";
-      this.label4.Size = new System.Drawing.Size(297, 114);
+      this.label4.Size = new System.Drawing.Size(300, 123);
       this.label4.TabIndex = 16;
       this.label4.Text = "Czech Technical University in Prague \r\nFaculty of Electrical Engineering\r\nDepartm" +
     "ent of Control Engineering - K13135\r\nTechnicka 2\r\n160 00, Prague 6, Czech Republ" +
@@ -246,12 +246,13 @@
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(501, 360);
+      this.ClientSize = new System.Drawing.Size(504, 361);
       this.Controls.Add(this.tableLayoutPanel1);
       this.Controls.Add(this.groupBox1);
       this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
       this.MaximizeBox = false;
       this.MinimizeBox = false;
+      this.MinimumSize = new System.Drawing.Size(520, 400);
       this.Name = "FormStartAbout";
       this.Padding = new System.Windows.Forms.Padding(9);
       this.ShowIcon = false;

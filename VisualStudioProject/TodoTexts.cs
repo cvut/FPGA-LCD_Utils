@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
   public static class TodoTexts
   {

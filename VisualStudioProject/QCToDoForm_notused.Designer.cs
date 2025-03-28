@@ -1,4 +1,4 @@
-﻿namespace LSPtools
+﻿namespace FpgaLcdUtils
 {
   partial class QCToDoForm_notused
   {
@@ -49,7 +49,7 @@
       // closeButton
       // 
       this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-      this.closeButton.Image = global::LSPtools.Properties.Resources._109_AllAnnotations_Default_16x16_72;
+      this.closeButton.Image = global::FpgaLcdUtils.Properties.Resources._109_AllAnnotations_Default_16x16_72;
       this.closeButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
       this.closeButton.Location = new System.Drawing.Point(443, 1);
       this.closeButton.Name = "closeButton";
@@ -63,7 +63,7 @@
       // 
       // copyToClipboard
       // 
-      this.copyToClipboard.Image = global::LSPtools.Properties.Resources.CopyHS;
+      this.copyToClipboard.Image = global::FpgaLcdUtils.Properties.Resources.CopyHS;
       this.copyToClipboard.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
       this.copyToClipboard.Location = new System.Drawing.Point(4, 2);
       this.copyToClipboard.Name = "copyToClipboard";
@@ -124,7 +124,7 @@
       this.tabPageCZ.Location = new System.Drawing.Point(4, 23);
       this.tabPageCZ.Name = "tabPageCZ";
       this.tabPageCZ.Padding = new System.Windows.Forms.Padding(3);
-      this.tabPageCZ.Size = new System.Drawing.Size(513, 376);
+      this.tabPageCZ.Size = new System.Drawing.Size(339, 376);
       this.tabPageCZ.TabIndex = 1;
       this.tabPageCZ.Text = "CZ";
       this.tabPageCZ.UseVisualStyleBackColor = true;
@@ -134,7 +134,7 @@
       this.czRTB.Dock = System.Windows.Forms.DockStyle.Fill;
       this.czRTB.Location = new System.Drawing.Point(3, 3);
       this.czRTB.Name = "czRTB";
-      this.czRTB.Size = new System.Drawing.Size(507, 370);
+      this.czRTB.Size = new System.Drawing.Size(333, 370);
       this.czRTB.TabIndex = 0;
       this.czRTB.Text = "";
       // 
@@ -145,7 +145,7 @@
       this.imageList1.Images.SetKeyName(0, "engflag.png");
       this.imageList1.Images.SetKeyName(1, "czflag.png");
       // 
-      // QCToDoForm
+      // QCToDoForm_notused
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -153,7 +153,8 @@
       this.Controls.Add(this.tabControl1);
       this.Controls.Add(this.panel1);
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-      this.Name = "QCToDoForm";
+      this.MinimumSize = new System.Drawing.Size(530, 470);
+      this.Name = "QCToDoForm_notused";
       this.Text = "ToDo in Quartus Project";
       this.panel1.ResumeLayout(false);
       this.tabControl1.ResumeLayout(false);

@@ -1,4 +1,4 @@
-namespace LSPtools
+namespace FpgaLcdUtils
 {
     partial class BMFormAbout
     {
@@ -181,9 +181,9 @@ namespace LSPtools
       this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
       this.label5.Location = new System.Drawing.Point(141, 277);
       this.label5.Name = "label5";
-      this.label5.Size = new System.Drawing.Size(198, 20);
+      this.label5.Size = new System.Drawing.Size(239, 20);
       this.label5.TabIndex = 7;
-      this.label5.Text = "The part of FPGA Tools";
+      this.label5.Text = "The part of FPGA-LCD Tools";
       // 
       // BMFormAbout
       // 

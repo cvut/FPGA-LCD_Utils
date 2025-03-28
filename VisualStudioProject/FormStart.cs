@@ -4,22 +4,22 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using TextAnalysis;
-using static LSPtools.FormStart.DllImports;
+using static FpgaLcdUtils.FormStart.DllImports;
 using static System.Windows.Forms.AxHost;
 
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
 
   public partial class FormStart : Form
   {
     static bool IsRestart = false;
     const string RESTART_ARG = "-restart";
-    const string INFO_FORMAT = "V{0}.{1}";
+    const string INFO_FORMAT = "V{0}.{1}.{2}";
     static string INFO = "V 1.4";
-    const string TITLE = "LSP tools for FPGA";
-    const string VERSION_FORMAT = "LSPtools {0}.{1}.{2}.{3}/{4} [Major.Minor.Build.MajRev/minRev]";
-    static string VERSION = "LSPtools";
+    const string TITLE = "FPGA-LCD Utilities";
+    const string VERSION_FORMAT = "FpgaLcdUtils {0}.{1}.{2}.{3}/{4} [Major.Minor.Build.MajRev/minRev]";
+    static string VERSION = "FpgaLcdUtils";
     private const string appGuid = "e27a0b79-5ea3-44ce-92f7-88cb60bcf970";
     [STAThread]
     static void Main()
@@ -32,7 +32,7 @@ namespace LSPtools
         IsRestart = startInfo.Arguments.Contains(RESTART_ARG);
         Version v = assembly.GetName().Version;
         VERSION = String.Format(VERSION_FORMAT, v.Major, v.Minor, v.Build, v.MajorRevision, v.MinorRevision);
-        INFO = String.Format(INFO_FORMAT, v.Major, v.Minor);
+        INFO = String.Format(INFO_FORMAT, v.Major, v.Minor, v.Build);
       }
       catch (Exception ex) { IniData.DebugLogWriter.WriteLine(ex.ToString()); }
       // To customize application configuration such as set high DPI settings or default font,
@@ -145,7 +145,7 @@ namespace LSPtools
       if (!loadSettings)
       {
         emergencyRestart.Enabled = false;
-        emergencyRestart.ToolTipText = "LSP tools were already restarted";
+        emergencyRestart.ToolTipText = "FPGA-LCD Utils were already restarted";
       }
 
 
@@ -296,7 +296,7 @@ namespace LSPtools
     {
       if (bmForm1 == null)
       {
-        bmForm1 = new LSPtools.BMForm();
+        bmForm1 = new FpgaLcdUtils.BMForm();
         bmForm1.FormClosed += delegate (object s1, FormClosedEventArgs e1)
         {
           bmForm1 = null; saveSettingToFile();
@@ -306,8 +306,7 @@ namespace LSPtools
       if (bmForm1.WindowState == FormWindowState.Minimized)
         bmForm1.WindowState = FormWindowState.Normal;
       bmForm1.BringToFront();
-
-
+      InitTimerShow(bmForm1);
     }
 
     private void runTestbenchViewer_Click(object sender, EventArgs e)
@@ -324,8 +323,7 @@ namespace LSPtools
       if (tbFormMain.WindowState == FormWindowState.Minimized)
         tbFormMain.WindowState = FormWindowState.Normal;
       tbFormMain.BringToFront();
-
-
+      InitTimerShow(tbFormMain);
     }
 
     private void runLCDGeometry_Click(object sender, EventArgs e)
@@ -342,6 +340,7 @@ namespace LSPtools
       if (geoFormMain.WindowState == FormWindowState.Minimized)
         geoFormMain.WindowState = FormWindowState.Normal;
       geoFormMain.BringToFront();
+      InitTimerShow(geoFormMain);
     }
 
     private void runChecker_Click(object sender, EventArgs e)
@@ -358,13 +357,33 @@ namespace LSPtools
       if (checkerFormMain.WindowState == FormWindowState.Minimized)
         checkerFormMain.WindowState = FormWindowState.Normal;
       checkerFormMain.BringToFront();
+      InitTimerShow(checkerFormMain); 
+    }
+
+    private int timeCount = 20; // 2 seconds
+    private Control? timerControl = null;
+    private void InitTimerShow(Control form) 
+    { 
+      timeCount = 20; timerControl = form; timerShow.Enabled = true; 
+    }
+    private void timerShow_Tick(object sender, EventArgs e)
+    {
+      if(timeCount>0 && timerControl!=null)
+      {
+        try
+        {
+          timerControl.BringToFront(); timeCount--;
+        }
+        catch(Exception) { timeCount=0; }
+      }
+      if(timeCount<=0) timerShow.Enabled = false; 
     }
 
     private void infoButton_Click(object sender, EventArgs e)
     {
       if (formStartAbout == null)
       {
-        formStartAbout = new LSPtools.FormStartAbout();
+        formStartAbout = new FpgaLcdUtils.FormStartAbout();
         formStartAbout.FormClosed += delegate (object s1, FormClosedEventArgs e1) { formStartAbout = null; };
       }
       if (!formStartAbout.Visible) formStartAbout.Show();

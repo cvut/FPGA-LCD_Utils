@@ -1143,6 +1143,9 @@
         APjHAAD4xwAA+McAAPjHAADwRwAA8AcAAPAHAADwBwAA8AcAAP4BAAD+AQAA/gEAAP4DAAD//wAA
 </value>
   </data>
+  <metadata name="timerShow.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>441, 16</value>
+  </metadata>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAUAAAAAAAEAIAD3bwAAVgAAAEBAAAABACAAKEIAAE1wAAAwMAAAAQAgAKglAAB1sgAAICAAAAEA

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LSPtools.Properties {
+namespace FpgaLcdUtils.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace LSPtools.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LSPtools.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FpgaLcdUtils.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -183,6 +183,36 @@ namespace LSPtools.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Draw24x24 {
+            get {
+                object obj = ResourceManager.GetObject("Draw24x24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap EquationOfEllipse {
+            get {
+                object obj = ResourceManager.GetObject("EquationOfEllipse", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap EquationOfLine {
+            get {
+                object obj = ResourceManager.GetObject("EquationOfLine", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap FastStone_Image_Viewer_16x16 {
             get {
                 object obj = ResourceManager.GetObject("FastStone-Image-Viewer_16x16", resourceCulture);
@@ -233,6 +263,36 @@ namespace LSPtools.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Help16x16 {
+            get {
+                object obj = ResourceManager.GetObject("Help16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Help24x24 {
+            get {
+                object obj = ResourceManager.GetObject("Help24x24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Help32x32 {
+            get {
+                object obj = ResourceManager.GetObject("Help32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap HelpHS {
             get {
                 object obj = ResourceManager.GetObject("HelpHS", resourceCulture);
@@ -256,6 +316,16 @@ namespace LSPtools.Properties {
         internal static System.Drawing.Bitmap Information {
             get {
                 object obj = ResourceManager.GetObject("Information", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Information32x32 {
+            get {
+                object obj = ResourceManager.GetObject("Information32x32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -323,6 +393,16 @@ namespace LSPtools.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Play {
+            get {
+                object obj = ResourceManager.GetObject("Play", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap QCtool32x32 {
             get {
                 object obj = ResourceManager.GetObject("QCtool32x32", resourceCulture);
@@ -356,6 +436,16 @@ namespace LSPtools.Properties {
         internal static System.Drawing.Bitmap RepeatHS {
             get {
                 object obj = ResourceManager.GetObject("RepeatHS", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Resize24x24 {
+            get {
+                object obj = ResourceManager.GetObject("Resize24x24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -416,6 +506,16 @@ namespace LSPtools.Properties {
         internal static System.Drawing.Bitmap UpperLeftCorner40x40 {
             get {
                 object obj = ResourceManager.GetObject("UpperLeftCorner40x40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Wheel24x24 {
+            get {
+                object obj = ResourceManager.GetObject("Wheel24x24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

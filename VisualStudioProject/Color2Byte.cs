@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
   public static class Color2Byte
   {

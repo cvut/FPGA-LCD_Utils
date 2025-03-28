@@ -6,9 +6,10 @@ using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Windows.Forms;
 using System.Xml.Linq;
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
   public partial class BMForm : Form
   {
@@ -42,6 +43,11 @@ namespace LSPtools
     {
       if (!isFormShown) { panelExtendColor.BackColor = Color.Black; timerUpdate.Enabled = true; }
       isFormShown = true;
+      Font f = messagesErrorRichTextBox.Font;
+      int pxFont = (int)Math.Ceiling(f.GetHeight(messagesErrorRichTextBox.CreateGraphics()));
+      if (pxFont < 10) pxFont = 10;
+      splitContainer2.Panel1MinSize = pxFont;
+      splitContainer2.SplitterDistance = 2 * pxFont;
       IniSettings.GeometryBMP.ApplyGeometryToForm(this);
       if (firstMRUFileOnStart != null)
       {
@@ -83,6 +89,7 @@ namespace LSPtools
 
     private void setNoBitmapLoaded()
     {
+      messagesErrorRichTextBox.Text = " ";
       openedBitmap = null; previewBitmap = null;
       assignFilenameOfOpenedBitmap(null);
       txbLoadedSize.Text = "--";
@@ -90,7 +97,6 @@ namespace LSPtools
       previewBitmap = null;
       palettePanel.Invalidate();
       previewBitmapPanel.Invalidate();
-
     }
 
 
@@ -234,7 +240,7 @@ Split the bitmap first to smaller parts.", openedBitmap.Width, openedBitmap.Heig
         openedBitmap = null;
         return;
       }
- 
+
       string sn;
       string s = String.Format("{0} [{1}]", sn = Path.GetFileName(filename), Path.GetFullPath(filename));
       this.Text = "LSPtool bitmap: " + s;
@@ -274,7 +280,7 @@ Split the bitmap first to smaller parts.", openedBitmap.Width, openedBitmap.Heig
       {
         displayMessage("!!! You do not have the required permission to access: " + filename, MessageSeverity.Error);
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         displayMessage(ex.Message, MessageSeverity.Error);
       }
@@ -282,9 +288,9 @@ Split the bitmap first to smaller parts.", openedBitmap.Width, openedBitmap.Heig
       openedFilenameTextBox.Text = messageFailToLoadBitmap;
       return false;
     }
- 
-    
-    
+
+
+
 
     public class BmpItem
     {
@@ -337,7 +343,7 @@ Split the bitmap first to smaller parts.", openedBitmap.Width, openedBitmap.Heig
     {
       if (isPower2orSum(w))
       {
-        displayMessage("OK: The width allows calculating memory addresses without a hardware multiplier.");
+        displayMessage(messagesErrorRichTextBox, "OK: The width allows calculating memory addresses without a hardware multiplier.", MessageSeverity.Info);
         nudReloadWidth.ForeColor = SystemColors.ControlText;
       }
       else
@@ -353,8 +359,8 @@ Split the bitmap first to smaller parts.", openedBitmap.Width, openedBitmap.Heig
         {
           if (isPower2orSum(max)) break; max++;
         }
-        displayMessage(String.Format("KO: ROM width is not 2**n or (2**n+2**m)! The nearest better widths are {0} or {1}", max, min),
-                       MessageSeverity.Warning);
+        displayMessage(messagesErrorRichTextBox, String.Format("KO: ROM width is not 2**n or (2**n+2**m)! The nearest better widths are {0} or {1}", max, min),
+                       MessageSeverity.Error);
       }
     }
 
@@ -506,16 +512,8 @@ Split the bitmap first to smaller parts.", openedBitmap.Width, openedBitmap.Heig
         saveFileDialog1.Title = "Save as Memory Initialization File";
         saveFileDialog1.DefaultExt = "mif";
 
-        string s = previewBitmap.Filename;
-        if (!String.IsNullOrEmpty(s))
-        {
-          s = Path.ChangeExtension(s, ".mif");
-          saveFileDialog1.FileName = Path.GetFileName(s);
-          saveFileDialog1.InitialDirectory = Path.GetDirectoryName(s);
-        }
-
-        if (saveFileDialog1.ShowDialog() != System.Windows.Forms.DialogResult.OK)
-          return;
+        if (!IniSettings.FilesBitmap.ShowSaveDialog(saveFileDialog1, new string[] { "mif", "vhdl", "bmp" },
+                                                  previewBitmap.Filename, "mif")) return;
       }
       catch (Exception ex)
       {
@@ -523,7 +521,6 @@ Split the bitmap first to smaller parts.", openedBitmap.Width, openedBitmap.Heig
         displayStatusMessage(ex.Message, MessageSeverity.Error);
       }
       string filename = saveFileDialog1.FileName;
-
 
       //            string pattern = @"
       //-- Generated Memory Initialization File (.mif)
@@ -608,7 +605,7 @@ Split the bitmap first to smaller parts.", openedBitmap.Width, openedBitmap.Heig
     private void addMemoryHeader(StringBuilder sb, BmpItem bi, out int requiredMemorySize)
     {
       sb.AppendLine("-- CTU-FEE in Prague, Dept. of Control Eng. [Richard Susta]");
-      sb.AppendLine(String.Format("-- LSP tools generated file on {0}", DateTime.Now));
+      sb.AppendLine(String.Format("-- FPGA-LCD Utils generated file on {0}", DateTime.Now));
       int size = bi.Height * bi.Width;
       sb.AppendLine(String.Format("-- from bitmap file {0}", bi.Filename));
       int addressWidth = GetMemoryAddressWidth(size, out requiredMemorySize);
@@ -671,28 +668,18 @@ Split the bitmap first to smaller parts.", openedBitmap.Width, openedBitmap.Heig
         saveFileDialog1.Filter = "VHDL (*.vhd)|*.vhd|All files(*.*)|*.*";
         saveFileDialog1.Title = "Save as VHDL Entity";
         saveFileDialog1.DefaultExt = "vhd";
-        string s = previewBitmap.Filename;
-        if (!String.IsNullOrEmpty(s))
-        {
-          s = Path.ChangeExtension(s, ".vhd");
-          saveFileDialog1.FileName = Path.GetFileName(s);
-          if (String.IsNullOrEmpty(saveFileDialog1.InitialDirectory))
-            saveFileDialog1.InitialDirectory = Path.GetDirectoryName(s);
-        }
-
-        if (saveFileDialog1.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+        if (!IniSettings.FilesBitmap.ShowSaveDialog(saveFileDialog1, new string[] { "vhdl", "mif", "bmp" },
+                                                    previewBitmap.Filename, "vhd"))
           return;
+
       }
       catch (Exception ex)
       {
         Trace.WriteLine(ex.ToString());
         displayStatusMessage(ex.Message, MessageSeverity.Error);
+        return;
       }
       string filename = saveFileDialog1.FileName;
-      if (!String.IsNullOrEmpty(filename))
-        saveFileDialog1.InitialDirectory = Path.GetDirectoryName(filename);
-
-
 
       //      library ieee, work; use ieee.std_logic_1164.all; use ieee.numeric_std.all;
       //      entity romLCD10g is
@@ -972,6 +959,10 @@ end architecture;"
     {
       if (text == _displayMessageLastText) return;
       else _displayMessageLastText = text;
+      displayMessage(messageRichTextBox, text, severity);
+    }
+    private void displayMessage(RichTextBox rtb, string text, MessageSeverity severity)
+    {
       if (text == null || text.Trim().Length == 0) return;
       Color foreColor = SystemColors.WindowText;
       switch (severity)
@@ -979,20 +970,19 @@ end architecture;"
         case MessageSeverity.Error: foreColor = Color.Red; break;
         case MessageSeverity.Warning: foreColor = Color.BlueViolet; break;
       }
-      int start = messageRichTextBox.TextLength;
-      messageRichTextBox.AppendText(text + Environment.NewLine);
-      int end = messageRichTextBox.TextLength;
-      // Textbox may transform chars, so (end-start) != text.Length
-      messageRichTextBox.Select(start, end - start);
+      int start = rtb.TextLength;
+      if (rtb != messagesErrorRichTextBox)
       {
-        messageRichTextBox.SelectionColor = foreColor;
+        rtb.AppendText(text + Environment.NewLine);
       }
-      messageRichTextBox.SelectionLength = 0;
-    }
-    private void clearAllMessages_Click(object sender, EventArgs e)
-    {
-      messageRichTextBox.Text = String.Empty; // Clear() clears also font size; 
-      _displayMessageLastText = String.Empty;
+      else { start = 0; rtb.Text = text; }
+      int end = rtb.TextLength;
+      // Textbox may transform chars, so (end-start) != text.Length
+      rtb.Select(start, end - start);
+      {
+        rtb.SelectionColor = foreColor;
+      }
+      rtb.SelectionLength = 0;
     }
 
     private readonly TimeSpan _messageDuration = new TimeSpan(0, 0, 30); // 30 seconds
@@ -1075,15 +1065,12 @@ end architecture;"
       if (previewBitmap == null) { displayMessage("No image loaded"); return; }
       try
       {
-        if (String.IsNullOrEmpty(savePreviewBitmapFileDialog.FileName))
-          savePreviewBitmapFileDialog.FileName = openFileDialog1.FileName;
-        if (savePreviewBitmapFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-        {
-          string filename = savePreviewBitmapFileDialog.FileName;
-          filename = Path.ChangeExtension(filename, ".bmp");
-          previewBitmap.bitmap.Save(filename, System.Drawing.Imaging.ImageFormat.Bmp);
-          displayMessage("Bitmap saved as " + filename);
-        }
+        if (!IniSettings.FilesBitmap.ShowSaveDialog(savePreviewBitmapFileDialog, new string[] { "bmp", "vhdl", "mif" },
+                                                    null, "bmp")) // do not suggest file name
+          return;
+        string filename = savePreviewBitmapFileDialog.FileName;
+        previewBitmap.bitmap.Save(filename, System.Drawing.Imaging.ImageFormat.Bmp);
+        displayMessage("Bitmap saved as " + filename);
       }
       catch (Exception ex)
       {
@@ -1183,6 +1170,39 @@ end architecture;"
         }
 
       }
+    }
+    Control? _sourceControl = null;
+
+    private void messagesContextMenuStrip_Opened(object sender, EventArgs e)
+    {
+      _sourceControl = messagesContextMenuStrip.SourceControl;
+    }
+
+    private void copySelected_messagesContextMenuStrip_Click(object sender, EventArgs e)
+    {
+      ToolStripMenuItem? menuItem = sender as ToolStripMenuItem;
+      if (_sourceControl != null)
+      {
+        String? tag = _sourceControl.Tag as String;
+        if (tag == "E") messagesErrorRichTextBox.Copy(); else messageRichTextBox.Copy();
+      }
+    }
+
+    private void deleteAll_messagesContextMenuStrip_Click(object sender, EventArgs e)
+    {
+      ToolStripMenuItem? menuItem = sender as ToolStripMenuItem;
+      if (_sourceControl != null)
+      {
+        String? tag = _sourceControl.Tag as String;
+        if (tag == "E") messagesErrorRichTextBox.Text = " ";
+        else
+        {
+          messageRichTextBox.Text = " "; // Clear() clears also font size; 
+          _displayMessageLastText = " ";
+        }
+
+      }
+
     }
 
     private void Color2Mesage(Color c, string xyText)

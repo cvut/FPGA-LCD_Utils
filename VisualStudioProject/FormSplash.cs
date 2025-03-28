@@ -1,4 +1,4 @@
-﻿using LSPtools;
+﻿using FpgaLcdUtils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

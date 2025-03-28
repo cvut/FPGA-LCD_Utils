@@ -1,4 +1,4 @@
-﻿namespace LSPtools
+﻿namespace FpgaLcdUtils
 {
   partial class FormStartCloseQuestion
   {
@@ -41,7 +41,7 @@
       this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
       this.button1.DialogResult = System.Windows.Forms.DialogResult.Yes;
       this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.button1.Image = global::LSPtools.Properties.Resources._109_AllAnnotations_Default_16x16_72;
+      this.button1.Image = global::FpgaLcdUtils.Properties.Resources._109_AllAnnotations_Default_16x16_72;
       this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
       this.button1.Location = new System.Drawing.Point(9, 5);
       this.button1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -55,7 +55,7 @@
       // 
       this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
       this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-      this.button2.Image = global::LSPtools.Properties.Resources.ClosePreviewHS;
+      this.button2.Image = global::FpgaLcdUtils.Properties.Resources.ClosePreviewHS;
       this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
       this.button2.Location = new System.Drawing.Point(136, 5);
       this.button2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -107,6 +107,7 @@
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.MaximizeBox = false;
+      this.MaximumSize = new System.Drawing.Size(270, 175);
       this.MinimizeBox = false;
       this.Name = "FormStartCloseQuestion";
       this.Text = "Confirm";

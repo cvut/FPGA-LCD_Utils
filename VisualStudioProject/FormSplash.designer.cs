@@ -42,11 +42,12 @@
       this.label1.AutoSize = true;
       this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
       this.label1.ForeColor = System.Drawing.Color.DarkRed;
-      this.label1.Location = new System.Drawing.Point(76, 9);
+      this.label1.Location = new System.Drawing.Point(29, 9);
+      this.label1.MinimumSize = new System.Drawing.Size(270, 40);
       this.label1.Name = "label1";
-      this.label1.Size = new System.Drawing.Size(174, 37);
+      this.label1.Size = new System.Drawing.Size(270, 40);
       this.label1.TabIndex = 0;
-      this.label1.Text = "LSP Tools";
+      this.label1.Text = "FPGA-LCD Utils";
       this.label1.UseWaitCursor = true;
       // 
       // timerAnim
@@ -63,13 +64,13 @@
       this.labelBeta.Name = "labelBeta";
       this.labelBeta.Size = new System.Drawing.Size(165, 25);
       this.labelBeta.TabIndex = 0;
-      this.labelBeta.Text = "Alpha Release";
+      this.labelBeta.Text = "Beta Release";
       this.labelBeta.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
       this.labelBeta.UseWaitCursor = true;
       // 
       // pictureBox1
       // 
-      this.pictureBox1.Image = global::LSPtools.Properties.Resources.LSPToolsAll;
+      this.pictureBox1.Image = global::FpgaLcdUtils.Properties.Resources.LSPToolsAll;
       this.pictureBox1.Location = new System.Drawing.Point(31, 49);
       this.pictureBox1.Name = "pictureBox1";
       this.pictureBox1.Size = new System.Drawing.Size(256, 256);

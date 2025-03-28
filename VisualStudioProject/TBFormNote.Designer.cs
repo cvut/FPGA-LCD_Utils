@@ -1,4 +1,4 @@
-﻿namespace LSPtools
+﻿namespace FpgaLcdUtils
 {
     partial class TBFormNote
     {
@@ -41,7 +41,7 @@
             // closeButton
             // 
             this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.closeButton.Image = global::LSPtools.Properties.Resources._109_AllAnnotations_Default_16x16_72;
+            this.closeButton.Image = global::FpgaLcdUtils.Properties.Resources._109_AllAnnotations_Default_16x16_72;
             this.closeButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.closeButton.Location = new System.Drawing.Point(443, 1);
             this.closeButton.Name = "closeButton";
@@ -65,7 +65,7 @@
             // 
             // copyToClipboard
             // 
-            this.copyToClipboard.Image = global::LSPtools.Properties.Resources.CopyHS;
+            this.copyToClipboard.Image = global::FpgaLcdUtils.Properties.Resources.CopyHS;
             this.copyToClipboard.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.copyToClipboard.Location = new System.Drawing.Point(4, 2);
             this.copyToClipboard.Name = "copyToClipboard";

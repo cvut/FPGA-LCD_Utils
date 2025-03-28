@@ -12,7 +12,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Drawing;
 using System.Xml.Linq;
-using LSPtools;
+using FpgaLcdUtils;
 using System.Data;
 using System.Diagnostics;
 using System.Data.Common;
@@ -34,6 +34,10 @@ public class RGBInfoArray
   public const int HEIGHT = HEIGHT_LCD + 2 * BORDER_AROUND;
   public const int WIDTH_VISIBLE = VISIBLE_WIDTH_LCD + 2 * BORDER_AROUND;
   public const int HEIGHT_VISIBLE = VISIBLE_HEIGHT_LCD + 2 * BORDER_AROUND;
+
+  public static bool IsVisibleLCDonly { get { return _isVisibleLCDonly; } }
+  private static bool _isVisibleLCDonly = false;
+  public static void Assign_IsVisibleLCDonly(bool isVisibleLCDOnly) { _isVisibleLCDonly = isVisibleLCDOnly; }
 
   // Processing messages
   public delegate void DelegateDoEvents();
@@ -189,6 +193,18 @@ public class RGBInfoArray
   }
 
   /// <summary>
+  /// Test if bitmapColumn,bitmapRow index is in VGA image 
+  /// </summary>
+  /// <param name="column"></param>
+  /// <param name="row"></param>
+  /// <returns></returns>
+  public static bool IsLCDVisibleIndex(int column, int row)
+  {
+    return (column >= 0 && column < VISIBLE_WIDTH_LCD
+        && row >= 0 && row < VISIBLE_HEIGHT_LCD);
+  }
+
+  /// <summary>
   /// Reverse value shift by border size
   /// </summary>
   /// <param name="pos"></param>
@@ -212,16 +228,38 @@ public class RGBInfoArray
   {
     get
     {
-      if (IsLCDImageIndex(column, row))
+      if (IsVisibleLCDonly)
       {
-        TB tb = _rgbArray[column, row];
-        tb = tb.SetDXY(column, row);
-        return tb;
+        if (IsLCDVisibleIndex(column, row))
+        {
+          TB tb = _rgbArray[column, row];
+          tb = tb.SetDXY(column, row);
+          return tb;
+        }
+        else
+        {
+          TB tb = TBZERO;
+          if (IsLCDImageIndex(column, row))
+          {
+            tb = tb.SetDXY(column, row);
+          }
+          return tb;
+        };
+
       }
       else
       {
-        return TBZERO;
-      };
+        if (IsLCDImageIndex(column, row))
+        {
+          TB tb = _rgbArray[column, row];
+          tb = tb.SetDXY(column, row);
+          return tb;
+        }
+        else
+        {
+          return TBZERO;
+        };
+      }
     }
   }
 

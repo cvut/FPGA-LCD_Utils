@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
   internal class RulerData
   {
@@ -31,7 +31,8 @@ namespace LSPtools
     protected TextBox? semiZ = null;
     protected TextBox? gcdXYZ = null;
 
-    public const int ID_RECT = 0, ID_LINE = 1, ID_ELLIPSE = 2, ID_SELECTIONS = 3;
+    public const int ID_RECT = 0, ID_LINE = 1, ID_ELLIPSE = 2;
+    public const int ID_SELECTIONS = 3; // Unknown ID tab, we need to select one
 
     public const int SELECT_PIXEL_SIZE = 8;
 
@@ -43,7 +44,7 @@ namespace LSPtools
     /// Most recently used ruler tab
     /// </summary>
     internal static int[] MRURuler = new int[MRU_LENGTH] { ID_RECT, ID_LINE, ID_ELLIPSE };
-    public enum DragEnum { NONE, TOPLEFT, TOP, TOPRIGHT, RIGHT, BOTTOMRIGHT, BOTTOM, BOTTOMLEFT, LEFT, HAND, SIZEALLSTART, SIZEALLEND };
+    public enum DragEnum { NONE, TOPLEFT, TOP, TOPRIGHT, RIGHT, BOTTOMRIGHT, BOTTOM, BOTTOMLEFT, LEFT, HAND, SIZEALLSTART, SIZEALLEND, DRAWNEW };
     public enum DraggedRuler { RECTANGLE, LINE, ELLIPSE, NONE };
 
     #region Constants
@@ -66,16 +67,16 @@ namespace LSPtools
     private const int CANVAS_YUL = -HEIGHT_LCD * 2;
     private const int CANVAS_XDR = WIDTH_LCD * 3;
     private const int CANVAS_YDR = -HEIGHT_LCD * 3;
-    public const int  CANVAS_WIDTH = 5*WIDTH_LCD;
-    public const int  CANVAS_HEIGHT = 5*HEIGHT_LCD;
-    public const int CANVAS_XIMGCENTER = 2 * WIDTH_LCD+WIDTH_VISIBLE/2;
-    public const int CANVAS_YIMGCENTER = 2 * HEIGHT_LCD+HEIGHT_VISIBLE/2;
+    public const int CANVAS_WIDTH = 5 * WIDTH_LCD;
+    public const int CANVAS_HEIGHT = 5 * HEIGHT_LCD;
+    public const int CANVAS_XIMGCENTER = 2 * WIDTH_LCD + WIDTH_VISIBLE / 2;
+    public const int CANVAS_YIMGCENTER = 2 * HEIGHT_LCD + HEIGHT_VISIBLE / 2;
 
     #endregion
 
     public static Rectangle transformScrollsToCanvas(Rectangle scroll)
     {
-      return transformScrollsToCanvas(scroll.X, scroll.Y,scroll.Width, scroll.Height);
+      return transformScrollsToCanvas(scroll.X, scroll.Y, scroll.Width, scroll.Height);
     }
     public static Rectangle transformScrollsToCanvas(int x0, int y0, int width, int height)
     {
@@ -166,7 +167,7 @@ namespace LSPtools
     {
       switch (setState)
       {
-        case SelRuler_enum.Toggle: 
+        case SelRuler_enum.Toggle:
           selectButton_Clicked(!isSelected);
           break;
         case SelRuler_enum.True:
@@ -359,7 +360,7 @@ namespace LSPtools
     private PointF _topLeft;
     private PointF _bottomRight;
     private RulerData.DraggedRuler _ruler = RulerData.DraggedRuler.RECTANGLE;
-//    private Rectangle rectDraw;
+    //    private Rectangle rectDraw;
 
     public bool IsLine
     {
@@ -462,8 +463,8 @@ namespace LSPtools
     public Rectangle GetDrawRectangle()
     {
       // we create the rectangle using as surroundings
-      return new Rectangle(toInt(_topLeft.X +RulerData.BORDER_AROUND - 1),
-                           toInt(_topLeft.Y +RulerData.BORDER_AROUND - 1),
+      return new Rectangle(toInt(_topLeft.X + RulerData.BORDER_AROUND - 1),
+                           toInt(_topLeft.Y + RulerData.BORDER_AROUND - 1),
                                  Width + 1, Height + 1);
     }
     /// <summary>
@@ -723,9 +724,10 @@ namespace LSPtools
       bool isControl = (keys & Keys.Control) != 0;
       bool isShift = (keys & Keys.Shift) != 0;
       int xDistanceM = xDistance, yDistanceM = yDistance;
-      if(Math.Abs(xDistance) >= Math.Abs(yDistance))
-      { yDistanceM = Math.Abs(xDistance); 
-        if(yDistance<0) yDistanceM=-yDistanceM; 
+      if (Math.Abs(xDistance) >= Math.Abs(yDistance))
+      {
+        yDistanceM = Math.Abs(xDistance);
+        if (yDistance < 0) yDistanceM = -yDistanceM;
       }
       else
       {
@@ -737,6 +739,12 @@ namespace LSPtools
         case RulerData.DragEnum.NONE:
         default:
           return;
+        case RulerData.DragEnum.DRAWNEW:
+          _topLeft.X = dd.mouseDownRectInital.P11.X;
+          _topLeft.Y = dd.mouseDownRectInital.P11.Y;
+          _bottomRight.X = dd.mouseDownRectInital.P11.X + xDistance;
+          _bottomRight.Y = dd.mouseDownRectInital.P11.Y + yDistance;
+          break;
         case RulerData.DragEnum.TOPLEFT:
           _topLeft.X = dd.mouseDownRectInital.P11.X + xDistance;
           _topLeft.Y = dd.mouseDownRectInital.P11.Y + yDistance;
@@ -759,7 +767,7 @@ namespace LSPtools
             _topLeft.X = dd.mouseDownRectInital.P11.X - xDistance;
           }
 
-           break;
+          break;
         case RulerData.DragEnum.RIGHT:
           _bottomRight.X = dd.mouseDownRectInital.P33.X + xDistance;
           if (isControl) _topLeft.X = dd.mouseDownRectInital.P11.X - xDistance;
@@ -824,6 +832,7 @@ namespace LSPtools
           break;
       }
       Normalize();
+
     }
     /// <summary>
     /// On move, we keep width and height. The can be corrupted a little bit by rounding errors.
@@ -965,7 +974,7 @@ namespace LSPtools
 
       }
       int x0 = ScreenPoints[0].X, y0 = ScreenPoints[0].Y, x1 = ScreenPoints[1].X, y1 = ScreenPoints[1].Y;
-      if (x0 <= screen.X && x1 >= screen.X && y0 <= screen.Y && y1 >= screen.Y) 
+      if (x0 <= screen.X && x1 >= screen.X && y0 <= screen.Y && y1 >= screen.Y)
         return DragEnum.HAND;
       else
         return DragEnum.NONE;
@@ -1118,49 +1127,116 @@ namespace LSPtools
       int x2 = rect.P33.X, y2 = rect.P33.Y;
       // (y1-y2) * x + (x2-x1) * y + (x1-x2)*y1 + (y2-y1)*x1 = 0
       if (x1 > x2 && y1 > y2) { x1 = x2; y1 = y2; x2 = rect.P11.X; y2 = rect.P11.Y; }
-      long A = (y1 - y2), B = (x2 - x1), C = y2 * x1 - x2 * y1; // C=(x1 - x2) * y1 + (y2-y1) * x1
-      long gcd12 = RulerData.GCD(Math.Abs(A), Math.Abs(B));
-      long gcd = RulerData.GCD(gcd12, Math.Abs(C));
-      if (semiX != null) semiX.Text = B.ToString();
-      if (semiY != null) semiY.Text = A.ToString();
-      if (semiZ != null) semiZ.Text = C.ToString();
-      if (gcdXYZ != null) gcdXYZ.Text = String.Format("{0}=gcd(A,B,C)", gcd);
-      if (gcd > 1)
+      long DY = (y2 - y1), DX = (x2 - x1), Q = DY * x1 - DX * y1; // Q =(y2-y1) * x1-(x2 - x1) * y1
+      long gcd12 = RulerData.GCD(Math.Abs(DX), Math.Abs(DY));
+      long gcd = RulerData.GCD(gcd12, Math.Abs(Q)); // For safety, GCD should be the same
+      if (semiX != null) semiX.Text = DX.ToString();
+      if (semiY != null) semiY.Text = DY.ToString();
+      if (semiZ != null) semiZ.Text = Q.ToString();
+      if (gcdXYZ != null)
       {
-        long A0 = A, B0 = B, C0 = C;
-        A /= gcd; B /= gcd; C /= gcd;
-        if (semiX != null) semiX.Text = String.Format("{0}/{1}={2}", B0, gcd, B);
-        if (semiY != null) semiY.Text = String.Format("{0}/{1}={2}", A0, gcd, A);
-        if (semiZ != null) semiZ.Text = String.Format("{0}/{1}={2}", C0, gcd, C);
-      }
-
-      bool isText = false; rtb.Clear();
-      if (A != 0)
-      {
-        if (A != 1) { rtb.WrB(A.ToString()); rtb.WrR(" * "); }
-        rtb.WrR("X ");
-        isText = true;
-      }
-      if (B != 0)
-      {
-        if (isText) rtb.WrR(" + ");
-        if (B != 1) { rtb.WrB(B.ToString()); rtb.WrR(" * "); }
-        rtb.WrR("Y");
-        isText = true;
-      }
-      if (C != 0)
-      {
-        if (isText && C != 0)
+        gcdXYZ.ForeColor = SystemColors.ControlText; gcdXYZ.BackColor = SystemColors.ControlLight;
+        if (DX == 0 || DY == 0)
         {
-          rtb.WrR(" + ");
-          rtb.WrB(C.ToString());
+          gcd = 1; gcdXYZ.Text = String.Format("1", gcd);
+          if (semiZ != null) semiZ.Text = "?";
+        }
+        else
+        {
+          if (gcd <= 1) gcdXYZ.BackColor = Color.LightPink;
+          else
+          {
+            if (gcd <= 2) gcdXYZ.BackColor = Color.Yellow;
+          }
+          gcdXYZ.Text = String.Format("{0}=gcd(ΔX,ΔY)", gcd);
         }
       }
-      if (isText)
+      if (gcd > 1)
       {
-        rtb.WrR(" = "); rtb.WrR("0");
+        long DX0 = DX, DY0 = DY, Q0 = Q;
+        DX /= gcd; DY /= gcd; Q /= gcd;
+        if (semiX != null) semiX.Text = String.Format("{0}/{1}={2}", DX0, gcd, DX);
+        if (semiY != null) semiY.Text = String.Format("{0}/{1}={2}", DY0, gcd, DY);
+        if (semiZ != null) semiZ.Text = String.Format("{0}/{1}={2}", Q0, gcd, Q);
       }
-      else rtb.WrR("?");
+      //  bool isText = false; 
+      rtb.Clear();
+      if (gcdXYZ != null) rtb.SetBackColor(gcdXYZ.BackColor);
+      // DX is in the equation with minus sign
+      if (Q < 0 && DX >= 0 && DY < 0) { Q = -Q; DX = -DX; DY = -DY; }
+      if (DY == 0)
+      {
+        if (DX == 0) rtb.WrR("?");
+        else
+        {
+          rtb.WrR("y = "); rtb.WrB(y1.ToString());
+        }
+        return;
+      }
+      if (DX == 0)
+      {
+        rtb.WrR("x = "); rtb.WrB(x1.ToString());
+        return;
+      }
+      //     if (DX > 0 && DY < 0) { DX = -DX; DY = -DY; Q = -Q; } // omitted for agreement with help
+      if (DY == -1) rtb.WrR("-x ");
+      else
+      {
+        if (DY != 1) { rtb.WrB(" "); rtb.WrB(DY.ToString()); rtb.WrR(" * "); }
+        rtb.WrR("x ");
+      }
+      // DX is in the equation with minus sign
+      if (DX < 0) rtb.WrR("+ "); else rtb.WrR("- "); // it is -DX
+      long DXA = Math.Abs(DX);
+      if (DXA != 1) { rtb.WrB(Math.Abs(DXA).ToString()); rtb.WrR(" * "); }
+      rtb.WrR("y");
+      rtb.WrR(" = ");
+      rtb.WrB(Q.ToString());
+    }
+    /// <summary>
+    /// Called from search optimal line
+    /// </summary>
+    /// <param name="x1"></param>
+    /// <param name="y1"></param>
+    /// <param name="x2"></param>
+    /// <param name="y2"></param>
+    /// <returns></returns>
+    public static string ToLineEquation(int x1, int y1, int x2, int y2)
+    {
+      // (y1-y2) * x + (x2-x1) * y + (x1-x2)*y1 + (y2-y1)*x1 = 0
+      if (x1 > x2 && y1 > y2)
+      {
+        int x10 = x1, y10 = y1;
+        x1 = x2; y1 = y2; x2 = x10; y2 = y10;
+      }
+      long DY = (y2 - y1), DX = (x2 - x1), Q = DY * x1 - DX * y1; // Q =(y2-y1) * x1-(x2 - x1) * y1
+      long gcd12 = RulerData.GCD(Math.Abs(DX), Math.Abs(DY));
+      long gcd = RulerData.GCD(gcd12, Math.Abs(Q)); // For safety, GCD should be the same
+      if (gcd > 1) { DX /= gcd; DY /= gcd; Q /= gcd; }
+      // DX is in the equation with minus sign
+      if (Q < 0 && DX >= 0 && DY < 0) { Q = -Q; DX = -DX; DY = -DY; }
+      //  bool isText = false; 
+      if (DY == 0)
+      {
+        if (DX == 0) return "?";
+        else return String.Format("y = {0}", y1);
+      }
+      if (DX == 0) return String.Format("y = {0}", y1);
+      //     if (DX > 0 && DY < 0) { DX = -DX; DY = -DY; Q = -Q; } // omitted for agreement with help
+      StringBuilder sb = new StringBuilder();
+      if (DY == -1) sb.Append("-x ");
+      else
+      {
+        if (DY != 1) { sb.Append(" "); sb.Append(DY.ToString()); sb.Append(" * "); }
+        sb.Append("x ");
+      }
+      if (DX < 0) sb.Append("+ "); else sb.Append("- "); // it is -DX
+      long DXA = Math.Abs(DX);
+      if (DXA != 1) { sb.Append(Math.Abs(DXA).ToString()); sb.Append(" * "); }
+      sb.Append("y");
+      sb.Append(" = ");
+      sb.Append(Q);
+      return sb.ToString();
     }
     public DragEnum testMousePosition(Point screen) // mouse is in screen coordinates
     {
@@ -1208,7 +1284,7 @@ namespace LSPtools
     {
       if (pt == null || pt.Length < 2) return;
       this.ScreenPoints = pt;
-      Rect r = new Rect(pt[0], pt[1]); 
+      Rect r = new Rect(pt[0], pt[1]);
       setLineArray(this.selectedScreenAreas, r, RulerData.SELECT_PIXEL_SIZE, RulerData.SELECT_PIXEL_SIZE);
     }
     private void setLineArray(Rect[] selectedAreas, Rect selectedRectangle, float selsX, float selsY)
@@ -1260,34 +1336,52 @@ namespace LSPtools
       rtb.Clear();
       int xcenter = rect.P22.X, ycenter = rect.P22.Y;
       long xaxis = Math.Abs(rect.Width / 2), yaxis = Math.Abs(rect.Height / 2);
-      if (semiX != null) semiX.Text = "A=" + xaxis.ToString();
-      if (semiY != null) semiY.Text = "B=" + yaxis.ToString();
+      if (semiX != null) semiX.Text = xaxis.ToString();
+      if (semiY != null) semiY.Text = yaxis.ToString();
       if (xaxis == 0 || yaxis == 0) { rtb.WrR(" --- "); return; }
       long gcd = RulerData.GCD(Math.Abs(xaxis), Math.Abs(yaxis));
-      if (gcdXYZ != null) gcdXYZ.Text = gcd.ToString();
+      if (gcdXYZ != null)
+      {
+        gcdXYZ.ForeColor = SystemColors.ControlText;
+        gcdXYZ.Text = gcd.ToString();
+        if (gcd <= 1) gcdXYZ.BackColor = Color.LightPink;
+        else
+        {
+          if (gcd <= 4) gcdXYZ.BackColor = Color.Yellow;
+          else gcdXYZ.BackColor = SystemColors.ControlLight;
+        }
+        rtb.SetBackColor(gcdXYZ.BackColor);
+      }
+
       long xaxisorg = xaxis;
       if (gcd > 1)
       {
         long xaxis0 = xaxis / gcd, yaxis0 = yaxis / gcd;
-        if (semiX != null) semiX.Text = String.Format("A={0}/{1}={2}", xaxis, gcd, xaxis0); ;
-        if (semiY != null) semiY.Text = String.Format("B={0}/{1}={2}", yaxis, gcd, yaxis0); ;
+        if (semiX != null) semiX.Text = String.Format("{0}; A/{1}={2}", xaxis, gcd, xaxis0); ;
+        if (semiY != null) semiY.Text = String.Format("{0}; B/{1}={2}", yaxis, gcd, yaxis0); ;
         xaxis = xaxis0; yaxis = yaxis0;
       }
+      rtb.WrR(" ");
       if (yaxis != 1)
       {
         rtb.WrB(yaxis.ToString());
         rtb.WrR("**2 * ");
       }
-      rtb.WrR("(X-");
+      rtb.WrR("(x-");
       rtb.WrB(xcenter.ToString());
       rtb.WrR(")**2 + ");
       if (xaxis != 1)
       {
         rtb.WrB(xaxis.ToString()); rtb.WrR("**2 *");
       }
-      rtb.WrR("(Y-"); rtb.WrB(ycenter.ToString()); rtb.WrR(")**2 = (");
-      rtb.WrB(xaxisorg.ToString()); rtb.WrR("*"); rtb.WrB(yaxis.ToString());
-      rtb.WrR(")**2");
+      rtb.WrR("(y-"); rtb.WrB(ycenter.ToString()); rtb.WrR(")**2 = ");
+      if (yaxis != 1) rtb.WrR("(");
+      rtb.WrB(xaxisorg.ToString());
+      if (yaxis != 1)
+      {
+        rtb.WrR("*"); rtb.WrB(yaxis.ToString()); rtb.WrR(")");
+      }
+      rtb.WrR("**2");
 
       base.updateEquation();
     }

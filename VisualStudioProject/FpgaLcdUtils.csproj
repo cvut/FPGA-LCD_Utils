@@ -1,0 +1,93 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>preview</LangVersion>
+    <ApplicationIcon>Images\FpgaLcdUtils.ico</ApplicationIcon>
+    <StartupObject>FpgaLcdUtils.FormStart</StartupObject>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <AssemblyVersion>2.1.5</AssemblyVersion>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <FileVersion>2.1.5</FileVersion>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>E:\@VS_PRG\@Vyuka\FPGA_LCD_Utils\RichardSusta.snk</AssemblyOriginatorKeyFile>
+    <Copyright>2025, Richard Susta, Dept. of Control Eng., Faculty of Electrical Eng. CTU in Prague</Copyright>
+    <PackageProjectUrl>https://dcenet.fel.cvut.cz/edu/fpga/Default_en.aspx</PackageProjectUrl>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <Authors>Richard Susta</Authors>
+    <Company>Department of Control Eng., Faculty of Electrical Eng. CTU in Prague</Company>
+    <Product>FPGA-LCD Utils</Product>
+    <Description>FPGA-LCD Utils support the storing images in FPGA with connected LCD display module. They are compiled for the VEEK-MT2 development board manufactured by Terasic. </Description>
+    <Version>2.1.5</Version>
+    <RepositoryType>git</RepositoryType>
+    <Title>FPGA-LCD utilities</Title>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>$(DefineConstants);xTABLE_CREATION</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>True</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Form1_old.cs" />
+    <Compile Remove="Form1_old.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Form1_old.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Help.rtf" />
+    <None Remove="Resources\Zoom.cur" />
+    <None Remove="tb.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Zoom.cur" />
+    <Content Include="Images\FPGAtools.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Help.rtf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="RulerFormSearchLineGCD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="TBFormHelp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="RulerFormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="QCToDoForm_notused.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

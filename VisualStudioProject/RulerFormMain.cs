@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
   public partial class RulerFormMain : Form
   {
@@ -36,6 +36,8 @@ namespace LSPtools
     EllipticRuler? eRuler = null;
 
     string? firstMRUFileOnStart = null;
+
+
     public RulerFormMain()
     {
 
@@ -97,7 +99,7 @@ namespace LSPtools
       //      const string SPS = @"C:\SPS";
       try
       {
-         fontTextBox = xyCoordinatesTextBox.Font;
+        fontTextBox = xyCoordinatesTextBox.Font;
         fontTextBoxItalic = new Font(fontTextBox, FontStyle.Italic);
         this.Cursor = Cursors.WaitCursor;
         if (firstMRUFileOnStart != null)
@@ -147,7 +149,7 @@ namespace LSPtools
       }
       finally
       {
-        this.Cursor = cursor;
+        this.Cursor = cursor; timerUpdate.Enabled = true;
       }
     }
 
@@ -208,6 +210,29 @@ namespace LSPtools
       {
         openLCDImage(openLCDImageFile.FileName);
       }
+    }
+    static public RulerFormEquations? formEquation = null;
+
+    public static void ShowEquationHelp(int id)
+    {
+      try
+      {
+        if (RulerFormMain.formEquation == null)
+        {
+          RulerFormMain.formEquation = new RulerFormEquations(RulerFormEquations.ELLIPSE_TAB);
+          RulerFormMain.formEquation.FormClosed += delegate (object s1, FormClosedEventArgs e1)
+          {
+            RulerFormMain.formEquation = null;
+          };
+        }
+        if (!RulerFormMain.formEquation.Visible) RulerFormMain.formEquation.Show();
+        Application.DoEvents();
+        if (RulerFormMain.formEquation.WindowState == FormWindowState.Minimized)
+          RulerFormMain.formEquation.WindowState = FormWindowState.Normal;
+        RulerFormMain.formEquation.OpenTab(id);
+        RulerFormMain.formEquation.BringToFront();
+      }
+      catch (Exception) { }
     }
 
     private void recentToolStripMenuItem_Click(object sender, EventArgs e)
@@ -277,8 +302,8 @@ namespace LSPtools
         g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
         myBuffer.Graphics.Clear(Color.Black);
 
- //       imageWidth = screenBitmap.Width;
- //       imageHeight = screenBitmap.Height;
+        //       imageWidth = screenBitmap.Width;
+        //       imageHeight = screenBitmap.Height;
         myBuffer.Graphics.DrawImage(screenBitmap, 0, 0);
         PointF[] pt1 = new PointF[] { new PointF(0, 0),
                              new PointF(RulerData.SELECT_PIXEL_SIZE, RulerData.SELECT_PIXEL_SIZE) };
@@ -418,12 +443,13 @@ namespace LSPtools
       { displayMessage("No image loaded", MessageSeverity.Info); return; }
       try
       {
+        saveLCDImageAs.Title = "Save displayed image as";
         if (saveLCDImageAs.ShowDialog() == System.Windows.Forms.DialogResult.OK)
         {
           // Create bitmap without border
           Bitmap bitmap = //showVisibleToolStripMenuItem.Checked ?
                     rgbArray.CreateVisibleBitmap(panelGraph.CreateGraphics(), Application.DoEvents);
-               //   : rgbArray.CreateBitmap(false, panelGraph.CreateGraphics(), Application.DoEvents);
+          //   : rgbArray.CreateBitmap(false, panelGraph.CreateGraphics(), Application.DoEvents);
           string ext = Path.GetExtension(saveLCDImageAs.FileName).ToLower();
           switch (ext)
           {
@@ -446,8 +472,7 @@ namespace LSPtools
 
     private void helpToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      TBFormHelp formHelp = new TBFormHelp();
-      formHelp.ShowDialog();
+      ShowEquationHelp(0);
     }
 
     bool SendNote(string text, bool bringFormToFront)
@@ -525,6 +550,10 @@ namespace LSPtools
         if (rRuler != null) rRuler.StoreData(IniSettings.RRData.FloatList);
         if (lRuler != null) lRuler.StoreData(IniSettings.LRData.FloatList);
         if (eRuler != null) eRuler.StoreData(IniSettings.ERData.FloatList);
+        if (formEquation != null && !formEquation.IsDisposed)
+        {
+          formEquation.Close(); formEquation = null;
+        }
       }
       catch (Exception ex)
       {
@@ -664,12 +693,12 @@ namespace LSPtools
     {
       int w = hScrollBarGraph.LargeChange;
       int h = vScrollBarGraph.LargeChange;
-      int xval = RulerData.CANVAS_XIMGCENTER-w/2;
-      if(xval<0) xval = 0;
-      int yval = RulerData.CANVAS_YIMGCENTER-h/2;
+      int xval = RulerData.CANVAS_XIMGCENTER - w / 2;
+      if (xval < 0) xval = 0;
+      int yval = RulerData.CANVAS_YIMGCENTER - h / 2;
       if (yval < 0) yval = 0;
       hScrollBarGraph.Minimum = 0;
-      hScrollBarGraph.Maximum = RulerData.CANVAS_WIDTH-1;
+      hScrollBarGraph.Maximum = RulerData.CANVAS_WIDTH - 1;
       hScrollBarGraph.Value = xval;
       vScrollBarGraph.Minimum = 0;
       vScrollBarGraph.Maximum = RulerData.CANVAS_HEIGHT - 1;
@@ -800,7 +829,7 @@ namespace LSPtools
 
     }
 
-    private DragData dd = new DragData();
+    private DragData dragData = new DragData();
 
     private void panelGraph_MouseWheel(object sender, MouseEventArgs e)
     {
@@ -830,7 +859,7 @@ namespace LSPtools
 
     private void panelGraph_MouseEnter(object sender, EventArgs e)
     {
-      panelGraph.Focus();
+      if (this.ContainsFocus) panelGraph.Focus();
     }
     private void vScrollBarGraph_MouseEnter(object sender, EventArgs e)
     {
@@ -845,6 +874,7 @@ namespace LSPtools
     {
       switch (mp)
       {
+        case RulerData.DragEnum.DRAWNEW:
         case RulerData.DragEnum.NONE:
         default:
           panelGraph.Cursor = Cursors.Cross;
@@ -882,75 +912,137 @@ namespace LSPtools
       if (e.Button == MouseButtons.Left)
       {
         if (rRuler == null || lRuler == null || eRuler == null) return; // not initialized yet
-        if (dd.mousePointDragEnum != RulerData.DragEnum.NONE
-          || dd.draggedRuler == RulerData.DraggedRuler.NONE)
+        if (modeResizeMove)
         {
-          dd.dragEnumOnDown = dd.mousePointDragEnum;
-          int idSel = dd.mousePointDragEnum == RulerData.DragEnum.NONE ? RulerData.ID_SELECTIONS : -1;
-          switch (dd.draggedRuler)
+          if (dragData.mousePointDragEnum != RulerData.DragEnum.NONE
+          || dragData.draggedRuler == RulerData.DraggedRuler.NONE)
           {
-            case RulerData.DraggedRuler.RECTANGLE:
-              rulersTabControl.SelectedIndex = idSel = RulerData.ID_RECT;
-              dd.rulerOrgRectangle = rRuler.rect;
-              goto default;
-            case RulerData.DraggedRuler.LINE:
-              rulersTabControl.SelectedIndex = idSel = RulerData.ID_LINE;
-              dd.rulerOrgRectangle = lRuler.rect;
-              goto default;
-            case RulerData.DraggedRuler.ELLIPSE:
-              rulersTabControl.SelectedIndex = idSel = RulerData.ID_ELLIPSE;
-              dd.rulerOrgRectangle = eRuler.rect;
-              goto default;
-            default:
-              dd.idSelectedRuler = idSel;
-              if (idSel >= 0) selectRulerByNumber(idSel, RulerData.SelRuler_enum.True);
-              break;
-          }
-
-          //if (Control.ModifierKeys == Keys.Shift) 
-          //  _lastMouseDownPositionEnum = MeasurementRuler.MousePosition.INSIDE;
-          if (!dd.isDownRect)
-          {
-            Control control = (Control)sender;
-            dd.downStart = control.PointToScreen(e.Location);
-            dd.downEnd = dd.downStart;
-            dd.isHand = (dd.dragEnumOnDown == RulerData.DragEnum.HAND);
-            setPanelGrafCursor(dd.dragEnumOnDown);
-            using (Graphics g = panelGraph.CreateGraphics())
+            int idSel = -1;
+            dragData.dragEnumOnDown = dragData.mousePointDragEnum;
+            idSel = dragData.mousePointDragEnum == RulerData.DragEnum.NONE ? RulerData.ID_SELECTIONS : -1;
+            switch (dragData.draggedRuler)
             {
-              Rectangle rect = GetScrollBarRectangle();
-              SetupTransformation(g, rect, panelGraph.ClientRectangle);
-              Point[] pt;
-              switch (dd.draggedRuler)
-              {
-                default:
-                case RulerData.DraggedRuler.RECTANGLE:
-                  pt = rRuler.rect.GetDrawPoints();
-                  break;
-                case RulerData.DraggedRuler.LINE:
-                  pt = lRuler.rect.GetDrawPoints();
-                  break;
-                case RulerData.DraggedRuler.ELLIPSE:
-                  pt = eRuler.rect.GetDrawPoints();
-                  break;
-              }
-              g.TransformPoints(
-                   System.Drawing.Drawing2D.CoordinateSpace.Device,
-                   System.Drawing.Drawing2D.CoordinateSpace.World, pt);
-              dd.mouseDownRectInital = new Rect(control.PointToScreen(pt[0]), control.PointToScreen(pt[1]), dd.draggedRuler);
-              dd.mouseDownRect = dd.mouseDownRectInital;
-              g.TransformPoints(
-                  System.Drawing.Drawing2D.CoordinateSpace.World,
-                  System.Drawing.Drawing2D.CoordinateSpace.Device, pt);
+              case RulerData.DraggedRuler.RECTANGLE:
+                rulersTabControl.SelectedIndex = idSel = RulerData.ID_RECT;
+                dragData.rulerOrgRectangle = rRuler.rect;
+                goto default;
+              case RulerData.DraggedRuler.LINE:
+                rulersTabControl.SelectedIndex = idSel = RulerData.ID_LINE;
+                dragData.rulerOrgRectangle = lRuler.rect;
+                goto default;
+              case RulerData.DraggedRuler.ELLIPSE:
+                rulersTabControl.SelectedIndex = idSel = RulerData.ID_ELLIPSE;
+                dragData.rulerOrgRectangle = eRuler.rect;
+                goto default;
+              default:
+                dragData.idSelectedRuler = idSel;
+                if (idSel >= 0) selectRulerByNumber(idSel, RulerData.SelRuler_enum.True);
+                break;
             }
-            return;
+
+            //if (Control.ModifierKeys == Keys.Shift) 
+            //  _lastMouseDownPositionEnum = MeasurementRuler.MousePosition.INSIDE;
+            if (!dragData.isDownRect)
+            {
+              Control control = (Control)sender;
+              dragData.downStart = control.PointToScreen(e.Location);
+              dragData.downEnd = dragData.downStart;
+              dragData.isHand = (dragData.dragEnumOnDown == RulerData.DragEnum.HAND);
+              setPanelGrafCursor(dragData.dragEnumOnDown);
+              using (Graphics g = panelGraph.CreateGraphics())
+              {
+                Rectangle rect = GetScrollBarRectangle();
+                SetupTransformation(g, rect, panelGraph.ClientRectangle);
+                Point[] pt;
+                switch (dragData.draggedRuler)
+                {
+                  default:
+                  case RulerData.DraggedRuler.RECTANGLE:
+                    pt = rRuler.rect.GetDrawPoints();
+                    break;
+                  case RulerData.DraggedRuler.LINE:
+                    pt = lRuler.rect.GetDrawPoints();
+                    break;
+                  case RulerData.DraggedRuler.ELLIPSE:
+                    pt = eRuler.rect.GetDrawPoints();
+                    break;
+                }
+                g.TransformPoints(
+                     System.Drawing.Drawing2D.CoordinateSpace.Device,
+                     System.Drawing.Drawing2D.CoordinateSpace.World, pt);
+                dragData.mouseDownRectInital = new Rect(control.PointToScreen(pt[0]), control.PointToScreen(pt[1]), dragData.draggedRuler);
+                dragData.mouseDownRect = dragData.mouseDownRectInital;
+                g.TransformPoints(
+                    System.Drawing.Drawing2D.CoordinateSpace.World,
+                    System.Drawing.Drawing2D.CoordinateSpace.Device, pt);
+              }
+              return;
+            }
+          }
+          else
+          {
+            dragData.isDownRect = false; dragData.isHand = false;
+            panelGraph.Cursor = Cursors.Cross;
           }
         }
         else
         {
-          dd.isDownRect = false; dd.isHand = false;
-          panelGraph.Cursor = Cursors.Cross;
+          dragData.draggedRuler = ixTab2DraggeredRuler(rulersTabControl.SelectedIndex);
+          dragData.dragEnumOnDown = RulerData.DragEnum.DRAWNEW;
+          if (!dragData.isDownRect)
+          {
+            Control control = (Control)sender;
+            dragData.downStart = control.PointToScreen(e.Location);
+            dragData.downEnd = dragData.downStart;
+            dragData.isHand = false;
+            setPanelGrafCursor(dragData.dragEnumOnDown);
+
+            using (Graphics g = panelGraph.CreateGraphics())
+            {
+              Rectangle rect = GetScrollBarRectangle();
+              SetupTransformation(g, rect, panelGraph.ClientRectangle);
+              Point[] pt = new Point[] { e.Location, e.Location };
+              dragData.mouseDownRectInital = new Rect(dragData.downStart, dragData.downStart, dragData.draggedRuler);
+              dragData.mouseDownRect = dragData.mouseDownRectInital;
+              g.TransformPoints(
+                  System.Drawing.Drawing2D.CoordinateSpace.World,
+                  System.Drawing.Drawing2D.CoordinateSpace.Device, pt);
+              Rect rect0 = new Rect(pt[0], pt[0]);
+              switch (dragData.draggedRuler)
+              {
+                default:
+                case RulerData.DraggedRuler.RECTANGLE:
+                  rRuler.rect = rect0;
+                  break;
+                case RulerData.DraggedRuler.LINE:
+                  lRuler.rect = rect0;
+                  break;
+                case RulerData.DraggedRuler.ELLIPSE:
+                  eRuler.rect = rect0;
+                  break;
+              }
+
+            }
+            return;
+          }
         }
+      }
+      else
+      {
+        dragData.isDownRect = false; dragData.isHand = false;
+        panelGraph.Cursor = Cursors.Cross;
+      }
+
+    }
+
+    RulerData.DraggedRuler ixTab2DraggeredRuler(int indexOfTab)
+    {
+      switch (indexOfTab)
+      {
+        case RulerData.ID_RECT: return RulerData.DraggedRuler.RECTANGLE;
+        case RulerData.ID_LINE: return RulerData.DraggedRuler.LINE;
+        case RulerData.ID_ELLIPSE: return RulerData.DraggedRuler.ELLIPSE;
+        default: return RulerData.DraggedRuler.NONE;
       }
     }
 
@@ -973,85 +1065,87 @@ namespace LSPtools
 
         if (e.Button != MouseButtons.Left)
         {
-          int i = 0; dd.mousePointDragEnum = RulerData.DragEnum.NONE;
-          dd.draggedRuler = RulerData.DraggedRuler.NONE;
-          do
+          if (modeResizeMove)
           {
-            switch (RulerData.MRURuler[i])
+            int i = 0; dragData.mousePointDragEnum = RulerData.DragEnum.NONE;
+            dragData.draggedRuler = RulerData.DraggedRuler.NONE;
+            do
             {
-              case 0:
-                dd.mousePointDragEnum = rRuler.testMousePosition(e.Location);
-                if (dd.mousePointDragEnum != RulerData.DragEnum.NONE)
-                  dd.draggedRuler = RulerData.DraggedRuler.RECTANGLE;
-                break;
-              case 1:
-                dd.mousePointDragEnum = lRuler.testMousePosition(e.Location);
-                if (dd.mousePointDragEnum != RulerData.DragEnum.NONE)
-                  dd.draggedRuler = RulerData.DraggedRuler.LINE;
-                break;
-              case 2:
-                dd.mousePointDragEnum = eRuler.testMousePosition(e.Location);
-                if (dd.mousePointDragEnum != RulerData.DragEnum.NONE)
-                  dd.draggedRuler = RulerData.DraggedRuler.ELLIPSE;
-                break;
-            }
-            i++;
-          } while (i < RulerData.MRURuler.Length
-                    && dd.mousePointDragEnum == RulerData.DragEnum.NONE);
-
-          setPanelGrafCursor(dd.mousePointDragEnum);
+              switch (RulerData.MRURuler[i])
+              {
+                case 0:
+                  dragData.mousePointDragEnum = rRuler.testMousePosition(e.Location);
+                  if (dragData.mousePointDragEnum != RulerData.DragEnum.NONE)
+                    dragData.draggedRuler = RulerData.DraggedRuler.RECTANGLE;
+                  break;
+                case 1:
+                  dragData.mousePointDragEnum = lRuler.testMousePosition(e.Location);
+                  if (dragData.mousePointDragEnum != RulerData.DragEnum.NONE)
+                    dragData.draggedRuler = RulerData.DraggedRuler.LINE;
+                  break;
+                case 2:
+                  dragData.mousePointDragEnum = eRuler.testMousePosition(e.Location);
+                  if (dragData.mousePointDragEnum != RulerData.DragEnum.NONE)
+                    dragData.draggedRuler = RulerData.DraggedRuler.ELLIPSE;
+                  break;
+              }
+              i++;
+            } while (i < RulerData.MRURuler.Length
+                      && dragData.mousePointDragEnum == RulerData.DragEnum.NONE);
+          }
+          setPanelGrafCursor(dragData.mousePointDragEnum);
         }
         else
         {
           // clear previous
-          if (dd.isDownRect && dd.mouseDownRect.IsValid)
+          if (dragData.isDownRect && dragData.mouseDownRect.IsValid)
           {
-            switch (dd.draggedRuler)
+            switch (dragData.draggedRuler)
             {
               case RulerData.DraggedRuler.ELLIPSE:
               case RulerData.DraggedRuler.RECTANGLE:
-                ControlPaint.DrawReversibleFrame(dd.mouseDownRect.GetRectangle(), Color.White, FrameStyle.Dashed);
+                ControlPaint.DrawReversibleFrame(dragData.mouseDownRect.GetRectangle(), Color.White, FrameStyle.Dashed);
                 break;
               case RulerData.DraggedRuler.LINE:
                 // clear previous
-                ControlPaint.DrawReversibleLine(dd.mouseDownRect.P11, dd.mouseDownRect.P33, Color.White);
+                ControlPaint.DrawReversibleLine(dragData.mouseDownRect.P11, dragData.mouseDownRect.P33, Color.White);
                 break;
             }
-            dd.isDownRect = false;
+            dragData.isDownRect = false;
           }
 
-          dd.isHand = dd.mousePointDragEnum == RectRuler.DragEnum.HAND;
+          dragData.isHand = dragData.mousePointDragEnum == RectRuler.DragEnum.HAND;
           Control control = (Control)sender;
           // Calculate the startPoint by using the PointToScreen         // method.
-          dd.downEnd = control.PointToScreen(e.Location);
-          int xDistance = dd.downEnd.X - dd.downStart.X;
-          int yDistance = dd.downEnd.Y - dd.downStart.Y;
-          switch (dd.dragEnumOnDown)
+          dragData.downEnd = control.PointToScreen(e.Location);
+          int xDistance = dragData.downEnd.X - dragData.downStart.X;
+          int yDistance = dragData.downEnd.Y - dragData.downStart.Y;
+          switch (dragData.dragEnumOnDown)
           {
             case RulerData.DragEnum.LEFT:
             case RulerData.DragEnum.RIGHT: yDistance = 0; break;
             case RulerData.DragEnum.TOP:
             case RulerData.DragEnum.BOTTOM: xDistance = 0; break;
           }
-          dd.mouseDownRect.ApplyChange(dd, xDistance, yDistance, Control.ModifierKeys);
-          if (dd.mouseDownRect.IsValid)
+          dragData.mouseDownRect.ApplyChange(dragData, xDistance, yDistance, Control.ModifierKeys);
+          if (dragData.mouseDownRect.IsValid)
           {
-            switch (dd.draggedRuler)
+            switch (dragData.draggedRuler)
             {
               case RulerData.DraggedRuler.ELLIPSE:
               case RulerData.DraggedRuler.RECTANGLE:
                 // clear previous
-                ControlPaint.DrawReversibleFrame(dd.mouseDownRect.GetRectangle(), Color.White, FrameStyle.Dashed);
+                ControlPaint.DrawReversibleFrame(dragData.mouseDownRect.GetRectangle(), Color.White, FrameStyle.Dashed);
                 break;
               case RulerData.DraggedRuler.LINE:
                 // clear previous
-                ControlPaint.DrawReversibleLine(dd.mouseDownRect.P11, dd.mouseDownRect.P33, Color.White);
+                ControlPaint.DrawReversibleLine(dragData.mouseDownRect.P11, dragData.mouseDownRect.P33, Color.White);
                 break;
             }
-            dd.isDownRect = true;
+            dragData.isDownRect = true;
           }
           PointF[] pt = new PointF[3]
-            { control.PointToClient(dd.mouseDownRect.P11), control.PointToClient(dd.mouseDownRect.P33),
+            { control.PointToClient(dragData.mouseDownRect.P11), control.PointToClient(dragData.mouseDownRect.P33),
             e.Location };
           using (Graphics g = panelGraph.CreateGraphics())
           {
@@ -1060,24 +1154,24 @@ namespace LSPtools
             g.TransformPoints(
                System.Drawing.Drawing2D.CoordinateSpace.World,
                System.Drawing.Drawing2D.CoordinateSpace.Device, pt);
-            switch (dd.draggedRuler)
+            switch (dragData.draggedRuler)
             {
               case RulerData.DraggedRuler.RECTANGLE:
-                rRuler.RedefineDrawing(pt, dd.draggedRuler);
-                if (dd.isHand) rRuler.rect.AdjustWidthHeight(dd.rulerOrgRectangle);
+                rRuler.RedefineDrawing(pt, dragData.draggedRuler);
+                if (dragData.isHand) rRuler.rect.AdjustWidthHeight(dragData.rulerOrgRectangle);
                 break;
               case RulerData.DraggedRuler.LINE:
-                lRuler.RedefineDrawing(pt, dd.draggedRuler);
-                if (dd.isHand) lRuler.rect.AdjustWidthHeight(dd.rulerOrgRectangle);
+                lRuler.RedefineDrawing(pt, dragData.draggedRuler);
+                if (dragData.isHand) lRuler.rect.AdjustWidthHeight(dragData.rulerOrgRectangle);
                 break;
               case RulerData.DraggedRuler.ELLIPSE:
-                eRuler.RedefineDrawing(pt, dd.draggedRuler);
-                if (dd.isHand) eRuler.rect.AdjustWidthHeight(dd.rulerOrgRectangle);
+                eRuler.RedefineDrawing(pt, dragData.draggedRuler);
+                if (dragData.isHand) eRuler.rect.AdjustWidthHeight(dragData.rulerOrgRectangle);
                 break;
             }
           }
-          dd.columnDisplay = Rect.toInt(pt[2].X);
-          dd.rowDisplay = Rect.toInt(pt[2].Y);
+          dragData.columnDisplay = Rect.toInt(pt[2].X);
+          dragData.rowDisplay = Rect.toInt(pt[2].Y);
           doTransformation4Display = false;
         }
 
@@ -1090,16 +1184,16 @@ namespace LSPtools
             g.TransformPoints(
              System.Drawing.Drawing2D.CoordinateSpace.World,
              System.Drawing.Drawing2D.CoordinateSpace.Device, pt);
-            dd.columnDisplay = pt[0].X;
-            dd.rowDisplay = pt[0].Y;
+            dragData.columnDisplay = pt[0].X;
+            dragData.rowDisplay = pt[0].Y;
 
           }
         }
         //     if (RulerData.IsLCDImageIndex(columnDisplay, rowDisplay))
 
         xyCoordinatesTextBox.Text = String.Format("{0:000}, {1:000}",
-                           RulerData.Index2LCDImage(dd.columnDisplay), RulerData.Index2LCDImage(dd.rowDisplay));
-        rgbTextBox.Text = rgbArray?[dd.columnDisplay, dd.rowDisplay].ToStringReduced();
+                           RulerData.Index2LCDImage(dragData.columnDisplay), RulerData.Index2LCDImage(dragData.rowDisplay));
+        rgbTextBox.Text = rgbArray?[dragData.columnDisplay, dragData.rowDisplay].ToStringReduced();
       }
       catch (Exception) { }
       finally { _mouseMoveProcessing = false; }
@@ -1108,24 +1202,24 @@ namespace LSPtools
     private void panelGraf_MouseUp(object sender, MouseEventArgs e)
     {
       _mouseMoveProcessing = false; // safety clear
-      if (dd.isDownRect && dd.mouseDownRect.IsValid)
+      if (dragData.isDownRect && dragData.mouseDownRect.IsValid)
       {
-        bool isHand = dd.isHand;
-        switch (dd.draggedRuler)
+        bool isHand = dragData.isHand;
+        switch (dragData.draggedRuler)
         {
           case RulerData.DraggedRuler.ELLIPSE:
           case RulerData.DraggedRuler.RECTANGLE:
             // clear previous
-            ControlPaint.DrawReversibleFrame(dd.mouseDownRect.GetRectangle(), Color.White, FrameStyle.Dashed);
+            ControlPaint.DrawReversibleFrame(dragData.mouseDownRect.GetRectangle(), Color.White, FrameStyle.Dashed);
             break;
           case RulerData.DraggedRuler.LINE:
             // clear previous
-            ControlPaint.DrawReversibleLine(dd.mouseDownRect.P11, dd.mouseDownRect.P33, Color.White);
+            ControlPaint.DrawReversibleLine(dragData.mouseDownRect.P11, dragData.mouseDownRect.P33, Color.White);
             break;
         }
-        dd.isDownRect = false;
+        dragData.isDownRect = false;
       }
-      selectRulerByNumber(dd.idSelectedRuler, RulerData.SelRuler_enum.True);
+      selectRulerByNumber(dragData.idSelectedRuler, RulerData.SelRuler_enum.True);
       panelGraph.Invalidate();
       panelGraph.Cursor = Cursors.Default;
     }  // MouseUp
@@ -1146,8 +1240,8 @@ namespace LSPtools
     {
       if (rgbArray == null) return String.Empty;
       StringBuilder sb = new StringBuilder();
-      int column = RulerData.Index2LCDImage(dd.columnDisplay);
-      int row = RulerData.Index2LCDImage(dd.rowDisplay);
+      int column = RulerData.Index2LCDImage(dragData.columnDisplay);
+      int row = RulerData.Index2LCDImage(dragData.rowDisplay);
       if (!RulerData.IsLCDImageIndex(column, row))
         sb.AppendFormat("Screen point x,y={0},{1} is outside of LCD image frame", column, row);
       else
@@ -1371,30 +1465,33 @@ namespace LSPtools
               crop.SetPixel(i, j, tb.ToColor());
             }
           }
-          if (saveLCDImageAs.ShowDialog() == DialogResult.OK)
+          saveLCDImageAs.Title = "Save cropped image as";
+
+          if (!IniSettings.FilesRulers.ShowSaveDialog(saveLCDImageAs, new string[] { "tb" }, currentFilename, "bmp", true))
           {
-            string ext = Path.GetExtension(saveLCDImageAs.FileName).ToLower();
-
-            switch (ext)
-            {
-              case ".bmp":
-                crop.Save(saveLCDImageAs.FileName, System.Drawing.Imaging.ImageFormat.Bmp);
-                break;
-              case ".jpg":
-                crop.Save(saveLCDImageAs.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
-                break;
-              case ".png":
-                crop.Save(saveLCDImageAs.FileName, System.Drawing.Imaging.ImageFormat.Png);
-                break;
-              default:
-                displayMessage("Unsupported extension: " + ext, MessageSeverity.Error);
-                return;
-            }
-            displayMessage("Image saved as " + saveLCDImageAs.FileName, MessageSeverity.Info);
+            saveLCDImageAs.Title = "Save displayed image as";
+            return;
           }
+
+          string ext = Path.GetExtension(saveLCDImageAs.FileName).ToLower();
+
+          switch (ext)
+          {
+            case ".bmp":
+              crop.Save(saveLCDImageAs.FileName, System.Drawing.Imaging.ImageFormat.Bmp);
+              break;
+            case ".jpg":
+              crop.Save(saveLCDImageAs.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+              break;
+            case ".png":
+              crop.Save(saveLCDImageAs.FileName, System.Drawing.Imaging.ImageFormat.Png);
+              break;
+            default:
+              displayMessage("Use bmp, jpg or png extension. You entered unsupported: " + ext, MessageSeverity.Error);
+              return;
+          }
+          displayMessage("Image saved as " + saveLCDImageAs.FileName, MessageSeverity.Info);
         }
-
-
       }
       catch (Exception ex)
       {
@@ -1527,7 +1624,92 @@ namespace LSPtools
       selectRulerByNumber(RulerData.ID_ELLIPSE, RulerData.SelRuler_enum.Toggle);
     }
 
+    public delegate void AdjustEllipticRulerDelegate(int width, int height);
+    public delegate void AdjustLinearRulerDelegate(int X2, int Y2);
 
+    private void AdjustEllipticRuler(int width, int height)
+    {
+      if (eRuler == null || !eRuler.IsValid)
+      {
+        displayMessage("Elliptic Ruler is not valid!", MessageSeverity.Error);
+        return;
+      }
+      eRuler.numericUpDowns[RulerData.MRW].Value = width;
+      eRuler.numericUpDowns[RulerData.MRH].Value = height;
+    }
+    private void AdjustLinearRuler(int X2, int Y2)
+    {
+      if (lRuler == null || !lRuler.IsValid)
+      {
+        displayMessage("Line Segment Ruler is not valid!", MessageSeverity.Error);
+        return;
+      }
+      lRuler.numericUpDowns[RulerData.MRXEND].Value = X2;
+      lRuler.numericUpDowns[RulerData.MRYEND].Value = Y2;
+    }
+    private void tryAdjustEllipseGCGbutton_Click(object sender, EventArgs e)
+    {
+      RulerFormSearchGCD.OrgData orgData = new RulerFormSearchGCD.OrgData();
+      if (eRuler == null || !eRuler.IsValid)
+      {
+        displayMessage("Elliptic Ruler is not valid!", MessageSeverity.Error);
+        return;
+      }
+      orgData.Xwidth = eRuler.rect.Width;
+      orgData.Yheight = eRuler.rect.Height;
+      orgData.Xcenter = eRuler.rect.P22.X;
+      orgData.Xcenter = eRuler.rect.P22.Y;
+      RulerFormSearchGCD rfsg = new RulerFormSearchGCD(orgData, AdjustEllipticRuler);
+      rfsg.ShowDialog(this);
+    }
+
+    private void tryAdjustLineGCGbutton_Click(object sender, EventArgs e)
+    {
+      RulerFormSearchLineGCD.OrgLineData orgLineData = new RulerFormSearchLineGCD.OrgLineData();
+      if (lRuler == null || !lRuler.IsValid)
+      {
+        displayMessage("Line Segment Ruler is not valid!", MessageSeverity.Error);
+        return;
+      }
+      orgLineData.X1 = lRuler.rect.P11.X;
+      orgLineData.Y1 = lRuler.rect.P11.Y;
+      orgLineData.X2 = lRuler.rect.P33.X;
+      orgLineData.Y2 = lRuler.rect.P33.Y;
+      orgLineData.isDX2DY = true;
+      RulerFormSearchLineGCD rfsg = new RulerFormSearchLineGCD(orgLineData, AdjustLinearRuler);
+      rfsg.ShowDialog(this);
+    }
+    /// <summary>
+    /// True=moving images, false = drawing images
+    /// </summary>
+    bool modeResizeMove = true;
+    private const int IMG_RESIZE_MOVE = 0;
+    private const int IMG_RESIZE_MOVE_OFF = 1;
+    private const int IMG_DRAW = 2;
+    private const int IMG_DRAW_OFF = 3;
+
+    private void resizeMoveButton_Click(object sender, EventArgs e)
+    {
+      modeResizeMove = true; resizeDrawSetImages();
+    }
+    private void drawButton_Click(object sender, EventArgs e)
+    {
+      modeResizeMove = false; resizeDrawSetImages();
+    }
+    private void resizeDrawSetImages()
+    {
+      if (modeResizeMove)
+      {
+        resizeMoveButton.ImageIndex = IMG_RESIZE_MOVE;
+        drawButton.ImageIndex = IMG_DRAW_OFF;
+      }
+      else
+      {
+        resizeMoveButton.ImageIndex = IMG_RESIZE_MOVE_OFF;
+        drawButton.ImageIndex = IMG_DRAW;
+      }
+      resizeMoveButton.Invalidate(); drawButton.Invalidate();
+    }
 
     private void ellipseNUD_ValueChanged(object sender, EventArgs e)
     {

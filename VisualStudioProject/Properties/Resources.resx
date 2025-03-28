@@ -127,8 +127,14 @@
   <data name="FullScreenHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FullScreenHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="HelpHS1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\HelpHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Main" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Main.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Information32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Information32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Tools32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\Tools32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -136,8 +142,11 @@
   <data name="Width16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\Width16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="tb1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\tb.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="EquationOfEllipse" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\EquationOfEllipse.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Play" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Play.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LSPToolsAll" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\LSPToolsAll.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -157,6 +166,9 @@
   <data name="FastStone-Image-Viewer_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FastStone-Image-Viewer_16x16.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Help24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Help24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="OK" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\OK.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -165,9 +177,6 @@
   </data>
   <data name="HelpHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\HelpHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Bitmap2MIF" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Bitmap2MIF.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="BM32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\BM32x32.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -181,22 +190,40 @@
   <data name="ClosePreviewHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ClosePreviewHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Restart_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\Restart_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Help32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Help32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Measure48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\Measure48x48.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="EquationOfLine" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\EquationOfLine.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Bitmap2MIF1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Bitmap2MIF.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Height16x161" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\Height16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Help16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Help16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Restart_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Restart_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Wheel24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Wheel24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Measure48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Measure48x48.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="tb1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\tb.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Bitmap2MIF" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Bitmap2MIF.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="BMHelp" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\BMHelp.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="Height16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Height16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Height16x161" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\Height16x16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="RepeatHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -226,7 +253,10 @@
   <data name="BM48x48" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\BM48x48.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="HelpHS1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\HelpHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Draw24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Draw24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Resize24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Resize24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

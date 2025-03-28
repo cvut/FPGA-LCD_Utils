@@ -1,4 +1,4 @@
-﻿namespace LSPtools
+﻿namespace FpgaLcdUtils
 {
   partial class QCFormSaveQuestion
   {
@@ -37,7 +37,7 @@
       // 
       // pictureBox1
       // 
-      this.pictureBox1.Image = global::LSPtools.Properties.Resources.QuartusSaveProject_123x178;
+      this.pictureBox1.Image = global::FpgaLcdUtils.Properties.Resources.QuartusSaveProject_123x178;
       this.pictureBox1.Location = new System.Drawing.Point(0, 0);
       this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
       this.pictureBox1.Name = "pictureBox1";
@@ -66,7 +66,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
       this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
       this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.button1.Image = global::LSPtools.Properties.Resources._109_AllAnnotations_Default_16x16_72;
+      this.button1.Image = global::FpgaLcdUtils.Properties.Resources._109_AllAnnotations_Default_16x16_72;
       this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
       this.button1.Location = new System.Drawing.Point(130, 146);
       this.button1.Name = "button1";
@@ -87,6 +87,7 @@
       this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+      this.MinimumSize = new System.Drawing.Size(340, 220);
       this.Name = "QCFormSaveQuestion";
       this.Text = "Saved ?";
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

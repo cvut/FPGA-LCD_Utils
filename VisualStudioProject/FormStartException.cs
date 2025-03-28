@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
   public partial class FormStartException : Form
   {

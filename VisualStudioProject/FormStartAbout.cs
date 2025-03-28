@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
   partial class FormStartAbout : Form
   {
@@ -16,7 +16,7 @@ namespace LSPtools
       InitializeComponent();
       this.Text = String.Format("About {0}", AssemblyTitle);
       Version v = Assembly.GetExecutingAssembly().GetName().Version;
-      labelVersion.Text = String.Format("Version Alpha {0}.{1}", v.Major, v.Minor, v.Build, v.MajorRevision);
+      labelVersion.Text = String.Format("Version Beta {0}.{1}", v.Major, v.Minor, v.Build, v.MajorRevision);
     }
 
     #region Assembly Attribute Accessors

@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace LSPtools
+namespace FpgaLcdUtils
 {
   internal class RichTBWriter
   {
-    public readonly RichTextBox rtb;
+    private readonly RichTextBox rtb;
     private Font italicRTB = SystemFonts.DefaultFont;
     private Font boldRTB = SystemFonts.DefaultFont;
     private Font regularRTB = SystemFonts.DefaultFont;
@@ -26,7 +26,7 @@ namespace LSPtools
       underlineRTB = new Font(rtb.Font, FontStyle.Underline);
     }
     /// <summary>
-    /// Clear RichTextBox
+    /// Clear RichTextBox and keep its zoom factor
     /// </summary>
     public void Clear()
     {
@@ -188,6 +188,11 @@ namespace LSPtools
     internal void ShowFirstLine()
     {
       rtb.SelectionStart = 0; rtb.SelectionLength = 0; rtb.ScrollToCaret();
+    }
+
+    internal void SetBackColor(Color backColor)
+    {
+      rtb.BackColor = backColor;
     }
   }
 }
